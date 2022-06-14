@@ -46,19 +46,18 @@ function RenderForm(){
 export default RenderForm;
 
 const Form = styled.form`
-  width: 80%;
+  width: 90%;
   display:flex;
   flex-direction:column;
   font-family: var(--input-font);
 
   input{
-    height: 50px;
-    margin-bottom: 20px;
+    height: 60px;
+    margin-bottom: 10px;
     border:none;
     border-radius: 6px;
     padding-left: 10px;
     font-weight: 700;  
-
   }
   
   input::placeholder{
@@ -67,13 +66,18 @@ const Form = styled.form`
   }
 
   button{
-    height: 45px;
+    height: 60px;
     border:none;
     border-radius: 6px;
     background-color: rgba(24, 119, 242, 1);
     color: #fff;
     font-size: 22px;
     font-weight: 700;  
+    font-family: var(--input-font);
+  }
+
+  @media(max-width: 460px){
+    margin-top: 50px;
   }
 `
 
@@ -85,4 +89,5 @@ const Button =styled.button`
   border:none;
   background-color:transparent;
   color:white;
+  text-decoration:underline;
 `
