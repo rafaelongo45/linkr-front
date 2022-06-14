@@ -1,0 +1,24 @@
+*{
+  box-sizing: content-box;
+  --background-color:#151515;
+  --background-color-header:#333333;
+  --logo-font: 'Passion One';
+  --input-font: 'Oswald';
+  --link-font: 'Lato';
+}
+
+html{
+  min-height: 100%;
+}
+
+body{
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+}
+
+.root{
+  min-height: 100%;
+}
