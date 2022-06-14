@@ -19,9 +19,7 @@ function RenderSignUpPage(){
 export default RenderSignUpPage;
 
 const Main = styled.main`
-  position: fixed;
-  top:0;
-  bottom:0;
+  height:100%;
   width:100%;
   background-color: var(--background-color);
   display:flex;
@@ -53,7 +51,7 @@ const LeftSide = styled.section`
 `
 
 const RightSide = styled.section`
-  position:absolute;
+  position:relative;
   right: 0;
   width:40%;
   height: 100%;
