@@ -1,12 +1,37 @@
 import { useContext, useState } from "react";
+import axios from "axios";
 import styled from "styled-components";
 
 import UserContext from "../Contexts/UserContext";
 
 function PostUrl(){
+    const URL = "http://localhost:4000/posts";
     const {userInfo} = useContext(UserContext);
-    const [url, setUrl] = useState("");
-    const [descripiton, setDescription] = useState("");
+    const [disable, setDisable] = useState(false);
+
+    const [data, setData] = useState({
+        link: "", description: ""
+    });
+
+    function sendUrl(e){
+        e.preventDefault();
+        const token = localStorage.getItem("token");
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        }
+
+        const promise = axios.post(URL, data, config);
+        promise.then(() => setDisable(false)); promise.catch(warnError);
+        setDisable(true);
+    }
+
+    function warnError(error) {
+        alert("Houve um erro ao publicar seu link");
+        setDisable(false);
+    }
+
 
     return (
     <Post>
@@ -15,11 +40,26 @@ function PostUrl(){
         </div>
         <div>
             <p>What are you going to share today?</p>
-            <Form>
-                <Url type ='text' placeholder="http://..." onChange={(e) => {setUrl(e.target.value)}}/>
-                <Description type ='text' placeholder="Awesome article about #javascript" onChange={(e) => {setDescription(e.target.value)}}/>
+            <Form onSubmit={sendUrl}>
+                <Url
+                    value={data.url}
+                    type ='text' 
+                    placeholder="http://..." 
+                    onChange={(e) => { setData({ ...data, link: e.target.value }) }}
+                    disabled={disable}
+                    required
+                />
+                <Description
+                    value={data.description}
+                    type ='text' 
+                    placeholder="Awesome article about #javascript" 
+                    onChange={(e) => { setData({ ...data, description: e.target.value }) }}
+                    disabled={disable}
+                />
+                <Button disabled={disable} type="submit">
+                    {disable? "Publishing..." : "Publish"}
+                </Button>
             </Form>
-            <Button>Publish</Button>
         </div>
     </Post>
     )
