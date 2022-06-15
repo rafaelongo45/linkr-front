@@ -1,7 +1,19 @@
+import styled from "styled-components";
 import Card from "./PostCard";
 
-export default function PostsList () {
+export default function PostsList ({posts}) {
     return (
-        <Card photoLink="" username="Gabriel Pires" description="Olaaaa" link="https://www.youtube.com/" />
+        <TimelinePosts >
+            {posts.map(data => <Card data={data} />)}
+        </TimelinePosts>
     )
-}
+};
+
+const TimelinePosts = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
+
+
