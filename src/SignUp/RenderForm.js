@@ -7,7 +7,6 @@ function RenderForm(){
   const navigate = useNavigate();
   const [userData, setUserData] = useState({name: '', email: '', password: '', photoLink: ''});
   const [buttonState, setButtonState] = useState(false);
-  console.log(userData)
 
   function sendData(e){
     e.preventDefault();
