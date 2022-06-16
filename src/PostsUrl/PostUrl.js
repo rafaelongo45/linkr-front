@@ -66,10 +66,10 @@ function PostUrl(){
 
 export default PostUrl;
 
-const Post = styled.main`
+const Post = styled.div`
     position: relative;
     display: flex;
-    height: 490px;
+    height: 150px;
     width: 611px;
     margin: 43px 0 29px 0;
     padding: 16px 20px 55px 20px;
@@ -138,6 +138,8 @@ const Description = styled.input`
 `
 
 const Button = styled.button`
+    font-size: 14px;
+    font-weight: 700;
     position: absolute;
     bottom: 16px;
     right: 20px;

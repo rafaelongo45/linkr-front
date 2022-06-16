@@ -4,6 +4,7 @@ import Header from "../Header";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import PostUrl from "../PostsUrl/PostUrl";
+import TrendingHashtags from "../TrendingHashtags";
 
 export default function Timeline () {
     const [posts, setPosts] = useState([])
@@ -33,19 +34,23 @@ export default function Timeline () {
         })
     };
 
-    return (
-    <TimelineStyle >
-        <Title><h1>timeline</h1></Title>
-        <Header /> 
-        <PostUrl />
-        {loading ?
-            <>
-                Loading
-                <LoadingStyle ><div></div><div></div><div></div></LoadingStyle>
-            </>
-        : posts !== [] ? <PostsList posts={posts} /> : <NoPosts>There are no posts yet</NoPosts>
-        }
-    </TimelineStyle>
+    return ( <>
+        <TimelineStyle >
+            <Header /> 
+            <PostsArea>
+                <Title><h1>timeline</h1></Title>
+                <PostUrl />
+                {loading ?
+                    <>
+                        Loading
+                        <LoadingStyle ><div></div><div></div><div></div></LoadingStyle>
+                    </>
+                : posts !== [] ? <PostsList posts={posts} /> : <NoPosts>There are no posts yet</NoPosts>
+                }
+            </PostsArea>
+            <TrendingHashtags />
+        </TimelineStyle>
+    </>
     )
 }
 
@@ -54,13 +59,16 @@ const NoPosts = styled.p`
     color: black;
 `
 
-const TimelineStyle = styled.div`
-    height: 100%;
+const TimelineStyle = styled.main`
+    display: flex;
+    justify-content: center;
+    margin-top: 113px;
+`
+
+const PostsArea = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 60px;
-    background-color: var(--background-page);
 `
 
 const Title = styled.div`
@@ -68,7 +76,6 @@ const Title = styled.div`
     font-family: var(--input-font);
     font-weight: bold;
     font-size: 43px;
-    margin-top: 53px;
     color: #FFFFFF;
 `
 
