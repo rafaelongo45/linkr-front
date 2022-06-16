@@ -11,7 +11,7 @@ function ProfileImg ({img}) {
 
 function LinkData ({linkTitle,linkDesc,linkImg,link}) {
     return (
-        <LinkSnnipet>
+        <LinkSnnipet onClick={() => window.open(link)}>
             <SnippetDesc>
                 <h1>{linkTitle}</h1>
                 <h3>{linkDesc}</h3>
@@ -31,8 +31,8 @@ export default function Card (data) {
             <div>
                 <ProfileImg img={posts.photoLink} />
             </div>
-            <CardDetails >
-                <PostUsername>{posts.username}</PostUsername>
+            <CardDetails>
+                <PostUsername onClick={() => navigate(`/user/${posts.userId}`, {state: {userId: posts.userId}})}>{posts.username}</PostUsername>
                 
                 <PostDescription>
                     <ReactHashtag onHashtagClick={name => navigate(`/hashtag/${name.replace('#','')}`)}>
@@ -40,7 +40,7 @@ export default function Card (data) {
                     </ReactHashtag > 
                 </PostDescription>
                 
-                <LinkData onClick={() => window.open(posts.link)}
+                <LinkData
                     linkTitle={posts.linkTitle} 
                     linkDesc={posts.linkDesc} 
                     linkImg={posts.linkImg}
@@ -82,6 +82,9 @@ const PostUsername = styled.div`
     color: white;
     display: flex;
     align-items: center;
+    :hover{
+        cursor:pointer;
+    }
 `
 
 const PostDescription = styled.div`
