@@ -31,20 +31,20 @@ export default function Login() {
 
     return (
         <Main>
-            <LogoBox>
+            <LogoSection>
                 <Logo>
                     <h1>linkr</h1>
                     <h2>save, share and discover the best links on the web</h2>
                 </Logo>
-            </LogoBox>
-            <FormBox>
+            </LogoSection>
+            <FormSection>
                 <Form onSubmit={sendData}>
                     <input type='text' placeholder="e-mail" required value={userData.email} onChange={e => setUserData({ ...userData, email: e.target.value })}></input>
                     <input type='password' placeholder="password" required value={userData.password} onChange={e => setUserData({ ...userData, password: e.target.value })}></input>
                     <button type="submit" disabled={buttonState}>Log In</button>
                 </Form>
                 <Button onClick={() => navigate('/signup')}>First time? Create an account!</Button>
-            </FormBox>
+            </FormSection>
         </Main>
     );
 }
@@ -60,7 +60,7 @@ const Main = styled.main`
     }
 `
 
-const LogoBox = styled.section`
+const LogoSection = styled.section`
     font-family: var(--logo-font);
     font-weight:700;
     color:#fff;
@@ -122,7 +122,7 @@ const Logo = styled.div`
     }
 `;
 
-const FormBox = styled.section`
+const FormSection = styled.section`
     position:relative;
     right: 0;
     width:40%;
@@ -172,6 +172,7 @@ const Form = styled.form`
     }
 
     @media(max-width: 460px) {
+        width: 92%;
         position: static;
         margin-top: 40px;
 
