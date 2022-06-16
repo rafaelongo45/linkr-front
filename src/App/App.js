@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 
 import Login from "../Login/index.js";
 import SignUp from "../SignUp/Index.js";
+import Timeline from "../Timeline/TimelinePage.js";
 import HashtagsPage from "../HashtagsPage/index.js";
 import UserContext from "../Contexts/UserContext.js";
 
@@ -14,6 +15,7 @@ function App(){
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path='/signup' element={<SignUp />} />
+          <Route path='/timeline' element={<Timeline />} />
           <Route path='/hashtag/:hashtag' element={<HashtagsPage />} />
         </Routes>
       </UserContext.Provider>
