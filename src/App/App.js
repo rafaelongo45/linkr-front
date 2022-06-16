@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 
+import TrendingHashtags from "../TrendingHashtags/index.js";
+import Login from "../Login/index.js";
 import SignUp from "../SignUp/Index.js";
 import Timeline from "../Timeline/TimelinePage.js";
-import Login from "../Login/index.js";
-import TrendingHashtags from "../TrendingHashtags/index.js";
 import UserContext from "../Contexts/UserContext.js";
 
 function App() {
