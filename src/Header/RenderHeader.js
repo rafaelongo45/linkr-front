@@ -28,7 +28,7 @@ function RenderHeader(){
         }
         {
           userInfo.profileImage !== '' ? 
-          <img src = {userInfo.profileImage}/>
+          <img src = {userInfo.profileImage} alt = 'User profile'/>
           :
           <div>
             <IoPersonCircle />

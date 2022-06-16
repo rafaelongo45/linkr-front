@@ -33,7 +33,7 @@ const Background = styled.section`
   position:absolute;
   top:0;
   left:0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   z-index: 1;
   margin: 0;

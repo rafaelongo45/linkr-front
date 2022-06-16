@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router";
+import ReactHashtag from "@mdnm/react-hashtag";
 
 function ProfileImg ({img}) {
     return (
@@ -6,9 +8,8 @@ function ProfileImg ({img}) {
     )
 }
 
-
 function LinkData ({linkTitle,linkDesc,linkImg,link}) {
-
+  
     return (
         <LinkSnnipet>
             <SnippetDesc>
@@ -23,16 +24,23 @@ function LinkData ({linkTitle,linkDesc,linkImg,link}) {
 
 export default function Card (data) {
     const posts = data.data;
-
+    const navigate = useNavigate();
+  
     return (
         <CardDiv>
             <div>
                 <ProfileImg img={posts.photoLink} />
             </div>
-            <CardDetails onClick={() => window.open(posts.link)}>
+            <CardDetails >
                 <PostUsername>{posts.username}</PostUsername>
-                <PostDescription>{posts.description}</PostDescription>
-                <LinkData 
+                
+                <PostDescription>
+                    <ReactHashtag onHashtagClick={name => navigate(`/hashtag/${name.replace('#','')}`)}>
+                        {posts.description}
+                    </ReactHashtag > 
+                </PostDescription>
+                
+                <LinkData onClick={() => window.open(posts.link)}
                     linkTitle={posts.linkTitle} 
                     linkDesc={posts.linkDesc} 
                     linkImg={posts.linkImg}
@@ -53,6 +61,11 @@ const CardDiv = styled.div`
     margin-bottom: 50px;
     border-radius: 15px;
     padding: 10px;
+
+    span{
+        color:#fff;
+        font-weight: 700;
+    }
 `
 
 const CardDetails = styled.div`
@@ -74,6 +87,7 @@ const PostUsername = styled.div`
 
 const PostDescription = styled.div`
     font-size: 14px;
+    color: #B7B7B7;
     color: white;
     opacity: 0.7;
     min-height: 30px;
@@ -94,6 +108,7 @@ const LinkSnnipet = styled.div`
     width: 100%;
     display: flex;
     justify-content:center;
+    cursor: pointer;
 `
 
 const SnippetImg = styled.img`
