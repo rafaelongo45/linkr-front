@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 
 import Login from "../Login/index.js";
 import SignUp from "../SignUp/Index.js";
-import HashtagsPage from "../HashtagsPage/index.js";
+import TrendingHashtags from "../TrendingHashtags/index.js";
 import UserContext from "../Contexts/UserContext.js";
 
 function App(){
@@ -14,7 +14,7 @@ function App(){
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path='/signup' element={<SignUp />} />
-          <Route path='/hashtag/:hashtag' element={<HashtagsPage />} />
+          <Route path='/hashtag/:hashtag' element={<TrendingHashtags />} />
         </Routes>
       </UserContext.Provider>
     </BrowserRouter>
