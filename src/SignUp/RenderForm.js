@@ -11,7 +11,6 @@ function RenderForm(){
   function sendData(e){
     e.preventDefault();
     setButtonState(true);
-    console.log('aaa')
 
     const URL = 'http://localhost:4000/signup';
     const promise = axios.post(URL, userData);
