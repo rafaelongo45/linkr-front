@@ -31,20 +31,20 @@ export default function Login() {
 
     return (
         <Main>
-            <LeftSide>
+            <LogoBox>
                 <Logo>
                     <h1>linkr</h1>
                     <h2>save, share and discover the best links on the web</h2>
                 </Logo>
-            </LeftSide>
-            <RightSide>
+            </LogoBox>
+            <FormBox>
                 <Form onSubmit={sendData}>
                     <input type='text' placeholder="e-mail" required value={userData.email} onChange={e => setUserData({ ...userData, email: e.target.value })}></input>
                     <input type='password' placeholder="password" required value={userData.password} onChange={e => setUserData({ ...userData, password: e.target.value })}></input>
                     <button type="submit" disabled={buttonState}>Log In</button>
                 </Form>
                 <Button onClick={() => navigate('/signup')}>First time? Create an account!</Button>
-            </RightSide>
+            </FormBox>
         </Main>
     );
 }
@@ -54,15 +54,28 @@ const Main = styled.main`
     width:100%;
     background-color: var(--background-color);
     display:flex;
+
+    @media(max-width: 460px) {
+        flex-direction: column;
+    }
 `
 
-const LeftSide = styled.section`
+const LogoBox = styled.section`
     font-family: var(--logo-font);
     font-weight:700;
     color:#fff;
     position:relative;
     width: 60%;
     height: 100%;
+
+    @media(max-width: 460px) {
+        width: 100%;
+        height: 30%;
+        position: static;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 `
 
 const Logo = styled.div`
@@ -85,9 +98,31 @@ const Logo = styled.div`
         width: 300px;
         font-family:var(--input-font);
     }
+
+    @media(max-width: 460px) {
+        width: 230px;
+        height: 110px;
+        position: static;
+        align-items: center;
+        justify-content: center;
+
+        h1 {
+            font-size: 68px;
+            line-height: 58px;
+            padding: 0px;
+        }
+
+        h2 {
+            font-size: 20px;
+            line-height: 28px;
+            width: 220px;
+            font-family:var(--input-font);
+            text-align: center;
+        }
+    }
 `;
 
-const RightSide = styled.section`
+const FormBox = styled.section`
     position:relative;
     right: 0;
     width:40%;
@@ -97,6 +132,13 @@ const RightSide = styled.section`
     flex-direction:column;
     align-items:center;
     justify-content:center;
+
+    @media(max-width: 460px) {
+        width: 100%;
+        height: 70%;
+        position: static;
+        justify-content:flex-start;
+    }
 `
 
 const Form = styled.form`
@@ -106,28 +148,36 @@ const Form = styled.form`
     font-family: var(--input-font);
 
     input{
-    height: 50px;
-    margin-bottom: 20px;
-    border:none;
-    border-radius: 6px;
-    padding-left: 10px;
-    font-weight: 700;  
-
+        height: 50px;
+        margin-bottom: 20px;
+        border:none;
+        border-radius: 6px;
+        padding-left: 10px;
+        font-weight: 700;
     }
     
     input::placeholder{
-    font-size: 22px;
-    color: rgba(159, 159, 159, 1);
+        font-size: 22px;
+        color: rgba(159, 159, 159, 1);
     }
 
     button{
-    height: 45px;
-    border:none;
-    border-radius: 6px;
-    background-color: rgba(24, 119, 242, 1);
-    color: #fff;
-    font-size: 22px;
-    font-weight: 700;  
+        height: 50px;
+        border:none;
+        border-radius: 6px;
+        background-color: rgba(24, 119, 242, 1);
+        color: #fff;
+        font-size: 22px;
+        font-weight: 700;  
+    }
+
+    @media(max-width: 460px) {
+        position: static;
+        margin-top: 40px;
+
+        input {
+            margin-bottom: 11px;
+        }
     }
 `
 
@@ -136,11 +186,12 @@ const Button = styled.button`
     font-family: var(--link-font);
     font-weight: 400;
     font-size: 16px;
+    text-decoration: underline;
     border:none;
     background-color:transparent;
     color:white;
 
-    :hover{
-        cursor: pointer;
+    @media(max-width: 460px) {
+        margin-top: 21px;
     }
 `
