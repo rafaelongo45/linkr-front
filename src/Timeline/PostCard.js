@@ -8,8 +8,8 @@ function ProfileImg ({img}) {
     )
 }
 
-
 function LinkData ({linkTitle,linkDesc,linkImg,link}) {
+  
     return (
         <LinkSnnipet>
             <SnippetDesc>
@@ -25,7 +25,7 @@ function LinkData ({linkTitle,linkDesc,linkImg,link}) {
 export default function Card (data) {
     const posts = data.data;
     const navigate = useNavigate();
-
+  
     return (
         <CardDiv>
             <div>
@@ -74,6 +74,7 @@ const CardDetails = styled.div`
     justify-content: space-between;
     width: 100%;
     margin-left: 20px;
+    cursor: pointer;
 `
 
 const PostUsername = styled.div`
@@ -87,6 +88,8 @@ const PostUsername = styled.div`
 const PostDescription = styled.div`
     font-size: 14px;
     color: #B7B7B7;
+    color: white;
+    opacity: 0.7;
     min-height: 30px;
     display: flex;
     align-items: center;

@@ -6,6 +6,7 @@ import SignUp from "../SignUp/Index.js";
 import Timeline from "../Timeline/TimelinePage.js";
 import HashtagsPage from "../HashtagsPage/index.js";
 import UserContext from "../Contexts/UserContext.js";
+import PostUrl from "../PostsUrl/PostUrl.js";
 
 function App(){
   const [userInfo, setUserInfo] = useState({name: '', profileImage: ''});
