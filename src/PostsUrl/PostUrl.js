@@ -40,7 +40,7 @@ function PostUrl(){
         </div>
         <div>
             <p>What are you going to share today?</p>
-            <Form onSubmit={sendUrl}>
+            <form onSubmit={sendUrl}>
                 <Url
                     value={data.url}
                     type ='text' 
@@ -59,7 +59,7 @@ function PostUrl(){
                 <Button disabled={disable} type="submit">
                     {disable? "Publishing..." : "Publish"}
                 </Button>
-            </Form>
+            </form>
         </div>
     </Post>
     )
@@ -68,42 +68,83 @@ function PostUrl(){
 export default PostUrl;
 
 const Post = styled.main`
+    position: relative;
     display: flex;
-    height: 209px;
+    height: 190px;
     width: 611px;
     padding: 16px 20px;
     border-radius: 16px;
-    background-color: red;
+    background-color: var(--background-post-url);
 
     div:first-child{
         width: 50px;
         margin-right: 18px;
-        background-color: blue;
     }
 
     div:nth-child(2){
         display: flex;
         width: 100%;
         flex-direction: column;
+
+        p{
+            font-family: var(--link-font);
+            font-size: 20px;
+            margin: 8px 0 17px 0;
+            color: var(--post-color);
+        }
     }
 `
 const Image = styled.img`
-
-`
-const Form = styled.form`
-
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
 `
 
 const Url = styled.input`
+    font-family: var(--link-font);
+    font-size: 15px;
     box-sizing: border-box;
+    height: 30px;
     width: 100%;
+    padding: 0 13px;
+    margin-bottom: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--background-input);
+
+    ::placeholder{
+        font-family: var(--link-font);
+        font-size: 15px;
+        color: var(--placeholder-color);
+    }
 `
 
 const Description = styled.input`
+    font-family: var(--link-font);
+    font-size: 15px;
     box-sizing: border-box;
+    height: 70px;
     width: 100%;
+    padding: 7px 13px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--background-input);
+
+    ::placeholder{
+        font-family: var(--link-font);
+        font-size: 15px;
+        color: var(--placeholder-color);
+    }
 `
 
 const Button = styled.button`
-
+    position: absolute;
+    bottom: 16px;
+    right: 20px;
+    width: 112px;
+    height: 31px;
+    border: none;
+    border-radius: 5px;
+    color: var(--button-text);
+    background-color: var(--background-button);
 `
