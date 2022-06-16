@@ -39,7 +39,7 @@ export default function Timeline () {
                 Loading
                 <LoadingStyle ><div></div><div></div><div></div></LoadingStyle>
             </>
-        : posts === [] ? <PostsList posts={posts} /> : <NoPosts>There are no posts yet</NoPosts>
+        : posts !== [] ? <PostsList posts={posts} /> : <NoPosts>There are no posts yet</NoPosts>
         }
     </TimelineStyle>
     )
