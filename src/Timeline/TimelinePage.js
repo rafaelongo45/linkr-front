@@ -1,26 +1,34 @@
-import PostsList from "./PostsList";
 import styled, { keyframes } from "styled-components";
-import Header from "../Header";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import axios from "axios";
+
+import PostsList from "./PostsList";
+import Header from "../Header";
 import PostUrl from "../PostsUrl/PostUrl";
 import TrendingHashtags from "../TrendingHashtags";
 
-export default function Timeline () {
-    const [posts, setPosts] = useState([])
-    const [loading, setLoading] = useState(false)
+export default function Timeline({ filter }) {
+    const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const params = useParams();
+
+    let URL = "http://localhost:4000"; let name;
+    if(filter === "hashtag"){
+        name = params.hashtag
+        URL = `${URL}/${filter}/${name}`;
+    }
 
     useEffect(() => {
         getPosts()
-    },[])
+    }, [])
 
-    function getPosts () {
+    function getPosts() {
         setLoading(true)
-        
-        const URL = "http://localhost:4000/timeline";
+
         const token = localStorage.getItem('token');
-        const header = {headers: {authorization: `Bearer ${token}`}}
-        
+        const header = { headers: { authorization: `Bearer ${token}` } }
+
         const promise = axios.get(URL, header)
 
         promise.then(res => {
@@ -34,21 +42,21 @@ export default function Timeline () {
         })
     };
 
-    return ( <>
+    return (<>
         <TimelineStyle >
-            <Header /> 
+            <Header />
             <PostsArea>
-                <Title><h1>timeline</h1></Title>
-                <PostUrl />
+                {filter === "timeline" ? <Title><h1>timeline</h1></Title> : <Title><h1>{name}</h1></Title>}
+                {filter === "timeline" ? <PostUrl /> : <></>}
                 {loading ?
                     <>
                         Loading
                         <LoadingStyle ><div></div><div></div><div></div></LoadingStyle>
                     </>
-                : posts !== [] ? <PostsList posts={posts} /> : <NoPosts>There are no posts yet</NoPosts>
+                    : posts !== [] ? <PostsList posts={posts} /> : <NoPosts>There are no posts yet</NoPosts>
                 }
             </PostsArea>
-            <TrendingHashtags />
+            {filter === "timeline" ? <TrendingHashtags /> : <></>}
         </TimelineStyle>
     </>
     )

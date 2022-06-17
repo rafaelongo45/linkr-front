@@ -8,6 +8,7 @@ import UserContext from "../Contexts/UserContext.js";
 
 function App(){
   const [userInfo, setUserInfo] = useState({name: '', profileImage: ''});
+
   return (
     <BrowserRouter>
       <UserContext.Provider value={{userInfo, setUserInfo}}>
