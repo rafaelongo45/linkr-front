@@ -46,7 +46,7 @@ export default function Timeline({ filter }) {
         <TimelineStyle >
             <Header />
             <PostsArea>
-                {filter === "timeline" ? <Title><h1>timeline</h1></Title> : <Title><h1>{name}</h1></Title>}
+                {filter === "timeline" ? <Title><h1>timeline</h1></Title> : <Title><h1>{`#${name}`}</h1></Title>}
                 {filter === "timeline" ? <PostUrl /> : <></>}
                 {loading ?
                     <>
