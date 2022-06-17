@@ -13,10 +13,10 @@ export default function Timeline({ filter }) {
     const [loading, setLoading] = useState(false);
     const params = useParams();
 
-    let URL = "http://localhost:4000"; let name;
+    let URL = `http://localhost:4000/${filter}`; let name;
     if(filter === "hashtag"){
         name = params.hashtag
-        URL = `${URL}/${filter}/${name}`;
+        URL = `${URL}/${name}`;
     }
 
     useEffect(() => {
