@@ -39,8 +39,9 @@ function TrendingHashtags() {
 export default TrendingHashtags;
 
 const TrendingArea = styled.aside`
-  height: 400px;
-  width: 250px;
+  height: 406px;
+  width: 301px;
+  margin: 85px 0 0 25px;
   padding-top: 20px;
   background-color: var(--background-color);
   border-radius: 14px;
