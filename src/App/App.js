@@ -5,10 +5,12 @@ import Login from "../Login/index.js";
 import SignUp from "../SignUp/Index.js";
 import Timeline from "../Timeline/TimelinePage.js";
 import UserContext from "../Contexts/UserContext.js";
+import UserPage from "../UserPage/index.js";
+import PostUrl from "../PostsUrl/PostUrl.js";
 
 function App(){
   const [userInfo, setUserInfo] = useState({name: '', profileImage: '', userId: ''});
-  
+
   return (
     <BrowserRouter>
       <UserContext.Provider value={{userInfo, setUserInfo}}>
