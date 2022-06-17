@@ -14,7 +14,7 @@ export default function Timeline () {
     },[])
 
     function getPosts () {
-        setLoading(true)
+        setLoading(true);
         
         const URL = "http://localhost:4000/timeline";
         const token = localStorage.getItem('token');
