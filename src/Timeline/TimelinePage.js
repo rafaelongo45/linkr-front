@@ -21,7 +21,7 @@ export default function Timeline({ filter }) {
 
     useEffect(() => {
         getPosts()
-    }, [])
+    }, [filter])
 
     function getPosts() {
         setLoading(true)
