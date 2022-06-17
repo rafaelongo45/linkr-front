@@ -4,6 +4,7 @@ import ReactHashtag from "@mdnm/react-hashtag";
 
 import { useEffect, useState } from "react";
 import LikesContainer from "./LikesContainer.js";
+import axios from "axios";
 
 function ProfileImg ({img}) {
     return (
@@ -26,24 +27,44 @@ function LinkData ({linkTitle,linkDesc,linkImg,link}) {
 }
 
 export default function Card (data) {
-    const [liked, setLiked] = useState(false);
+    const [userLiked, setUserLiked] = useState(false);
+    const [likes, setLikes] = useState([])
     
     const posts = data.data;
     const navigate = useNavigate();
 
     useEffect(() => {
+        peopleWhoLiked()
+    },[userLiked])
+    
+    function peopleWhoLiked () {
+        const URL = `http://localhost:4000/post-likes/${posts.id}`;
+		const token = localStorage.getItem("token");
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        }
 
-    },[liked])
-  
+		const promise = axios.get(URL, config);
+        promise.then((res) => {
+            setLikes(res.data)})
+        promise.catch(warnError)
+    }
+
+    function warnError(error) {
+        alert("Houve um erro ao publicar seu link");
+    }
+
     return (
         <CardDiv>
             <IconsDiv>
                 <ProfileImg img={posts.photoLink} />
                 <LikesContainer 
-                    liked={liked} 
-                    likeCount={posts.likeCount} 
+                    liked={userLiked} 
+                    likes={likes}
                     posts={posts} 
-                    setLiked={setLiked} />
+                    setLiked={setUserLiked} />
             </IconsDiv>
             <CardDetails>
                 <PostUsername onClick={() => navigate(`/user/${posts.userId}`, {state: {userId: posts.userId}})}>{posts.username}</PostUsername>

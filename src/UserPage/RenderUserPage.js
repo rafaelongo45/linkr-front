@@ -22,8 +22,6 @@ function RenderUserPage(){
 
   }, [location.state.userId]);
 
-  console.log(user)
-
   return(
      <Main>
       <Posts>
