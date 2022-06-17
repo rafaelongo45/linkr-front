@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-function RenderTrending({name}){
+function RenderHashtags({name}){
   return (
     <Hashtag>
       # {name}
@@ -8,9 +8,9 @@ function RenderTrending({name}){
   )
 }
 
-export default RenderTrending;
+export default RenderHashtags;
 
-const Hashtag = styled.p`
+const Hashtag = styled.li`
   margin: 6px 0;
   font-size: 18px;
   color: #fff;

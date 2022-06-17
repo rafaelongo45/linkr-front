@@ -3,6 +3,7 @@ import styled, { keyframes } from "styled-components";
 import Header from "../Header";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import PostUrl from "../PostsUrl/PostUrl";
 
 export default function Timeline () {
     const [posts, setPosts] = useState([])
@@ -34,6 +35,9 @@ export default function Timeline () {
 
     return (
     <TimelineStyle >
+        <Title><h1>timeline</h1></Title>
+        <Header /> 
+        <PostUrl />
         {loading ?
             <>
                 Loading
@@ -51,11 +55,21 @@ const NoPosts = styled.p`
 `
 
 const TimelineStyle = styled.div`
-    background-color: #E5E5E5;
     height: 100%;
     display: flex;
-    justify-content: center;
-    margin-top: 200px;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 60px;
+    background-color: var(--background-page);
+`
+
+const Title = styled.div`
+    width: 651px;
+    font-family: var(--input-font);
+    font-weight: bold;
+    font-size: 43px;
+    margin-top: 53px;
+    color: #FFFFFF;
 `
 
 const loadingAnimation = keyframes`
