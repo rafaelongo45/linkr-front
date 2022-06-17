@@ -11,7 +11,6 @@ function App(){
   const [click, setClick] = useState(false);
   const [userInfo, setUserInfo] = useState({name: '', profileImage: '', userId: ''});
 
-  
   return (
     <BrowserRouter>
       <UserContext.Provider value={{userInfo, setUserInfo}}>

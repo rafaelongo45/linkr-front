@@ -25,6 +25,7 @@ function LinkData ({linkTitle,linkDesc,linkImg,link}) {
 export default function Card (data) {
     const posts = data.data;
     const navigate = useNavigate();
+    const user = {userId: posts.userId, name: posts.username, image: posts.photoLink};
   
     return (
         <CardDiv>
@@ -32,12 +33,13 @@ export default function Card (data) {
                 <ProfileImg img={posts.photoLink} />
             </div>
             <CardDetails>
-                <PostUsername onClick={() => navigate(`/user/${posts.userId}`, {state: {userId: posts.userId}})}>{posts.username}</PostUsername>
+                <PostUsername onClick={() => navigate(`/user/${posts.userId}`, {state: user})}>{posts.username}</PostUsername>
                 
                 <PostDescription>
                     <ReactHashtag onHashtagClick={name => navigate(`/hashtag/${name.replace('#','')}`)}>
                         {posts.description}
                     </ReactHashtag > 
+                    
                 </PostDescription>
                 
                 <LinkData
