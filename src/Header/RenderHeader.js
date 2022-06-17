@@ -42,9 +42,10 @@ export default RenderHeader;
 
 const Header = styled.header`
   top: 0;
+  z-index: 1;
   width: 100%;
   height: 60px;
-  position: absolute;
+  position: fixed;
   background-color: var(--background-color);
   display:flex;
   align-items:center;
