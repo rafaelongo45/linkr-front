@@ -18,5 +18,9 @@
 
 html, body, .root{
   height: 100vh;
+<<<<<<< HEAD
   background-color: #333333;
+=======
+  background-color: var(--background-page);
+>>>>>>> origin/main
 };

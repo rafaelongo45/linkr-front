@@ -2,11 +2,16 @@ import styled from "styled-components";
 import { useNavigate } from "react-router";
 import {IoPersonCircle} from 'react-icons/io5';
 
-function SearchResults({user}){
+function SearchResults({user, setClick, setSearchString}){
   const navigate = useNavigate()
 
   return (
-      <Result onClick={() => navigate(`/user/${user.id}`, {state: {userId: user.id}})}>
+      <Result onClick={
+        () => { 
+          navigate(`/user/${user.id}`, {state: {userId: user.id}}); 
+          setClick(false); 
+          setSearchString('')} }>
+
         {
           user.photoLink === null ?
           <div>
@@ -15,6 +20,7 @@ function SearchResults({user}){
           :
           <img src={user.photoLink}/>
         }
+        
         <p>{user.name}</p>
       </Result>
   )

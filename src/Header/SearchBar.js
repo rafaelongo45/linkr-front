@@ -1,13 +1,16 @@
 import axios from "axios";
 import styled from "styled-components";
-import { useState, useEffect } from "react";
-import {AiOutlineSearch as MagGlass} from 'react-icons/ai'
 import { DebounceInput } from "react-debounce-input";
+import { useState, useEffect, useContext } from "react";
+import {AiOutlineSearch as MagGlass} from 'react-icons/ai'
+
 import SearchResults from "./SearchResults";
+import ClickContext from "../Contexts/HeaderClickContext.js";
 
 function SearchBar(){
   const token = localStorage.getItem('token');
   const [searchInfo, setSearchInfo] = useState([]);
+  const {click, setClick} = useContext(ClickContext);
   const [searchString, setSearchString] = useState('');
 
   useEffect(()=> {
@@ -22,7 +25,11 @@ function SearchBar(){
 
     const promise = axios.get(URL, config);
 
-    promise.then(response => setSearchInfo(response.data));
+    promise.then(response => {
+      setSearchInfo(response.data); 
+      setClick(true);
+    });
+
     promise.catch(err => console.log(err));
   }, [searchString]);
 
@@ -35,23 +42,30 @@ function SearchBar(){
           element='input' 
           minLength={3} 
           debounceTimeout={300} 
+          value = {searchString}
           onChange = {e => setSearchString(e.target.value)}/>
 
           {
-            searchInfo.length === 0 ?
+            !click?
             ''
               :
             <Results>
               {
                 searchInfo.map(result => {
-                  return <SearchResults user={result}/>
+                  return <SearchResults user={result} setClick={setClick} setSearchString={setSearchString}/>
                 })
               }
             </Results>
           }
+          
       </Form>
 
-      
+      {
+        click?
+        <Background onClick={() =>{ setClick(false); setSearchString('')}}></Background>
+        :
+        ''
+      }
     </>
   )
 }
@@ -106,4 +120,12 @@ const Results = styled.section`
   background-color: #E7E7E7;
   z-index:1;
   padding-top: 15px;
+`
+
+const Background = styled.div`
+  position:absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
 `

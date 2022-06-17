@@ -22,7 +22,7 @@ export default function Login() {
             const { token, image, userId } = res.data;
             localStorage.setItem("token", token);
             localStorage.setItem("user", userId);
-            setUserInfo({...userInfo, profileImage: image});
+            setUserInfo({...userInfo, profileImage: image, userId});
             navigate('/timeline');
         });
         loginReq.catch(err => {

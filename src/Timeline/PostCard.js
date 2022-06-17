@@ -56,6 +56,8 @@ export default function Card (data) {
         alert("Houve um erro ao publicar seu link");
     }
 
+    const user = {userId: posts.userId, name: posts.username, image: posts.photoLink};
+  
     return (
         <CardDiv>
             <IconsDiv>
@@ -67,12 +69,13 @@ export default function Card (data) {
                     setLiked={setUserLiked} />
             </IconsDiv>
             <CardDetails>
-                <PostUsername onClick={() => navigate(`/user/${posts.userId}`, {state: {userId: posts.userId}})}>{posts.username}</PostUsername>
+                <PostUsername onClick={() => navigate(`/user/${posts.userId}`, {state: user})}>{posts.username}</PostUsername>
                 
                 <PostDescription>
                     <ReactHashtag onHashtagClick={name => navigate(`/hashtag/${name.replace('#','')}`)}>
                         {posts.description}
                     </ReactHashtag > 
+                    
                 </PostDescription>
                 
                 <LinkData

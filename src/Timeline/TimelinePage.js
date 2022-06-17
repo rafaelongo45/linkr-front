@@ -1,25 +1,35 @@
-import PostsList from "./PostsList";
 import styled, { keyframes } from "styled-components";
-import Header from "../Header";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import axios from "axios";
-import PostUrl from "../PostsUrl/PostUrl";
 
-export default function Timeline () {
-    const [posts, setPosts] = useState([])
-    const [loading, setLoading] = useState(false)
+import PostsList from "./PostsList";
+import Header from "../Header";
+import PostUrl from "../PostsUrl/PostUrl";
+import TrendingHashtags from "../TrendingHashtags";
+
+export default function Timeline({ filter }) {
+    const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const params = useParams();
+
+    let URL = `http://localhost:4000/${filter}`; let name;
+    if(filter === "hashtag"){
+        name = params.hashtag
+        URL = `${URL}/${name}`;
+    }
 
     useEffect(() => {
         getPosts()
-    },[])
+    }, [filter])
 
-    function getPosts () {
+
+    function getPosts() {
         setLoading(true)
-        
-        const URL = "http://localhost:4000/timeline";
+
         const token = localStorage.getItem('token');
-        const header = {headers: {authorization: `Bearer ${token}`}}
-        
+        const header = { headers: { authorization: `Bearer ${token}` } }
+
         const promise = axios.get(URL, header)
 
         promise.then(res => {
@@ -33,19 +43,23 @@ export default function Timeline () {
         })
     };
 
-    return (
-    <TimelineStyle >
-        <Title><h1>timeline</h1></Title>
-        <Header /> 
-        <PostUrl />
-        {loading ?
-            <>
-                Loading ...
-                <LoadingStyle ></LoadingStyle>
-            </>
-        : posts !== [] ? <PostsList posts={posts} /> : <NoPosts>There are no posts yet</NoPosts>
-        }
-    </TimelineStyle>
+    return (<>
+        <TimelineStyle >
+            <Header />
+            <PostsArea>
+                {filter === "timeline" ? <Title><h1>timeline</h1></Title> : <Title><h1>{`#${name}`}</h1></Title>}
+                {filter === "timeline" ? <PostUrl /> : <></>}
+                {loading ?
+                    <>
+                        Loading
+                        <LoadingStyle ></LoadingStyle>
+                    </>
+                    : posts !== [] ? <PostsList posts={posts} /> : <NoPosts>There are no posts yet</NoPosts>
+                }
+            </PostsArea>
+            {filter === "timeline" ? <TrendingHashtags /> : <></>}
+        </TimelineStyle>
+    </>
     )
 }
 
@@ -54,14 +68,16 @@ const NoPosts = styled.p`
     color: black;
 `
 
-const TimelineStyle = styled.div`
-    height: 100%;
+const TimelineStyle = styled.main`
+    display: flex;
+    justify-content: center;
+    margin-top: 113px;
+`
+
+const PostsArea = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 60px;
-    color: white;
-    background-color: var(--background-page);
 `
 
 const Title = styled.div`
@@ -69,7 +85,6 @@ const Title = styled.div`
     font-family: var(--input-font);
     font-weight: bold;
     font-size: 43px;
-    margin-top: 53px;
     color: #FFFFFF;
 `
 

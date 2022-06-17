@@ -44,7 +44,7 @@ function LikesContainer ({likes, liked, posts, setLiked}) {
 		}
 		const youLiked = likes.filter(item => item.id === Number(userId))
 		const usersLiked = likes.filter(item => item.id !== Number(userId))
-		console.log(usersLiked)
+		
 		if (youLiked.length) {
 			setLiked(true)
 		}
