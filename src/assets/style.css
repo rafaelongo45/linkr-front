@@ -1,6 +1,7 @@
 *{
   box-sizing: content-box;
 
+  --background-page: #333333;
   --background-color:#151515;
   --background-color-header:#333333;
   --background-input: #EFEFEF;

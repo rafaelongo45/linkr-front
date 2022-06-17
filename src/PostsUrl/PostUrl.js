@@ -32,7 +32,6 @@ function PostUrl(){
         setDisable(false);
     }
 
-
     return (
     <Post>
         <div>
@@ -70,9 +69,10 @@ export default PostUrl;
 const Post = styled.main`
     position: relative;
     display: flex;
-    height: 190px;
+    height: 490px;
     width: 611px;
-    padding: 16px 20px;
+    margin: 43px 0 29px 0;
+    padding: 16px 20px 55px 20px;
     border-radius: 16px;
     background-color: var(--background-post-url);
 
