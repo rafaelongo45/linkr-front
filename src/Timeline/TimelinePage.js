@@ -40,8 +40,8 @@ export default function Timeline () {
         <PostUrl />
         {loading ?
             <>
-                Loading
-                <LoadingStyle ><div></div><div></div><div></div></LoadingStyle>
+                Loading ...
+                <LoadingStyle ></LoadingStyle>
             </>
         : posts !== [] ? <PostsList posts={posts} /> : <NoPosts>There are no posts yet</NoPosts>
         }
@@ -60,6 +60,7 @@ const TimelineStyle = styled.div`
     flex-direction: column;
     align-items: center;
     margin-top: 60px;
+    color: white;
     background-color: var(--background-page);
 `
 
@@ -73,42 +74,19 @@ const Title = styled.div`
 `
 
 const loadingAnimation = keyframes`
-    0% {
-        top: 8px;
-        height: 64px;
-    }
-    50%, 100% {
-        top: 24px;
-        height: 32px;
-    }
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
 `
 
 const LoadingStyle = styled.div`
-    display: inline-block;
-    position: relative;
-    width: 80px;
-    height: 80px;
-    div {
-        color: black;
-        display: inline-block;
-        position: absolute;
-        left: 8px;
-        width: 16px;
-        background: #fff;
-        animation: lds-facebook 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
-    }
-    div:nth-child(1) {
-        left: 8px;
-        animation-delay: -0.24s;
-    }
-    div:nth-child(2) {
-        left: 32px;
-        animation-delay: -0.12s;
-    }
-    div:nth-child(3) {
-        left: 56px;
-        animation-delay: 0;
-    }
+    margin-top: 5px;
+    border: 6px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 6px solid black;
+    width: 40px;
+    height: 40px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
     animation-name: ${loadingAnimation};
     
 `

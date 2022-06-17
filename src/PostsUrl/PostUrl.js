@@ -70,6 +70,7 @@ const Post = styled.main`
     position: relative;
     display: flex;
     height: 490px;
+    max-height: 490px;
     width: 611px;
     margin: 43px 0 29px 0;
     padding: 16px 20px 55px 20px;

@@ -52,7 +52,7 @@ export default function Card (data) {
 
 const CardDiv = styled.div`
     background-color: #171717;
-    width: 40%;
+    width: 631px;
     height: 250px;
     min-height: 230px;
     display: flex;
