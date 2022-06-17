@@ -10,7 +10,7 @@ import UserContext from "../Contexts/UserContext.js";
 function RenderHeader(){
   const {userInfo} = useContext(UserContext);
   const [click, setClick] = useState(false);
-  
+
   return (
     <Header>
       <Logo>
@@ -82,7 +82,8 @@ const User = styled.section`
   }
 
   img{
-    width: 45px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     margin-left: 5px;
   }
