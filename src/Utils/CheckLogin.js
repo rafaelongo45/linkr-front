@@ -3,6 +3,6 @@ export default function IsLoggedIn(){
 
   if(!token){
     alert('User not logged in')
-    window.location.replace('http://localhost:3000/')
+    window.location.replace('/')
   }
 }
