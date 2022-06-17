@@ -6,8 +6,6 @@ import SignUp from "../SignUp/Index.js";
 import Timeline from "../Timeline/TimelinePage.js";
 import UserContext from "../Contexts/UserContext.js";
 import ClickContext from "../Contexts/HeaderClickContext.js";
-import UserPage from "../UserPage/index.js";
-import PostUrl from "../PostsUrl/PostUrl.js";
 
 function App(){
   const [click, setClick] = useState(false);
