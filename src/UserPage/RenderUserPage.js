@@ -20,7 +20,7 @@ function RenderUserPage(){
 
     promise.catch(err => console.log(err));
 
-  }, []);
+  }, [location.state.userId]);
 
   console.log(user)
 

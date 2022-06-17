@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 
-import TrendingHashtags from "../TrendingHashtags/index.js";
 import Login from "../Login/index.js";
 import SignUp from "../SignUp/Index.js";
 import Timeline from "../Timeline/TimelinePage.js";
@@ -14,13 +13,13 @@ function App(){
 
   return (
     <BrowserRouter>
-      <UserContext.Provider value={{ userInfo, setUserInfo }}>
+      <UserContext.Provider value={{userInfo, setUserInfo}}>
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path='/signup' element={<SignUp />} />
-          <Route path='/timeline' element={<Timeline />} />
-          <Route path='/user/:id' element={<UserPage />} />
-          <Route path='/hashtag/:hashtag' element={<TrendingHashtags />} />
+          <Route path='/user/:id' element={<Timeline filter={"user"} />} />
+          <Route path='/timeline' element={<Timeline filter={"timeline"} />} />
+          <Route path='/hashtag/:hashtag' element={<Timeline filter={"hashtag"} />} />
         </Routes>
       </UserContext.Provider>
     </BrowserRouter>

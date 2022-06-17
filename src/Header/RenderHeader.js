@@ -3,18 +3,21 @@ import { useContext, useState } from "react";
 import {IoPersonCircle} from 'react-icons/io5';
 import {IoIosArrowUp, IoIosArrowDown} from 'react-icons/io';
 
+import SearchBar from "./SearchBar.js";
 import RenderDropdown from "./RenderDropdown.js";
 import UserContext from "../Contexts/UserContext.js";
 
 function RenderHeader(){
   const {userInfo} = useContext(UserContext);
   const [click, setClick] = useState(false);
-  
+
   return (
     <Header>
       <Logo>
         <h1>linkr</h1>
       </Logo>
+
+      <SearchBar /> 
 
       <User onClick = {() => setClick(click ? false : true)}>
         {
@@ -80,7 +83,8 @@ const User = styled.section`
   }
 
   img{
-    width: 45px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     margin-left: 5px;
   }
