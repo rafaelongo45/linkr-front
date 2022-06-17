@@ -32,7 +32,7 @@ export default function Card (data) {
                 <ProfileImg img={posts.photoLink} />
             </div>
             <CardDetails>
-                <PostUsername onClick={() => navigate(`/user/${posts.userId}`, {state: {userId: posts.userId}})}>{posts.username}</PostUsername>
+                <PostUsername onClick={() => navigate(`/user/${posts.userId}`, {state: {userId: posts.userId, name: posts.username}})}>{posts.username}</PostUsername>
                 
                 <PostDescription>
                     <ReactHashtag onHashtagClick={name => navigate(`/hashtag/${name.replace('#','')}`)}>
