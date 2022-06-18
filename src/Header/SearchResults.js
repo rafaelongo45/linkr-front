@@ -3,7 +3,6 @@ import { useNavigate } from "react-router";
 import {IoPersonCircle} from 'react-icons/io5';
 
 function SearchResults({user, setClick, setSearchString}){
-  console.log(user)
   const navigate = useNavigate()
 
   return (
