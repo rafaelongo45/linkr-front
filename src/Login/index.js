@@ -19,9 +19,10 @@ export default function Login() {
         const loginReq = axios.post(URL, userData);
 
         loginReq.then(res => {
-            const { token, image } = res.data;
+            const { token, image, userId } = res.data;
             localStorage.setItem("token", token);
-            setUserInfo({...userInfo, profileImage: image});
+            localStorage.setItem("user", userId);
+            setUserInfo({...userInfo, profileImage: image, userId});
             navigate('/timeline');
         });
         loginReq.catch(err => {

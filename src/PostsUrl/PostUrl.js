@@ -69,7 +69,8 @@ export default PostUrl;
 const Post = styled.div`
     position: relative;
     display: flex;
-    height: 150px;
+    height: 190px;
+    max-height: 490px;
     width: 611px;
     margin: 43px 0 29px 0;
     padding: 16px 20px 55px 20px;
@@ -123,7 +124,7 @@ const Description = styled.input`
     font-family: var(--link-font);
     font-size: 15px;
     box-sizing: border-box;
-    height: 70px;
+    height: 90px;
     width: 100%;
     padding: 7px 13px;
     border: none;
