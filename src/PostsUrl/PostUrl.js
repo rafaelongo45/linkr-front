@@ -131,7 +131,7 @@ const Description = styled.input`
     border-radius: 5px;
     background-color: var(--background-input);
 
-    ::placeholder{
+    ::placeholder{ //TODO: posicionar placeholder na parte superior do input
         font-family: var(--link-font);
         font-size: 15px;
         color: var(--placeholder-color);
