@@ -1,6 +1,6 @@
 import styled, { keyframes } from "styled-components";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import axios from "axios";
 
 import PostsList from "./PostsList";
@@ -12,11 +12,20 @@ export default function Timeline({ filter }) {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(false);
     const params = useParams();
+    const location = useLocation();
+    console.log(location)
 
-    let URL = `http://localhost:4000/${filter}`; let name;
-    if(filter === "hashtag"){
-        name = params.hashtag
+    let URL = `http://localhost:4000/${filter}`; let image; let name;
+    if (filter === "hashtag") {
+        name = params.hashtag;
         URL = `${URL}/${name}`;
+    }
+
+    if (filter === "posts") {
+        image = location.state.image;
+        name = location.state.name;
+        const { id } = params;
+        URL = `${URL}/${id}`;
     }
 
     useEffect(() => {
@@ -47,7 +56,16 @@ export default function Timeline({ filter }) {
         <TimelineStyle >
             <Header />
             <PostsArea>
-                {filter === "timeline" ? <Title><h1>timeline</h1></Title> : <Title><h1>{`#${name}`}</h1></Title>}
+                {filter === "timeline" ?
+                    <Title><h1>timeline</h1></Title> :
+                    filter === "hashtag" ?
+                        <Title><h1>{`#${name}`}</h1></Title>
+                        :
+                        <User>
+                            <Image src={image} />
+                            <Title><h1>{`${name}'s posts`}</h1></Title>
+                        </User>
+                }
                 {filter === "timeline" ? <PostUrl /> : <></>}
                 {loading ?
                     <>
@@ -78,6 +96,18 @@ const PostsArea = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+`
+
+const User = styled.div`
+    display: flex;
+    margin-left: 69px;
+`
+
+const Image = styled.img`
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    margin-right: 18px;
 `
 
 const Title = styled.div`

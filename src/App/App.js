@@ -18,7 +18,7 @@ function App(){
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path='/signup' element={<SignUp />} />
-          <Route path='/user/:id' element={<Timeline filter={"user"} />} />
+          <Route path='/user/:id' element={<Timeline filter={"posts"} />} />
           <Route path='/timeline' element={<Timeline filter={"timeline"} />} />
           <Route path='/hashtag/:hashtag' element={<Timeline filter={"hashtag"} />} />
         </Routes>
