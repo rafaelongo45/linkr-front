@@ -18,5 +18,5 @@
 
 html, body, .root{
   height: 100vh;
-  background-color: #E5E5E5;
+  background-color: var(--background-page);
 };

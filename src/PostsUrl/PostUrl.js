@@ -66,10 +66,11 @@ function PostUrl(){
 
 export default PostUrl;
 
-const Post = styled.main`
+const Post = styled.div`
     position: relative;
     display: flex;
-    height: 490px;
+    height: 190px;
+    max-height: 490px;
     width: 611px;
     margin: 43px 0 29px 0;
     padding: 16px 20px 55px 20px;
@@ -123,14 +124,14 @@ const Description = styled.input`
     font-family: var(--link-font);
     font-size: 15px;
     box-sizing: border-box;
-    height: 70px;
+    height: 90px;
     width: 100%;
     padding: 7px 13px;
     border: none;
     border-radius: 5px;
     background-color: var(--background-input);
 
-    ::placeholder{
+    ::placeholder{ //TODO: posicionar placeholder na parte superior do input
         font-family: var(--link-font);
         font-size: 15px;
         color: var(--placeholder-color);
@@ -138,6 +139,8 @@ const Description = styled.input`
 `
 
 const Button = styled.button`
+    font-size: 14px;
+    font-weight: 700;
     position: absolute;
     bottom: 16px;
     right: 20px;

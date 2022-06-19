@@ -1,10 +1,13 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from 'react-router-dom';
 
+import UserContext from "../Contexts/UserContext.js";
+
 export default function Login() {
     const navigate = useNavigate();
+    const {userInfo, setUserInfo} = useContext(UserContext);
     const [userData, setUserData] = useState({ email: "", password: "" });
     const [buttonState, setButtonState] = useState(false);
 
@@ -16,9 +19,10 @@ export default function Login() {
         const loginReq = axios.post(URL, userData);
 
         loginReq.then(res => {
-            const { token } = res.data;
+            const { token, image, userId } = res.data;
             localStorage.setItem("token", token);
-
+            localStorage.setItem("user", userId);
+            setUserInfo({...userInfo, profileImage: image, userId});
             navigate('/timeline');
         });
         loginReq.catch(err => {

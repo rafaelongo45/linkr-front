@@ -2,6 +2,10 @@ import styled from "styled-components";
 import { useNavigate } from "react-router";
 import ReactHashtag from "@mdnm/react-hashtag";
 
+import { useEffect, useState } from "react";
+import LikesContainer from "./LikesContainer.js";
+import axios from "axios";
+
 function ProfileImg ({img}) {
     return (
         <ProfileImgStyle src={img} />
@@ -11,7 +15,7 @@ function ProfileImg ({img}) {
 function LinkData ({linkTitle,linkDesc,linkImg,link}) {
   
     return (
-        <LinkSnnipet>
+        <LinkSnnipet onClick={() => window.open(link)}>
             <SnippetDesc>
                 <h1>{linkTitle}</h1>
                 <h3>{linkDesc}</h3>
@@ -23,24 +27,58 @@ function LinkData ({linkTitle,linkDesc,linkImg,link}) {
 }
 
 export default function Card (data) {
+    const [userLiked, setUserLiked] = useState(false);
+    const [likes, setLikes] = useState([])
+    
     const posts = data.data;
     const navigate = useNavigate();
+
+    useEffect(() => {
+        peopleWhoLiked()
+    },[userLiked])
+    
+    function peopleWhoLiked () {
+        const URL = `http://localhost:4000/post-likes/${posts.id}`;
+		const token = localStorage.getItem("token");
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        }
+
+		const promise = axios.get(URL, config);
+        promise.then((res) => {
+            setLikes(res.data)})
+        promise.catch(warnError)
+    }
+
+    function warnError(error) {
+        alert("Houve um erro ao publicar seu link");
+    }
+
+    const user = {userId: posts.userId, name: posts.username, image: posts.photoLink};
   
     return (
         <CardDiv>
-            <div>
+            <IconsDiv>
                 <ProfileImg img={posts.photoLink} />
-            </div>
-            <CardDetails >
-                <PostUsername>{posts.username}</PostUsername>
+                <LikesContainer 
+                    liked={userLiked} 
+                    likes={likes}
+                    posts={posts} 
+                    setLiked={setUserLiked} />
+            </IconsDiv>
+            <CardDetails>
+                <PostUsername onClick={() => navigate(`/user/${posts.userId}`, {state: user})}>{posts.username}</PostUsername>
                 
                 <PostDescription>
                     <ReactHashtag onHashtagClick={name => navigate(`/hashtag/${name.replace('#','')}`)}>
                         {posts.description}
                     </ReactHashtag > 
+                    
                 </PostDescription>
                 
-                <LinkData onClick={() => window.open(posts.link)}
+                <LinkData
                     linkTitle={posts.linkTitle} 
                     linkDesc={posts.linkDesc} 
                     linkImg={posts.linkImg}
@@ -52,8 +90,8 @@ export default function Card (data) {
 
 const CardDiv = styled.div`
     background-color: #171717;
-    width: 40%;
-    height: 250px;
+    width: 631px;
+    height: 270px;
     min-height: 230px;
     display: flex;
     min-width: 500px;
@@ -67,6 +105,20 @@ const CardDiv = styled.div`
         font-weight: 700;
     }
 `
+
+const IconsDiv = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+    
+    svg {
+        font-size: 20px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        color: red;
+    }
+`;
 
 const CardDetails = styled.div`
     display: flex;
@@ -83,6 +135,9 @@ const PostUsername = styled.div`
     color: white;
     display: flex;
     align-items: center;
+    :hover{
+        cursor:pointer;
+    }
 `
 
 const PostDescription = styled.div`
@@ -103,7 +158,7 @@ const ProfileImgStyle = styled.img`
 
 const LinkSnnipet = styled.div`
     border: 1px solid #C4C4C4;
-    height: 130px;
+    height: 160px;
     border-radius: 10px;
     width: 100%;
     display: flex;
