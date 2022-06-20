@@ -15,7 +15,7 @@ export default function Login() {
         e.preventDefault();
         setButtonState(true);
 
-        const URL = "http://localhost:4000/signin";
+        const URL = "https://linkrback.herokuapp.com/signin";
         const loginReq = axios.post(URL, userData);
 
         loginReq.then(res => {

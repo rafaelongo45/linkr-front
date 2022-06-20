@@ -15,7 +15,7 @@ export default function Timeline({ filter }) {
     const params = useParams();
     const location = useLocation();
 
-    let URL = `http://localhost:4000/${filter}`; let image; let name;
+    let URL = `https://linkrback.herokuapp.com/${filter}`; let image; let name;
     if (filter === "hashtag") {
         name = params.hashtag;
         URL = `${URL}/${name}`;
@@ -43,7 +43,7 @@ export default function Timeline({ filter }) {
         promise.then(res => {
             setPosts(res.data)
             setLoading(false)
-            setRefresh(false)
+            setRefresh(false);
         });
         promise.catch(err => {
             setLoading(false)
@@ -51,7 +51,6 @@ export default function Timeline({ filter }) {
             alert("An error occured while trying to fetch the posts, please refresh the page")
         })
     };
-    console.log(posts)
 
     return (<>
         <TimelineStyle >

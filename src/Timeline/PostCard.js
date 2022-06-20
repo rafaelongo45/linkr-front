@@ -52,7 +52,7 @@ export default function Card (data) {
     },[userLiked])
 
     function peopleWhoLiked () {
-        const URL = `http://localhost:4000/post-likes/${posts.id}`;
+        const URL = `https://linkrback.herokuapp.com/post-likes/${posts.id}`;
 		const promise = axios.get(URL, config);
         promise.then((res) => {
             setLikes(res.data)})
@@ -76,7 +76,7 @@ export default function Card (data) {
     function sendEditRequisition() {
         setLoading(true);
         
-        const URL = `http://localhost:4000/posts/${posts.id}`;
+        const URL = `https://linkrback.herokuapp.com/posts/${posts.id}`;
         const promise = axios.put(URL, {description: inputDescription}, config);
         promise.then(() => {
             setDescription(inputDescription);

@@ -6,7 +6,7 @@ import RenderHashtags from "./RenderHashtags.js";
 
 function TrendingHashtags() {
   const [trendingHashtags, setTrendingHashtags] = useState([]);
-  const URL = 'http://localhost:4000/trending';
+  const URL = 'https://linkrback.herokuapp.com/trending';
 
   useEffect(() => {
     const trendingPromise = axios.get(URL);
