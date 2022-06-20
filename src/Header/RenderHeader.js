@@ -87,6 +87,7 @@ const User = styled.section`
     height: 40px;
     border-radius: 50%;
     margin-left: 5px;
+    object-fit: cover;
   }
 `
 

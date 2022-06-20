@@ -100,6 +100,7 @@ const Image = styled.img`
     width: 50px;
     height: 50px;
     border-radius: 25px;
+    object-fit: cover;
 `
 
 const Url = styled.input`
