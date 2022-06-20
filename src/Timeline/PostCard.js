@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router";
 import ReactHashtag from "@mdnm/react-hashtag";
-
-import { useEffect, useState } from "react";
-import LikesContainer from "./LikesContainer.js";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
+
+import LikesContainer from "./LikesContainer.js";
+import editIcon from "../assets/img/edit-icon.svg";
+import deleteIcon from "../assets/img/delete-icon.svg";
 
 function ProfileImg ({img}) {
     return (
@@ -13,7 +15,7 @@ function ProfileImg ({img}) {
 }
 
 function LinkData ({linkTitle,linkDesc,linkImg,link}) {
-  
+
     return (
         <LinkSnnipet onClick={() => window.open(link)}>
             <SnippetDesc>
@@ -27,25 +29,30 @@ function LinkData ({linkTitle,linkDesc,linkImg,link}) {
 }
 
 export default function Card (data) {
+    const token = localStorage.getItem("token");
+    const config = {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    }
+    const navigate = useNavigate();
+    const localUserId = parseInt(localStorage.getItem("user"));
+
+    const posts = data.data;
+    const inputRef = useRef();
+    const [editClicked, setEditClicked] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [description, setDescription] = useState(posts.description);
+    const [inputDescription, setInputDescription] = useState(posts.description);
     const [userLiked, setUserLiked] = useState(false);
     const [likes, setLikes] = useState([])
-    
-    const posts = data.data;
-    const navigate = useNavigate();
 
     useEffect(() => {
         peopleWhoLiked()
     },[userLiked])
-    
+
     function peopleWhoLiked () {
         const URL = `http://localhost:4000/post-likes/${posts.id}`;
-		const token = localStorage.getItem("token");
-        const config = {
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        }
-
 		const promise = axios.get(URL, config);
         promise.then((res) => {
             setLikes(res.data)})
@@ -54,10 +61,41 @@ export default function Card (data) {
 
     function warnError(error) {
         alert("Houve um erro ao publicar seu link");
+        console.log(error);
+    }
+
+    function editPost() {
+        if(editClicked === false) {
+            setEditClicked(true);
+        }
+        else {
+            setEditClicked(false);
+        }
+    }
+
+    function sendEditRequisition() {
+        setLoading(true);
+        
+        const URL = `http://localhost:4000/posts/${posts.id}`;
+        const promise = axios.put(URL, {description: inputDescription}, config);
+        promise.then(() => {
+            setDescription(inputDescription);
+            setLoading(false);
+            setEditClicked(false);
+        });
+        promise.catch(e => {
+            alert("Houve um erro ao alterar a descrição do post!");
+            console.log(e);
+            setLoading(false);
+        });
+    }
+
+    if(editClicked === true) {
+        inputRef.current.focus();
     }
 
     const user = {userId: posts.userId, name: posts.username, image: posts.photoLink};
-  
+
     return (
         <CardDiv>
             <IconsDiv>
@@ -69,13 +107,37 @@ export default function Card (data) {
                     setLiked={setUserLiked} />
             </IconsDiv>
             <CardDetails>
-                <PostUsername onClick={() => navigate(`/user/${posts.userId}`, {state: user})}>{posts.username}</PostUsername>
+                <PostUsername>
+                    <h1 onClick={() => navigate(`/user/${posts.userId}`, {state: user})}>{posts.username}</h1>
+                    <EditAndDeleteDiv visibility={posts.userId === localUserId ? "default" : "hidden"}>
+                        <img onClick={() => editPost()} src={editIcon} />
+                        <img src={deleteIcon} />
+                    </EditAndDeleteDiv>
+                </PostUsername>
                 
                 <PostDescription>
-                    <ReactHashtag onHashtagClick={name => navigate(`/hashtag/${name.replace('#','')}`)}>
-                        {posts.description}
-                    </ReactHashtag > 
-                    
+                        <ReactHashtag onHashtagClick={name => navigate(`/hashtag/${name.replace('#','')}`)}>
+                            {description}
+                        </ReactHashtag >
+                        <EditInput
+                            ref={inputRef}
+                            value={inputDescription}
+                            onChange={e => {
+                                setInputDescription(e.target.value);
+                            }}
+                            onKeyDown={(ev) => {
+                                if (ev.key === "Enter") {
+                                    ev.preventDefault();
+                                    sendEditRequisition();
+                                }
+                                if(ev.key === "Escape") {
+                                    ev.preventDefault();
+                                    setEditClicked(false);
+                                }
+                            }}
+                            disabled={loading}
+                            visibility={editClicked === true ? "default" : "hidden"}
+                        />
                 </PostDescription>
                 
                 <LinkData
@@ -126,28 +188,64 @@ const CardDetails = styled.div`
     justify-content: space-between;
     width: 100%;
     margin-left: 20px;
-    cursor: pointer;
 `
 
 const PostUsername = styled.div`
     height: 40px;
-    font-size: 18px;
-    color: white;
     display: flex;
     align-items: center;
-    :hover{
+    justify-content: space-between;
+
+    h1 {
+        background-color: blue;
+        width: auto;
+        color: white;
+        font-size: 18px;
+    }
+
+    h1:hover{
         cursor:pointer;
+        text-decoration: underline;
     }
 `
+
+const EditAndDeleteDiv = styled.div`
+    width: 45px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    visibility: ${props => props.visibility};
+
+    img {
+        width: 16px;
+        height: 16px;
+        cursor:pointer;
+    }
+`;
 
 const PostDescription = styled.div`
     font-size: 14px;
     color: #B7B7B7;
-    color: white;
-    opacity: 0.7;
-    min-height: 30px;
-    display: flex;
-    align-items: center;
+    min-height: 40px;
+    position: relative;
+`
+
+const EditInput = styled.input`
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    background-color: #FFFFFF;
+    border: none;
+    border-radius: 7px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    padding: 8px;
+    font-size: 14px;
+    line-height: 17px;
+    color: #4C4C4C;
+    visibility: ${props => props.visibility};
 `
 
 const ProfileImgStyle = styled.img`
