@@ -24,6 +24,7 @@ function PostUrl(){
 
         const promise = axios.post(URL, data, config);
         promise.then(() => setDisable(false)); promise.catch(warnError);
+        setData({ ...data, link: "", description: ""});
         setDisable(true);
     }
 
@@ -41,7 +42,7 @@ function PostUrl(){
             <p>What are you going to share today?</p>
             <form onSubmit={sendUrl}>
                 <Url
-                    value={data.url}
+                    value={data.link}
                     type ='text' 
                     placeholder="http://..." 
                     onChange={(e) => { setData({ ...data, link: e.target.value }) }}
