@@ -78,9 +78,7 @@ export default function Card(data) {
         }
     }
 
-    function sendEditRequisition() {
-        setLoading(true);
-        
+    function sendEditRequisition() {        
         const URL = `https://linkrback.herokuapp.com/posts/${posts.id}`;
         const promise = axios.put(URL, {description: inputDescription}, config);
 
