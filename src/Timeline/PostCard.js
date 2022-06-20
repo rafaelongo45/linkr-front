@@ -3,18 +3,20 @@ import { useNavigate } from "react-router";
 import ReactHashtag from "@mdnm/react-hashtag";
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import Modal from "react-modal";
+import { ThreeDots } from "react-loader-spinner";
 
 import LikesContainer from "./LikesContainer.js";
 import editIcon from "../assets/img/edit-icon.svg";
 import deleteIcon from "../assets/img/delete-icon.svg";
 
-function ProfileImg ({img}) {
+function ProfileImg({ img }) {
     return (
         <ProfileImgStyle src={img} />
     )
 }
 
-function LinkData ({linkTitle,linkDesc,linkImg,link}) {
+function LinkData({ linkTitle, linkDesc, linkImg, link }) {
 
     return (
         <LinkSnnipet onClick={() => window.open(link)}>
@@ -23,12 +25,12 @@ function LinkData ({linkTitle,linkDesc,linkImg,link}) {
                 <h3>{linkDesc}</h3>
                 <h2>{link}</h2>
             </SnippetDesc>
-            <SnippetImg src={linkImg}/>
+            <SnippetImg src={linkImg} />
         </LinkSnnipet>
     )
 }
 
-export default function Card (data) {
+export default function Card(data) {
     const token = localStorage.getItem("token");
     const config = {
         headers: {
@@ -41,7 +43,8 @@ export default function Card (data) {
     const posts = data.data;
     const inputRef = useRef();
     const [editClicked, setEditClicked] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [editLoading, setEditLoading] = useState(false);
+    const [deleteLoading, setDeleteLoading] = useState("Yes, delete it");
     const [description, setDescription] = useState(posts.description);
     const [inputDescription, setInputDescription] = useState(posts.description);
     const [userLiked, setUserLiked] = useState(false);
@@ -49,13 +52,14 @@ export default function Card (data) {
 
     useEffect(() => {
         peopleWhoLiked()
-    },[userLiked])
+    }, [userLiked])
 
-    function peopleWhoLiked () {
+    function peopleWhoLiked() {
         const URL = `http://localhost:4000/post-likes/${posts.id}`;
-		const promise = axios.get(URL, config);
+        const promise = axios.get(URL, config);
         promise.then((res) => {
-            setLikes(res.data)})
+            setLikes(res.data)
+        })
         promise.catch(warnError)
     }
 
@@ -65,7 +69,7 @@ export default function Card (data) {
     }
 
     function editPost() {
-        if(editClicked === false) {
+        if (editClicked === false) {
             setEditClicked(true);
         }
         else {
@@ -74,78 +78,120 @@ export default function Card (data) {
     }
 
     function sendEditRequisition() {
-        setLoading(true);
-        
+        setEditLoading(true);
+
         const URL = `http://localhost:4000/posts/${posts.id}`;
-        const promise = axios.put(URL, {description: inputDescription}, config);
+        const promise = axios.put(URL, { description: inputDescription }, config);
         promise.then(() => {
             setDescription(inputDescription);
-            setLoading(false);
+            setEditLoading(false);
             setEditClicked(false);
         });
         promise.catch(e => {
             alert("Houve um erro ao alterar a descrição do post!");
             console.log(e);
-            setLoading(false);
+            setEditLoading(false);
         });
     }
 
-    if(editClicked === true) {
+    if (editClicked === true) {
         inputRef.current.focus();
     }
 
-    const user = {userId: posts.userId, name: posts.username, image: posts.photoLink};
+    const customStyles = {
+        content: {
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: 'rgba(255, 255, 255, 0)'
+        },
+    };
+
+    const [modalIsOpen, setIsOpen] = useState(false);
+    function openModal() {
+        setIsOpen(true);
+    }
+    function closeModal() {
+        setIsOpen(false);
+    }
+
+    function sendDeleteRequisition() {
+        setDeleteLoading(<ThreeDots color="#FFFFFF" height={23} width={23} />);
+
+        const URL = `http://localhost:4000/posts/${posts.id}`;
+        const promise = axios.delete(URL, config);
+        promise.then(() => {
+            window.location.reload(true);
+        });
+        promise.catch(e => {
+            alert("Houve um erro ao deletar o post!");
+            console.log(e);
+            setDeleteLoading("Yes, delete it");
+        });
+    }
+
+    const user = { userId: posts.userId, name: posts.username, image: posts.photoLink };
 
     return (
         <CardDiv>
             <IconsDiv>
                 <ProfileImg img={posts.photoLink} />
-                <LikesContainer 
-                    liked={userLiked} 
+                <LikesContainer
+                    liked={userLiked}
                     likes={likes}
-                    posts={posts} 
+                    posts={posts}
                     setLiked={setUserLiked} />
             </IconsDiv>
             <CardDetails>
                 <PostUsername>
-                    <h1 onClick={() => navigate(`/user/${posts.userId}`, {state: user})}>{posts.username}</h1>
+                    <h1 onClick={() => navigate(`/user/${posts.userId}`, { state: user })}>{posts.username}</h1>
                     <EditAndDeleteDiv visibility={posts.userId === localUserId ? "default" : "hidden"}>
                         <img onClick={() => editPost()} src={editIcon} />
-                        <img src={deleteIcon} />
+                        <img onClick={() => openModal()} src={deleteIcon} />
                     </EditAndDeleteDiv>
                 </PostUsername>
-                
                 <PostDescription>
-                        <ReactHashtag onHashtagClick={name => navigate(`/hashtag/${name.replace('#','')}`)}>
-                            {description}
-                        </ReactHashtag >
-                        <EditInput
-                            ref={inputRef}
-                            value={inputDescription}
-                            onChange={e => {
-                                setInputDescription(e.target.value);
-                            }}
-                            onKeyDown={(ev) => {
-                                if (ev.key === "Enter") {
-                                    ev.preventDefault();
-                                    sendEditRequisition();
-                                }
-                                if(ev.key === "Escape") {
-                                    ev.preventDefault();
-                                    setEditClicked(false);
-                                }
-                            }}
-                            disabled={loading}
-                            visibility={editClicked === true ? "default" : "hidden"}
-                        />
+                    <ReactHashtag onHashtagClick={name => navigate(`/hashtag/${name.replace('#', '')}`)}>
+                        {description}
+                    </ReactHashtag >
+                    <EditInput
+                        ref={inputRef}
+                        value={inputDescription}
+                        onChange={e => {
+                            setInputDescription(e.target.value);
+                        }}
+                        onKeyDown={(ev) => {
+                            if (ev.key === "Enter") {
+                                ev.preventDefault();
+                                sendEditRequisition();
+                            }
+                            if (ev.key === "Escape") {
+                                ev.preventDefault();
+                                setEditClicked(false);
+                            }
+                        }}
+                        disabled={editLoading}
+                        visibility={editClicked === true ? "default" : "hidden"}
+                    />
                 </PostDescription>
-                
                 <LinkData
-                    linkTitle={posts.linkTitle} 
-                    linkDesc={posts.linkDesc} 
+                    linkTitle={posts.linkTitle}
+                    linkDesc={posts.linkDesc}
                     linkImg={posts.linkImg}
                     link={posts.link} />
             </CardDetails>
+            <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles}>
+                <ModalAlert>
+                    <h1>Are you sure you want to delete this post?</h1>
+                    <YesOrNoDiv>
+                        <button onClick={() => closeModal()}>No, go back</button>
+                        <button onClick={() => sendDeleteRequisition()}>{deleteLoading}</button>
+                    </YesOrNoDiv>
+                </ModalAlert>
+            </Modal>
         </CardDiv>
     )
 }
@@ -288,3 +334,57 @@ const SnippetDesc = styled.div`
         opacity: 0.7;
     }
 `
+
+const ModalAlert = styled.div`
+    width: 597px;
+    height: 262px;
+    background: #333333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+
+    h1 {
+        width: 338px;
+        height: 82px;
+        font-family: 'Lato';
+        font-weight: 700;
+        font-size: 34px;
+        line-height: 41px;
+        text-align: center;
+        color: #FFFFFF;
+    }
+`;
+
+const YesOrNoDiv = styled.div`
+    width: 300px;
+    height: 37px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+
+    button {
+        width: 130px;
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+        border: none;
+        font-family: 'Lato';
+        font-weight: 700;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    button:first-child {
+        background: #FFFFFF;
+        color: #1877F2;
+    }
+
+    button:last-child {
+        background: #1877F2;
+        color: #FFFFFF;
+    }
+`;
