@@ -4,10 +4,11 @@ import styled from "styled-components";
 
 import UserContext from "../Contexts/UserContext";
 
-function PostUrl(){
+function PostUrl({setRefresh}){
     const URL = "http://localhost:4000/posts";
     const {userInfo} = useContext(UserContext);
     const [disable, setDisable] = useState(false);
+    const userPhoto = localStorage.getItem('userImage');
 
     const [data, setData] = useState({
         link: "", description: ""
@@ -15,6 +16,7 @@ function PostUrl(){
 
     function sendUrl(e){
         e.preventDefault();
+        setRefresh(true);
         const token = localStorage.getItem("token");
         const config = {
             headers: {
@@ -36,7 +38,7 @@ function PostUrl(){
     return (
     <Post>
         <div>
-            <Image src={userInfo.profileImage} />
+            <Image src={userInfo.profileImage || userPhoto} />
         </div>
         <div>
             <p>What are you going to share today?</p>

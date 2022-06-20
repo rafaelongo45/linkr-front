@@ -11,9 +11,9 @@ import TrendingHashtags from "../TrendingHashtags";
 export default function Timeline({ filter }) {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [refresh, setRefresh] = useState(false);
     const params = useParams();
     const location = useLocation();
-    console.log(location)
 
     let URL = `http://localhost:4000/${filter}`; let image; let name;
     if (filter === "hashtag") {
@@ -30,8 +30,7 @@ export default function Timeline({ filter }) {
 
     useEffect(() => {
         getPosts()
-    }, [filter])
-
+    }, [filter, refresh])
 
     function getPosts() {
         setLoading(true)
@@ -44,6 +43,7 @@ export default function Timeline({ filter }) {
         promise.then(res => {
             setPosts(res.data)
             setLoading(false)
+            setRefresh(false)
         });
         promise.catch(err => {
             setLoading(false)
@@ -51,6 +51,7 @@ export default function Timeline({ filter }) {
             alert("An error occured while trying to fetch the posts, please refresh the page")
         })
     };
+    console.log(posts)
 
     return (<>
         <TimelineStyle >
@@ -66,7 +67,7 @@ export default function Timeline({ filter }) {
                             <Title><h1>{`${name}'s posts`}</h1></Title>
                         </User>
                 }
-                {filter === "timeline" ? <PostUrl /> : <></>}
+                {filter === "timeline" ? <PostUrl setRefresh = {setRefresh}/> : <></>}
                 {loading ?
                     <>
                         Loading

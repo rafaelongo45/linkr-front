@@ -4,7 +4,6 @@ import { useNavigate } from "react-router";
 
 import UserContext from "../Contexts/UserContext.js";
 
-
 function RenderDropdown(){
   const {setUserInfo} = useContext(UserContext);
   const navigate = useNavigate();

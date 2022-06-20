@@ -52,7 +52,7 @@ const Result = styled.section`
     border-radius: 50%;
     width: 45px;
     height: 45px;
-    padding-left: 15px;
+    margin-left: 15px;
   }
 
   p{

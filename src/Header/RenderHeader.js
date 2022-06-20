@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router";
 import { useContext, useState } from "react";
 import {IoPersonCircle} from 'react-icons/io5';
 import {IoIosArrowUp, IoIosArrowDown} from 'react-icons/io';
@@ -10,11 +11,13 @@ import UserContext from "../Contexts/UserContext.js";
 function RenderHeader(){
   const {userInfo} = useContext(UserContext);
   const [click, setClick] = useState(false);
+  const navigate = useNavigate();
+  const userPhoto = localStorage.getItem('userImage');
 
   return (
     <Header>
       <Logo>
-        <h1>linkr</h1>
+        <h1 onClick={() => navigate('/timeline')}>linkr</h1>
       </Logo>
 
       <SearchBar /> 
@@ -30,12 +33,12 @@ function RenderHeader(){
           <IoIosArrowDown />
         }
         {
-          userInfo.profileImage !== '' ? 
-          <img src = {userInfo.profileImage} alt = 'User profile'/>
+          userInfo.profileImage || userPhoto !== '' ? 
+          <img src = {userInfo.profileImage || userPhoto} alt = 'User '/>
           :
           <div>
             <IoPersonCircle />
-          </div>
+          </div>  
         }
       </User>
     </Header>
@@ -61,6 +64,10 @@ const Logo = styled.div`
   font-weight: 700;
   color:white;
   margin-left: 25px;
+  
+  :hover{
+    cursor: pointer;
+  }
 `;
 
 const User = styled.section`

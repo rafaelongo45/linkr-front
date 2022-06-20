@@ -23,6 +23,7 @@ export default function Login() {
             localStorage.setItem("token", token);
             localStorage.setItem("user", userId);
             setUserInfo({...userInfo, profileImage: image, userId});
+            localStorage.setItem('userImage', image);
             navigate('/timeline');
         });
         loginReq.catch(err => {

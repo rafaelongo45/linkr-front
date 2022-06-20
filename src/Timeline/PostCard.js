@@ -197,7 +197,6 @@ const PostUsername = styled.div`
     justify-content: space-between;
 
     h1 {
-        background-color: blue;
         width: auto;
         color: white;
         font-size: 18px;
