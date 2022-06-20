@@ -88,4 +88,8 @@ const Button =styled.button`
   background-color:transparent;
   color:white;
   text-decoration:underline;
+
+  :hover{
+    cursor:pointer;
+  }
 `

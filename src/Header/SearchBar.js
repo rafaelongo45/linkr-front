@@ -13,6 +13,10 @@ function SearchBar(){
   const {click, setClick} = useContext(ClickContext);
   const [searchString, setSearchString] = useState('');
 
+  if(searchString === ''){
+    setClick(false);
+  }
+
   useEffect(()=> {
     if(searchString.length < 3) return;
   
