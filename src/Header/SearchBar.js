@@ -20,7 +20,7 @@ function SearchBar(){
   useEffect(()=> {
     if(searchString.length < 3) return;
   
-    const URL = `http://localhost:4000/users/${searchString}`
+    const URL = `https://linkrback.herokuapp.com/${searchString}`
     const config = {
       headers:{
         'Authorization': `Bearer ${token}`

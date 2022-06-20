@@ -3,11 +3,13 @@ import axios from "axios";
 import styled from "styled-components";
 
 import UserContext from "../Contexts/UserContext";
+import createHashtags from "./createHashtags";
 
-function PostUrl(){
-    const URL = "http://localhost:4000/posts";
+function PostUrl({setRefresh}){
+    const URL = "https://linkrback.herokuapp.com/posts";
     const {userInfo} = useContext(UserContext);
     const [disable, setDisable] = useState(false);
+    const userPhoto = localStorage.getItem('userImage');
 
     const [data, setData] = useState({
         link: "", description: ""
@@ -15,6 +17,9 @@ function PostUrl(){
 
     function sendUrl(e){
         e.preventDefault();
+        setRefresh(true);
+        setData({ ...data, link: "", description: ""});
+
         const token = localStorage.getItem("token");
         const config = {
             headers: {
@@ -24,8 +29,25 @@ function PostUrl(){
 
         const promise = axios.post(URL, data, config);
         promise.then(() => setDisable(false)); promise.catch(warnError);
-        setData({ ...data, link: "", description: ""});
+        sendHashtags();
         setDisable(true);
+    }
+
+    function sendHashtags(){
+        const hashtags = createHashtags(data.description);
+        
+        const token = localStorage.getItem("token");
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        }
+        
+        hashtags.forEach(hashtag => {
+        const promise = axios.post('https://linkrback.herokuapp.com/hashtag', hashtag, config);
+        promise.then(() => console.log('Hashtag posted')); promise.catch(warnError);
+        
+        })
     }
 
     function warnError(error) {
@@ -36,7 +58,7 @@ function PostUrl(){
     return (
     <Post>
         <div>
-            <Image src={userInfo.profileImage} />
+            <Image src={userInfo.profileImage || userPhoto} />
         </div>
         <div>
             <p>What are you going to share today?</p>

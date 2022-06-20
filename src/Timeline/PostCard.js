@@ -54,9 +54,10 @@ export default function Card(data) {
         peopleWhoLiked()
     }, [userLiked])
 
-    function peopleWhoLiked() {
-        const URL = `http://localhost:4000/post-likes/${posts.id}`;
-        const promise = axios.get(URL, config);
+    function peopleWhoLiked () {
+        const URL = `https://linkrback.herokuapp.com/post-likes/${posts.id}`;
+		const promise = axios.get(URL, config);
+
         promise.then((res) => {
             setLikes(res.data)
         })
@@ -77,11 +78,12 @@ export default function Card(data) {
         }
     }
 
-    function sendEditRequisition() {
-        setEditLoading(true);
+    function sendEditRequisition() {        
+        const URL = `https://linkrback.herokuapp.com/posts/${posts.id}`;
+        const promise = axios.put(URL, {description: inputDescription}, config);
 
-        const URL = `http://localhost:4000/posts/${posts.id}`;
-        const promise = axios.put(URL, { description: inputDescription }, config);
+        setEditLoading(true);
+      
         promise.then(() => {
             setDescription(inputDescription);
             setEditLoading(false);
@@ -243,7 +245,6 @@ const PostUsername = styled.div`
     justify-content: space-between;
 
     h1 {
-        background-color: blue;
         width: auto;
         color: white;
         font-size: 18px;

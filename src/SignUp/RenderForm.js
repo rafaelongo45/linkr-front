@@ -12,7 +12,7 @@ function RenderForm(){
     e.preventDefault();
     setButtonState(true);
 
-    const URL = 'http://localhost:4000/signup';
+    const URL = 'https://linkrback.herokuapp.com/signup';
     const promise = axios.post(URL, userData);
 
     promise.then(() => {

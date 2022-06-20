@@ -15,7 +15,7 @@ export default function Login() {
         e.preventDefault();
         setButtonState(true);
 
-        const URL = "http://localhost:4000/signin";
+        const URL = "https://linkrback.herokuapp.com/signin";
         const loginReq = axios.post(URL, userData);
 
         loginReq.then(res => {
@@ -23,6 +23,7 @@ export default function Login() {
             localStorage.setItem("token", token);
             localStorage.setItem("user", userId);
             setUserInfo({...userInfo, profileImage: image, userId});
+            localStorage.setItem('userImage', image);
             navigate('/timeline');
         });
         loginReq.catch(err => {
