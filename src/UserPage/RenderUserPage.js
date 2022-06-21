@@ -9,7 +9,7 @@ function RenderUserPage(){
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    const URL = `https://linkrback.herokuapp.com/user/${location.state.userId}`
+    const URL = `http://localhost:4000/user/${location.state.userId}`
     const promise = axios.get(URL, {
       headers:{
         'Authorization': `Bearer ${token}`

@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router";
 import { useContext, useState } from "react";
-import {IoPersonCircle} from 'react-icons/io5';
-import {IoIosArrowUp, IoIosArrowDown} from 'react-icons/io';
+import { IoPersonCircle } from 'react-icons/io5';
+import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 
 import SearchBar from "./SearchBar.js";
 import RenderDropdown from "./RenderDropdown.js";
@@ -94,6 +94,7 @@ const User = styled.section`
     height: 40px;
     border-radius: 50%;
     margin-left: 5px;
+    object-fit: cover;
   }
 `
 

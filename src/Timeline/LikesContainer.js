@@ -22,7 +22,7 @@ function LikesContainer ({likes, liked, posts, setLiked}) {
 			setLiked(true)
 		}
 		
-		const URL = "https://linkrback.herokuapp.com/like";
+		const URL = "http:localhost:4000/like";
 		const token = localStorage.getItem("token");
         const config = {
             headers: {

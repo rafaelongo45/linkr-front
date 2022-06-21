@@ -1,4 +1,5 @@
 import styled, { keyframes } from "styled-components";
+import { IoPersonCircle } from 'react-icons/io5';
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router";
 import axios from "axios";
@@ -15,14 +16,14 @@ export default function Timeline({ filter }) {
     const params = useParams();
     const location = useLocation();
 
-    let URL = `https://linkrback.herokuapp.com/${filter}`; let image; let name;
+    let URL = `http://localhost:4000/${filter}`; let image; let name;
     if (filter === "hashtag") {
         name = params.hashtag;
         URL = `${URL}/${name}`;
     }
 
     if (filter === "posts") {
-        image = location.state.image;
+        image = localStorage.getItem('userImage');
         name = location.state.name;
         const { id } = params;
         URL = `${URL}/${id}`;
@@ -59,10 +60,15 @@ export default function Timeline({ filter }) {
                 {filter === "timeline" ?
                     <Title><h1>timeline</h1></Title> :
                     filter === "hashtag" ?
-                        <Title><h1>{`#${name}`}</h1></Title>
+                        <Title><h1 className="specific-page">{`#${name}`}</h1></Title>
                         :
-                        <User>
-                            <Image src={image} />
+                        <User className="specific-page">
+                            {
+                                image ?
+                                <Image src={image} />
+                                :
+                                <IoPersonCircle />
+                            }
                             <Title><h1>{`${name}'s posts`}</h1></Title>
                         </User>
                 }
@@ -96,11 +102,23 @@ const PostsArea = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    .specific-page{
+        margin-bottom: 45px;
+    }
 `
 
 const User = styled.div`
     display: flex;
     margin-left: 69px;
+    align-items: center;
+
+    svg{
+        width: 60px;
+        height: 60px;
+        color:#fff;
+        margin: 10px 18px 0 0;
+    }
 `
 
 const Image = styled.img`
@@ -108,6 +126,7 @@ const Image = styled.img`
     height: 50px;
     border-radius: 25px;
     margin-right: 18px;
+    object-fit: cover;
 `
 
 const Title = styled.div`

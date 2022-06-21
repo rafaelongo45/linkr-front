@@ -53,6 +53,7 @@ const Result = styled.section`
     width: 45px;
     height: 45px;
     margin-left: 15px;
+    object-fit: cover;
   }
 
   p{

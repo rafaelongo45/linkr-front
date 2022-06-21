@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router";
 import ReactHashtag from "@mdnm/react-hashtag";
 import { useEffect, useState, useRef } from "react";
+import {IoPersonCircle} from 'react-icons/io5';
 import axios from "axios";
 
 import LikesContainer from "./LikesContainer.js";
@@ -52,7 +53,7 @@ export default function Card (data) {
     },[userLiked])
 
     function peopleWhoLiked () {
-        const URL = `https://linkrback.herokuapp.com/post-likes/${posts.id}`;
+        const URL = `http://localhost:4000/post-likes/${posts.id}`;
 		const promise = axios.get(URL, config);
         promise.then((res) => {
             setLikes(res.data)})
@@ -76,7 +77,7 @@ export default function Card (data) {
     function sendEditRequisition() {
         setLoading(true);
         
-        const URL = `https://linkrback.herokuapp.com/posts/${posts.id}`;
+        const URL = `http://localhost:4000/posts/${posts.id}`;
         const promise = axios.put(URL, {description: inputDescription}, config);
         promise.then(() => {
             setDescription(inputDescription);
@@ -99,7 +100,12 @@ export default function Card (data) {
     return (
         <CardDiv>
             <IconsDiv>
-                <ProfileImg img={posts.photoLink} />
+                {
+                    posts.photoLink ? 
+                    <ProfileImg img={posts.photoLink} />
+                    :
+                    <IoPersonCircle className="userIcon"/>
+                }
                 <LikesContainer 
                     liked={userLiked} 
                     likes={likes}
@@ -158,7 +164,7 @@ const CardDiv = styled.div`
     display: flex;
     min-width: 500px;
     flex-direction: row;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
     border-radius: 15px;
     padding: 10px;
 
@@ -179,6 +185,12 @@ const IconsDiv = styled.div`
         margin-top: 20px;
         margin-bottom: 10px;
         color: red;
+    }
+
+    .userIcon{
+        width:50px;
+        height: 50px;
+        color: #fff;
     }
 `;
 
@@ -251,6 +263,7 @@ const ProfileImgStyle = styled.img`
     width: 40px;
     height: 40px;
     border-radius: 50%;
+    object-fit: cover;
 `
 
 const LinkSnnipet = styled.div`
