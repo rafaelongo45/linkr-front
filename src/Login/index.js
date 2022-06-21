@@ -4,31 +4,33 @@ import styled from "styled-components";
 import { useNavigate } from 'react-router-dom';
 
 import UserContext from "../Contexts/UserContext.js";
+import UrlContext from "../Contexts/UrlContext.js";
 
 export default function Login() {
     const navigate = useNavigate();
-    const {userInfo, setUserInfo} = useContext(UserContext);
+    const { userInfo, setUserInfo } = useContext(UserContext);
     const [userData, setUserData] = useState({ email: "", password: "" });
     const [buttonState, setButtonState] = useState(false);
+    const BASE_URL = useContext(UrlContext);
 
     function sendData(e) {
         e.preventDefault();
         setButtonState(true);
 
-        const URL = "https://linkrback.herokuapp.com/signin";
+        const URL = BASE_URL + "signin";
         const loginReq = axios.post(URL, userData);
 
         loginReq.then(res => {
             const { token, image, userId } = res.data;
             localStorage.setItem("token", token);
             localStorage.setItem("user", userId);
-            setUserInfo({...userInfo, profileImage: image, userId});
+            setUserInfo({ ...userInfo, profileImage: image, userId });
             localStorage.setItem('userImage', image);
             navigate('/timeline');
         });
         loginReq.catch(err => {
-            if(err.response.status === 404) alert("Usuário não cadastrado no sistema!");
-            if(err.response.status === 401) alert("Senha incorreta!");
+            if (err.response.status === 404) alert("Usuário não cadastrado no sistema!");
+            if (err.response.status === 401) alert("Senha incorreta!");
             setButtonState(false);
             console.log(err);
         });

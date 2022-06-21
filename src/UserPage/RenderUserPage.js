@@ -1,15 +1,17 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation } from "react-router";
+import UrlContext from "../Contexts/UrlContext";
 
 function RenderUserPage(){
   const location = useLocation();
   const [user, setUser] = useState([]);
   const token = localStorage.getItem("token");
+  const BASE_URL = useContext(UrlContext);
 
   useEffect(() => {
-    const URL = `https://linkrback.herokuapp.com/user/${location.state.userId}`
+    const URL = BASE_URL + `user/${location.state.userId}`;
     const promise = axios.get(URL, {
       headers:{
         'Authorization': `Bearer ${token}`

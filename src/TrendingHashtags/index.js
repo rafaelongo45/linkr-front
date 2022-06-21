@@ -1,12 +1,14 @@
 import axios from "axios";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import RenderHashtags from "./RenderHashtags.js";
+import UrlContext from "../Contexts/UrlContext.js";
 
 function TrendingHashtags() {
   const [trendingHashtags, setTrendingHashtags] = useState([]);
-  const URL = 'https://linkrback.herokuapp.com/trending';
+  const BASE_URL = useContext(UrlContext);
+  const URL = BASE_URL + 'trending';
 
   useEffect(() => {
     const trendingPromise = axios.get(URL);
