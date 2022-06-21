@@ -14,6 +14,7 @@ function RenderForm(){
     e.preventDefault();
     setButtonState(true);
 
+
     const URL = BASE_URL + 'signup';
     const promise = axios.post(URL, userData);
 
@@ -33,7 +34,7 @@ function RenderForm(){
         <input type ='text' placeholder="e-mail" required value={userData.email} onChange={e => setUserData({...userData, email: e.target.value})}></input>
         <input type ='password' placeholder="password" required value={userData.password} onChange={e => setUserData({...userData, password: e.target.value})}></input>
         <input type ='text' placeholder="username" required value={userData.name} onChange={e => setUserData({...userData, name: e.target.value})}></input>
-        <input type ='text' placeholder="picture url" required value={userData.photoLink} onChange={e => setUserData({...userData, photoLink: e.target.value})}></input>
+        <input type ='text' placeholder="picture url" value={userData.photoLink} onChange={e => setUserData({...userData, photoLink: e.target.value})}></input>
         <button type="submit" disabled = {buttonState}>Sign Up</button>
       </Form>
       <Button onClick={() => navigate('/')}>Switch back to log in</Button>

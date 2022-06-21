@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router";
 import ReactHashtag from "@mdnm/react-hashtag";
+import {IoPersonCircle} from 'react-icons/io5';
 import { useEffect, useState, useRef, useContext } from "react";
 import axios from "axios";
 import Modal from "react-modal";
@@ -57,8 +58,9 @@ export default function Card(data) {
     }, [userLiked])
 
     function peopleWhoLiked () {
+
         URL = BASE_URL + `post-likes/${posts.id}`;
-		const promise = axios.get(URL, config);
+		    const promise = axios.get(URL, config);
 
         promise.then((res) => {
             setLikes(res.data)
@@ -81,6 +83,7 @@ export default function Card(data) {
     }
 
     function sendEditRequisition() {        
+
         URL = BASE_URL + `posts/${posts.id}`;
         const promise = axios.put(URL, {description: inputDescription}, config);
 
@@ -125,6 +128,7 @@ export default function Card(data) {
     function sendDeleteRequisition() {
         setDeleteLoading(<ThreeDots color="#FFFFFF" height={23} width={23} />);
 
+
         URL = BASE_URL + `posts/${posts.id}`;
         const promise = axios.delete(URL, config);
         promise.then(() => {
@@ -142,9 +146,15 @@ export default function Card(data) {
     return (
         <CardDiv>
             <IconsDiv>
-                <ProfileImg img={posts.photoLink} />
-                <LikesContainer
-                    liked={userLiked}
+                {
+                    posts.photoLink ? 
+                    <ProfileImg img={posts.photoLink} />
+                    :
+                    <IoPersonCircle className="userIcon"/>
+                }
+                <LikesContainer 
+                    liked={userLiked} 
+
                     likes={likes}
                     posts={posts}
                     setLiked={setUserLiked} />
@@ -208,7 +218,7 @@ const CardDiv = styled.div`
     display: flex;
     min-width: 500px;
     flex-direction: row;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
     border-radius: 15px;
     padding: 10px;
 
@@ -229,6 +239,12 @@ const IconsDiv = styled.div`
         margin-top: 20px;
         margin-bottom: 10px;
         color: red;
+    }
+
+    .userIcon{
+        width:50px;
+        height: 50px;
+        color: #fff;
     }
 `;
 

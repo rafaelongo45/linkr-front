@@ -11,6 +11,7 @@ function RenderUserPage(){
   const BASE_URL = useContext(UrlContext);
 
   useEffect(() => {
+
     const URL = BASE_URL + `user/${location.state.userId}`;
     const promise = axios.get(URL, {
       headers:{
