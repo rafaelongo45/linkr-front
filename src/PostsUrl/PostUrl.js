@@ -4,9 +4,11 @@ import styled from "styled-components";
 
 import UserContext from "../Contexts/UserContext";
 import createHashtags from "./createHashtags";
+import UrlContext from "../Contexts/UrlContext";
 
 function PostUrl({setRefresh}){
-    const URL = "https://linkrback.herokuapp.com/posts";
+    const BASE_URL = useContext(UrlContext);
+    const URL = BASE_URL + "posts";
     const {userInfo} = useContext(UserContext);
     const [disable, setDisable] = useState(false);
     const userPhoto = localStorage.getItem('userImage');
@@ -44,7 +46,7 @@ function PostUrl({setRefresh}){
         }
         
         hashtags.forEach(hashtag => {
-        const promise = axios.post('https://linkrback.herokuapp.com/hashtag', hashtag, config);
+        const promise = axios.post(BASE_URL + 'hashtag', hashtag, config);
         promise.then(() => console.log('Hashtag posted')); promise.catch(warnError);
         
         })

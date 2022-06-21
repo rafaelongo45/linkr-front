@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router";
 import axios from "axios";
 
@@ -7,6 +7,7 @@ import PostsList from "./PostsList";
 import Header from "../Header";
 import PostUrl from "../PostsUrl/PostUrl";
 import TrendingHashtags from "../TrendingHashtags";
+import UrlContext from "../Contexts/UrlContext";
 
 export default function Timeline({ filter }) {
     const [posts, setPosts] = useState([]);
@@ -14,8 +15,9 @@ export default function Timeline({ filter }) {
     const [refresh, setRefresh] = useState(false);
     const params = useParams();
     const location = useLocation();
+    const BASE_URL = useContext(UrlContext);
 
-    let URL = `https://linkrback.herokuapp.com/${filter}`; let image; let name;
+    let URL = BASE_URL + filter; let image; let name;
     if (filter === "hashtag") {
         name = params.hashtag;
         URL = `${URL}/${name}`;
@@ -51,6 +53,8 @@ export default function Timeline({ filter }) {
             alert("An error occured while trying to fetch the posts, please refresh the page")
         })
     };
+
+    console.log(posts)
 
     return (<>
         <TimelineStyle >

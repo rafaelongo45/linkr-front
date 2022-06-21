@@ -1,15 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AiFillHeart } from "react-icons/ai"
 import ReactTooltip from "react-tooltip";
 import styled from "styled-components";
+
+import UrlContext from "../Contexts/UrlContext";
 
 function LikesContainer ({likes, liked, posts, setLiked}) {
 	const userId = localStorage.getItem("user");
 	const [likesPlaceholder, setLikes] = useState(posts.likeCount);
 	const [usersLikes, setUsersLikes] = useState(likes);
-	const [randomID, setRandomID] = useState(String(Math.random()))
+	const [randomID, setRandomID] = useState(String(Math.random()));
+	const BASE_URL = useContext(UrlContext);
 
 	function likePost(e) {
 		e.preventDefault();
@@ -22,7 +25,7 @@ function LikesContainer ({likes, liked, posts, setLiked}) {
 			setLiked(true)
 		}
 		
-		const URL = "https://linkrback.herokuapp.com/like";
+		const URL = BASE_URL + "like";
 		const token = localStorage.getItem("token");
         const config = {
             headers: {
