@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router";
 import ReactHashtag from "@mdnm/react-hashtag";
-import { useEffect, useState, useRef } from "react";
 import {IoPersonCircle} from 'react-icons/io5';
+import { useEffect, useState, useRef, useContext } from "react";
 import axios from "axios";
 import Modal from "react-modal";
 import { ThreeDots } from "react-loader-spinner";
@@ -10,6 +10,7 @@ import { ThreeDots } from "react-loader-spinner";
 import LikesContainer from "./LikesContainer.js";
 import editIcon from "../assets/img/edit-icon.svg";
 import deleteIcon from "../assets/img/delete-icon.svg";
+import UrlContext from "../Contexts/UrlContext.js";
 
 function ProfileImg({ img }) {
     return (
@@ -40,6 +41,7 @@ export default function Card(data) {
     }
     const navigate = useNavigate();
     const localUserId = parseInt(localStorage.getItem("user"));
+    const BASE_URL = useContext(UrlContext);
 
     const posts = data.data;
     const inputRef = useRef();
@@ -56,8 +58,9 @@ export default function Card(data) {
     }, [userLiked])
 
     function peopleWhoLiked () {
-        const URL = `http://localhost:4000/post-likes/${posts.id}`;
-		const promise = axios.get(URL, config);
+
+        URL = BASE_URL + `post-likes/${posts.id}`;
+		    const promise = axios.get(URL, config);
 
         promise.then((res) => {
             setLikes(res.data)
@@ -80,7 +83,8 @@ export default function Card(data) {
     }
 
     function sendEditRequisition() {        
-        const URL = `https://linkrback.herokuapp.com/posts/${posts.id}`;
+
+        URL = BASE_URL + `posts/${posts.id}`;
         const promise = axios.put(URL, {description: inputDescription}, config);
 
         setEditLoading(true);
@@ -124,7 +128,8 @@ export default function Card(data) {
     function sendDeleteRequisition() {
         setDeleteLoading(<ThreeDots color="#FFFFFF" height={23} width={23} />);
 
-        const URL = `http://localhost:4000/posts/${posts.id}`;
+
+        URL = BASE_URL + `posts/${posts.id}`;
         const promise = axios.delete(URL, config);
         promise.then(() => {
             window.location.reload(true);
@@ -149,6 +154,7 @@ export default function Card(data) {
                 }
                 <LikesContainer 
                     liked={userLiked} 
+
                     likes={likes}
                     posts={posts}
                     setLiked={setUserLiked} />

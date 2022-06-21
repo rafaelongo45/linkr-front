@@ -1,18 +1,21 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from 'react-router-dom';
+import UrlContext from "../Contexts/UrlContext";
 
 function RenderForm(){
   const navigate = useNavigate();
   const [userData, setUserData] = useState({name: '', email: '', password: '', photoLink: ''});
   const [buttonState, setButtonState] = useState(false);
+  const BASE_URL = useContext(UrlContext);
 
   function sendData(e){
     e.preventDefault();
     setButtonState(true);
 
-    const URL = 'http://localhost:4000/signup';
+
+    const URL = BASE_URL + 'signup';
     const promise = axios.post(URL, userData);
 
     promise.then(() => {

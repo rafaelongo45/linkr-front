@@ -2,27 +2,30 @@ import axios from "axios";
 import styled from "styled-components";
 import { DebounceInput } from "react-debounce-input";
 import { useState, useEffect, useContext } from "react";
-import {AiOutlineSearch as MagGlass} from 'react-icons/ai'
+import { AiOutlineSearch as MagGlass } from 'react-icons/ai'
 
 import SearchResults from "./SearchResults";
 import ClickContext from "../Contexts/HeaderClickContext.js";
+import UrlContext from "../Contexts/UrlContext";
 
-function SearchBar(){
+function SearchBar() {
   const token = localStorage.getItem('token');
   const [searchInfo, setSearchInfo] = useState([]);
-  const {click, setClick} = useContext(ClickContext);
+  const { click, setClick } = useContext(ClickContext);
   const [searchString, setSearchString] = useState('');
+  const BASE_URL = useContext(UrlContext);
 
-  if(searchString === ''){
+  if (searchString === '') {
     setClick(false);
   }
 
-  useEffect(()=> {
-    if(searchString.length < 3) return;
-  
-    const URL = `http://localhost:4000/users/${searchString}`
+
+  useEffect(() => {
+    if (searchString.length < 3) return;
+
+    const URL = BASE_URL + searchString;
     const config = {
-      headers:{
+      headers: {
         'Authorization': `Bearer ${token}`
       }
     };
@@ -30,7 +33,7 @@ function SearchBar(){
     const promise = axios.get(URL, config);
 
     promise.then(response => {
-      setSearchInfo(response.data); 
+      setSearchInfo(response.data);
       setClick(true);
     });
 
@@ -41,34 +44,34 @@ function SearchBar(){
     <>
       <Form>
         <MagGlass />
-        <DebounceInput 
-          placeholder='Search for people' 
-          element='input' 
-          minLength={3} 
-          debounceTimeout={300} 
-          value = {searchString}
-          onChange = {e => setSearchString(e.target.value)}/>
+        <DebounceInput
+          placeholder='Search for people'
+          element='input'
+          minLength={3}
+          debounceTimeout={300}
+          value={searchString}
+          onChange={e => setSearchString(e.target.value)} />
 
-          {
-            !click?
+        {
+          !click ?
             ''
-              :
+            :
             <Results>
               {
                 searchInfo.map(result => {
-                  return <SearchResults user={result} setClick={setClick} setSearchString={setSearchString}/>
+                  return <SearchResults user={result} setClick={setClick} setSearchString={setSearchString} />
                 })
               }
             </Results>
-          }
-          
+        }
+
       </Form>
 
       {
-        click?
-        <Background onClick={() =>{ setClick(false); setSearchString('')}}></Background>
-        :
-        ''
+        click ?
+          <Background onClick={() => { setClick(false); setSearchString('') }}></Background>
+          :
+          ''
       }
     </>
   )

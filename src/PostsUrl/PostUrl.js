@@ -5,9 +5,12 @@ import {IoPersonCircle} from 'react-icons/io5';
 
 import UserContext from "../Contexts/UserContext";
 import createHashtags from "./createHashtags";
+import UrlContext from "../Contexts/UrlContext";
 
 function PostUrl({setRefresh}){
-    const URL = "http://localhost:4000/posts";
+
+    const BASE_URL = useContext(UrlContext);
+    const URL = BASE_URL + "posts";
     const {userInfo} = useContext(UserContext);
     const [disable, setDisable] = useState(false);
     const userPhoto = localStorage.getItem('userImage');
@@ -45,10 +48,10 @@ function PostUrl({setRefresh}){
         }
         
         hashtags.forEach(hashtag => {
-            const promise = axios.post('http://localhost:4000/hashtag', hashtag, config);
+            const promise = axios.post(BASE_URL + 'hashtag', hashtag, config);
             promise.then(() => console.log('Hashtag posted')); promise.catch(warnError);
 
-            const hashtagsPostsPromise = axios.post('http://localhost:4000/hashtagsPosts', hashtag, config);
+            const hashtagsPostsPromise = axios.post(BASE_URL + 'hashtagsPosts', hashtag, config);
             hashtagsPostsPromise.then(() => console.log('Hashtag posted')); promise.catch(warnError);
         })
     }
