@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router";
 import ReactHashtag from "@mdnm/react-hashtag";
+import {IoPersonCircle} from 'react-icons/io5';
 import { useEffect, useState, useRef, useContext } from "react";
 import axios from "axios";
 import Modal from "react-modal";
@@ -10,6 +11,8 @@ import LikesContainer from "./LikesContainer.js";
 import editIcon from "../assets/img/edit-icon.svg";
 import deleteIcon from "../assets/img/delete-icon.svg";
 import UrlContext from "../Contexts/UrlContext.js";
+import CommentsIcon from "./CommentsIcon.js";
+import CommentsContainer from "./CommentsContainer.js";
 
 function ProfileImg({ img }) {
     return (
@@ -44,6 +47,7 @@ export default function Card(data) {
 
     const posts = data.data;
     const inputRef = useRef();
+    const [commentClick, setCommentClick] = useState(false);
     const [editClicked, setEditClicked] = useState(false);
     const [editLoading, setEditLoading] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState("Yes, delete it");
@@ -57,6 +61,7 @@ export default function Card(data) {
     }, [userLiked])
 
     function peopleWhoLiked () {
+
         URL = BASE_URL + `post-likes/${posts.id}`;
 		const promise = axios.get(URL, config);
 
@@ -81,6 +86,7 @@ export default function Card(data) {
     }
 
     function sendEditRequisition() {        
+
         URL = BASE_URL + `posts/${posts.id}`;
         const promise = axios.put(URL, {description: inputDescription}, config);
 
@@ -125,6 +131,7 @@ export default function Card(data) {
     function sendDeleteRequisition() {
         setDeleteLoading(<ThreeDots color="#FFFFFF" height={23} width={23} />);
 
+
         URL = BASE_URL + `posts/${posts.id}`;
         const promise = axios.delete(URL, config);
         promise.then(() => {
@@ -140,63 +147,79 @@ export default function Card(data) {
     const user = { userId: posts.userId, name: posts.username, image: posts.photoLink };
 
     return (
-        <CardDiv>
-            <IconsDiv>
-                <ProfileImg img={posts.photoLink} />
-                <LikesContainer
-                    liked={userLiked}
-                    likes={likes}
-                    posts={posts}
-                    setLiked={setUserLiked} />
-            </IconsDiv>
-            <CardDetails>
-                <PostUsername>
-                    <h1 onClick={() => navigate(`/user/${posts.userId}`, { state: user })}>{posts.username}</h1>
-                    <EditAndDeleteDiv visibility={posts.userId === localUserId ? "default" : "hidden"}>
-                        <img onClick={() => editPost()} src={editIcon} />
-                        <img onClick={() => openModal()} src={deleteIcon} />
-                    </EditAndDeleteDiv>
-                </PostUsername>
-                <PostDescription>
-                    <ReactHashtag onHashtagClick={name => navigate(`/hashtag/${name.replace('#', '')}`)}>
-                        {description}
-                    </ReactHashtag >
-                    <EditInput
-                        ref={inputRef}
-                        value={inputDescription}
-                        onChange={e => {
-                            setInputDescription(e.target.value);
-                        }}
-                        onKeyDown={(ev) => {
-                            if (ev.key === "Enter") {
-                                ev.preventDefault();
-                                sendEditRequisition();
-                            }
-                            if (ev.key === "Escape") {
-                                ev.preventDefault();
-                                setEditClicked(false);
-                            }
-                        }}
-                        disabled={editLoading}
-                        visibility={editClicked === true ? "default" : "hidden"}
-                    />
-                </PostDescription>
-                <LinkData
-                    linkTitle={posts.linkTitle}
-                    linkDesc={posts.linkDesc}
-                    linkImg={posts.linkImg}
-                    link={posts.link} />
-            </CardDetails>
-            <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles}>
-                <ModalAlert>
-                    <h1>Are you sure you want to delete this post?</h1>
-                    <YesOrNoDiv>
-                        <button onClick={() => closeModal()}>No, go back</button>
-                        <button onClick={() => sendDeleteRequisition()}>{deleteLoading}</button>
-                    </YesOrNoDiv>
-                </ModalAlert>
-            </Modal>
-        </CardDiv>
+        <>
+            <CardDiv>
+                <IconsDiv>
+                    {
+                        posts.photoLink ? 
+                        <ProfileImg img={posts.photoLink} />
+                        :
+                        <IoPersonCircle className="userIcon"/>
+                    }
+                    <LikesContainer 
+                        liked={userLiked} 
+
+                        likes={likes}
+                        posts={posts}
+                        setLiked={setUserLiked} />
+                    <CommentsIcon posts={posts} setCommentClick = {setCommentClick} commentClick={commentClick}/>
+                </IconsDiv>
+                <CardDetails>
+                    <PostUsername>
+                        <h1 onClick={() => navigate(`/user/${posts.userId}`, { state: user })}>{posts.username}</h1>
+                        <EditAndDeleteDiv visibility={posts.userId === localUserId ? "default" : "hidden"}>
+                            <img onClick={() => editPost()} src={editIcon} />
+                            <img onClick={() => openModal()} src={deleteIcon} />
+                        </EditAndDeleteDiv>
+                    </PostUsername>
+                    <PostDescription>
+                        <ReactHashtag onHashtagClick={name => navigate(`/hashtag/${name.replace('#', '')}`)}>
+                            {description}
+                        </ReactHashtag >
+                        <EditInput
+                            ref={inputRef}
+                            value={inputDescription}
+                            onChange={e => {
+                                setInputDescription(e.target.value);
+                            }}
+                            onKeyDown={(ev) => {
+                                if (ev.key === "Enter") {
+                                    ev.preventDefault();
+                                    sendEditRequisition();
+                                }
+                                if (ev.key === "Escape") {
+                                    ev.preventDefault();
+                                    setEditClicked(false);
+                                }
+                            }}
+                            disabled={editLoading}
+                            visibility={editClicked === true ? "default" : "hidden"}
+                        />
+                    </PostDescription>
+                    <LinkData
+                        linkTitle={posts.linkTitle}
+                        linkDesc={posts.linkDesc}
+                        linkImg={posts.linkImg}
+                        link={posts.link} />
+                    
+                </CardDetails>
+                <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles}>
+                    <ModalAlert>
+                        <h1>Are you sure you want to delete this post?</h1>
+                        <YesOrNoDiv>
+                            <button onClick={() => closeModal()}>No, go back</button>
+                            <button onClick={() => sendDeleteRequisition()}>{deleteLoading}</button>
+                        </YesOrNoDiv>
+                    </ModalAlert>
+                </Modal>
+            </CardDiv>
+            {
+                commentClick ? 
+                <CommentsContainer posts = {posts}/>
+                :
+                ''
+            }
+        </>
     )
 }
 
@@ -208,9 +231,11 @@ const CardDiv = styled.div`
     display: flex;
     min-width: 500px;
     flex-direction: row;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
     border-radius: 15px;
     padding: 10px;
+    position:relative;
+    z-index:1;
 
     span{
         color:#fff;
@@ -230,6 +255,13 @@ const IconsDiv = styled.div`
         margin-bottom: 10px;
         color: red;
     }
+
+    .userIcon{
+        width:50px;
+        height: 50px;
+        color: #fff;
+        margin:0;
+    }
 `;
 
 const CardDetails = styled.div`
@@ -247,9 +279,10 @@ const PostUsername = styled.div`
     justify-content: space-between;
 
     h1 {
+        font-family: 'Lato';
         width: auto;
         color: white;
-        font-size: 18px;
+        font-size: 20px;
     }
 
     h1:hover{
@@ -274,23 +307,30 @@ const EditAndDeleteDiv = styled.div`
 `;
 
 const PostDescription = styled.div`
-    font-size: 14px;
+    height: 44px;
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 20px;
     color: #B7B7B7;
-    min-height: 40px;
     position: relative;
 `
 
 const EditInput = styled.input`
     box-sizing: border-box;
     width: 100%;
-    height: 100%;
+    height: 44px;
     background-color: #FFFFFF;
+    display: flex;
     border: none;
     border-radius: 7px;
     position: absolute;
     top: 0px;
     left: 0px;
     padding: 8px;
+    padding-bottom: 10px;
+    font-family: 'Lato';
     font-size: 14px;
     line-height: 17px;
     color: #4C4C4C;

@@ -19,10 +19,11 @@ function SearchBar() {
     setClick(false);
   }
 
+
   useEffect(() => {
     if (searchString.length < 3) return;
 
-    const URL = BASE_URL + searchString;
+    const URL = BASE_URL + `users/${searchString}`;
     const config = {
       headers: {
         'Authorization': `Bearer ${token}`

@@ -1,18 +1,20 @@
 import { useContext, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
+import {IoPersonCircle} from 'react-icons/io5';
 
 import UserContext from "../Contexts/UserContext";
 import createHashtags from "./createHashtags";
 import UrlContext from "../Contexts/UrlContext";
 
 function PostUrl({setRefresh}){
+
     const BASE_URL = useContext(UrlContext);
     const URL = BASE_URL + "posts";
     const {userInfo} = useContext(UserContext);
     const [disable, setDisable] = useState(false);
     const userPhoto = localStorage.getItem('userImage');
-
+    
     const [data, setData] = useState({
         link: "", description: ""
     });
@@ -46,9 +48,11 @@ function PostUrl({setRefresh}){
         }
         
         hashtags.forEach(hashtag => {
-        const promise = axios.post(BASE_URL + 'hashtag', hashtag, config);
-        promise.then(() => console.log('Hashtag posted')); promise.catch(warnError);
-        
+            const promise = axios.post(BASE_URL + 'hashtag', hashtag, config);
+            promise.then(() => console.log('Hashtag posted')); promise.catch(warnError);
+
+            const hashtagsPostsPromise = axios.post(BASE_URL + 'hashtagsPosts', hashtag, config);
+            hashtagsPostsPromise.then(() => console.log('Hashtag posted')); promise.catch(warnError);
         })
     }
 
@@ -60,7 +64,13 @@ function PostUrl({setRefresh}){
     return (
     <Post>
         <div>
-            <Image src={userInfo.profileImage || userPhoto} />
+            {
+                userPhoto ? 
+                <Image src={userPhoto} />
+                :
+                <IoPersonCircle />
+            }
+            
         </div>
         <div>
             <p>What are you going to share today?</p>
@@ -101,6 +111,11 @@ const Post = styled.div`
     padding: 16px 20px 55px 20px;
     border-radius: 16px;
     background-color: var(--background-post-url);
+
+    div>svg{
+        width: 50px;
+        height: 50px;   
+    }
 
     div:first-child{
         width: 50px;
@@ -156,12 +171,14 @@ const Description = styled.input`
     border: none;
     border-radius: 5px;
     background-color: var(--background-input);
+    padding-bottom: 50px;
 
-    ::placeholder{ //TODO: posicionar placeholder na parte superior do input
+    ::placeholder{
         font-family: var(--link-font);
         font-size: 15px;
         color: var(--placeholder-color);
-    }
+    };
+
 `
 
 const Button = styled.button`

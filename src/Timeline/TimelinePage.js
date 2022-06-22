@@ -18,6 +18,7 @@ export default function Timeline({ filter }) {
     const location = useLocation();
     const BASE_URL = useContext(UrlContext);
 
+
     let URL = BASE_URL + filter; let image; let name;
     if (filter === "hashtag") {
         name = params.hashtag;
@@ -25,7 +26,7 @@ export default function Timeline({ filter }) {
     }
 
     if (filter === "posts") {
-        image = location.state.image;
+        image = localStorage.getItem('userImage');
         name = location.state.name;
         const { id } = params;
         URL = `${URL}/${id}`;
@@ -60,7 +61,7 @@ export default function Timeline({ filter }) {
     return (<>
         <TimelineStyle >
             <Header />
-            {filter === "posts" ? <UserInfo /> : <></>}
+            {filter !== "timeline" && filter !== "hashtag" ? <UserInfo userId={params.id} /> : <></>}
             <PostsArea>
                 {filter === "timeline" ?
                     <Title><h1>timeline</h1></Title> :
@@ -78,7 +79,7 @@ export default function Timeline({ filter }) {
                     : posts !== [] ? <PostsList posts={posts} /> : <NoPosts>There are no posts yet</NoPosts>
                 }
             </PostsArea>
-            {filter === "timeline" ? <TrendingHashtags /> : <></>}
+            {filter !== "hashtag" ? <TrendingHashtags /> : <></>}
         </TimelineStyle>
     </>
     )
@@ -86,7 +87,7 @@ export default function Timeline({ filter }) {
 
 const NoPosts = styled.p`
     font-size: 20px;
-    color: black;
+    color: #000000;
 `
 
 const TimelineStyle = styled.main`
@@ -100,6 +101,14 @@ const PostsArea = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+`
+
+const Title = styled.div`
+    width: 651px;
+    font-family: var(--input-font);
+    font-weight: bold;
+    font-size: 43px;
+    color: #FFFFFF;
 `
 
 const loadingAnimation = keyframes`

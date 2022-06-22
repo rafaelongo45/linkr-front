@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router";
 import { useContext, useState } from "react";
-import {IoPersonCircle} from 'react-icons/io5';
-import {IoIosArrowUp, IoIosArrowDown} from 'react-icons/io';
+import { IoPersonCircle } from 'react-icons/io5';
+import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 
 import SearchBar from "./SearchBar.js";
 import RenderDropdown from "./RenderDropdown.js";
@@ -48,7 +48,7 @@ export default RenderHeader;
 
 const Header = styled.header`
   top: 0;
-  z-index: 1;
+  z-index: 2;
   width: 100%;
   height: 60px;
   position: fixed;

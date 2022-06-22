@@ -25,6 +25,7 @@ function LikesContainer ({likes, liked, posts, setLiked}) {
 			setLiked(true)
 		}
 		
+
 		const URL = BASE_URL + "like";
 		const token = localStorage.getItem("token");
         const config = {

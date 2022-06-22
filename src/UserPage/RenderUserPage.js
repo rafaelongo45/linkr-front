@@ -1,11 +1,13 @@
 import styled from "styled-components";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { useLocation } from "react-router";
+import { IoPersonCircle } from 'react-icons/io5';
 
 import UrlContext from "../Contexts/UrlContext";
 
-function UserInfo() {
+function UserInfo(props) {
+  const { userId } = props;
+
   const token = localStorage.getItem("token");
   const config = {
     headers: {
@@ -13,29 +15,28 @@ function UserInfo() {
     }
   }
 
-  const location = useLocation();
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(false);
   const BASE_URL = useContext(UrlContext);
 
   useEffect(() => {
-    const URL = BASE_URL + `follows/${location.state.userId}`;
+    const URL = BASE_URL + `user/${userId}`;
     const promise = axios.get(URL, config);
     promise.then(response => setUser(response.data));
     promise.catch(err => console.log(err));
 
-  }, [location.state.userId]);
+  }, [userId]);
 
   function followOrUnfollowRequest() {
     setLoading(true);
 
-    if(user.following) {
-      const URL = BASE_URL + `follows/${location.state.userId}`;
+    if (user.following) {
+      const URL = BASE_URL + `follows/${userId}`;
       const promise = axios.delete(URL, config);
       promise.then(() => {
-        const aux = {...user};
+        const aux = { ...user };
         aux.following = false;
-        setUser({...aux});
+        setUser({ ...aux });
         setLoading(false);
       });
       promise.catch(e => {
@@ -45,12 +46,12 @@ function UserInfo() {
       });
     }
     else {
-      const URL = BASE_URL + `follows/${location.state.userId}`;
+      const URL = BASE_URL + `follows/${userId}`;
       const promise = axios.post(URL, null, config);
       promise.then(() => {
-        const aux = {...user};
+        const aux = { ...user };
         aux.following = true;
-        setUser({...aux});
+        setUser({ ...aux });
         setLoading(false);
       });
       promise.catch(e => {
@@ -64,7 +65,12 @@ function UserInfo() {
   return (
     <UserInfoBody>
       <Title>
-        <img src={user.photo}/>
+        {
+          user.photo ?
+            <img src={user.photo}/>
+            :
+            <IoPersonCircle className="userIcon" />
+        }
         <h1>{`${user.name}'s posts`}</h1>
       </Title>
       <FollowButton
@@ -72,7 +78,7 @@ function UserInfo() {
         backgroundColor={user.following ? "#FFFFFF" : "#1877F2"}
         fontColor={user.following ? "#1877F2" : "#FFFFFF"}
         disabled={loading}>
-          {user.following ? "Unfollow" : "Follow"}
+        {user.following ? "Unfollow" : "Follow"}
       </FollowButton>
     </UserInfoBody>
   )
@@ -82,13 +88,13 @@ export default UserInfo;
 
 
 const UserInfoBody = styled.div`
-  width: 100%;
+  box-sizing: border-box;
+  width: 975px;
   height: 64px;
-  background-color: var(--background-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-left: 69px;
+  margin-bottom: 33px;
 `;
 
 const Title = styled.div`
@@ -96,6 +102,14 @@ const Title = styled.div`
   height: 64px;
   display: flex;
   align-items: center;
+  margin-left: 16px;
+
+  svg {
+    width:50px;
+    height: 50px;
+    color: #fff;
+    margin:0;
+  }
 
   img {
     width: 50px;
@@ -108,13 +122,14 @@ const Title = styled.div`
     font-family: 'Oswald';
     font-weight: 700;
     font-size: 43px;
-    line-height: 64px;
+    line-height: 58px;
     color: #FFFFFF;
     margin-left: 18px;
+    padding-bottom: 6px;
   }
 `;
 
-FollowButton = styled.button`
+const FollowButton = styled.button`
   width: 112px;
   height: 31px;
   background: ${props => props.backgroundColor};
