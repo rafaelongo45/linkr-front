@@ -1,5 +1,4 @@
 import styled, { keyframes } from "styled-components";
-import { IoPersonCircle } from 'react-icons/io5';
 import { useContext, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router";
 import axios from "axios";
@@ -9,6 +8,7 @@ import Header from "../Header";
 import PostUrl from "../PostsUrl/PostUrl";
 import TrendingHashtags from "../TrendingHashtags";
 import UrlContext from "../Contexts/UrlContext";
+import UserInfo from "../UserPage/RenderUserPage";
 
 export default function Timeline({ filter }) {
     const [posts, setPosts] = useState([]);
@@ -61,21 +61,14 @@ export default function Timeline({ filter }) {
     return (<>
         <TimelineStyle >
             <Header />
+            {filter !== "timeline" && filter !== "hashtag" ? <UserInfo userId={params.id} /> : <></>}
             <PostsArea>
                 {filter === "timeline" ?
                     <Title><h1>timeline</h1></Title> :
                     filter === "hashtag" ?
-                        <Title><h1 className="specific-page">{`#${name}`}</h1></Title>
+                        <Title><h1>{`#${name}`}</h1></Title>
                         :
-                        <User className="specific-page">
-                            {
-                                image ?
-                                <Image src={image} />
-                                :
-                                <IoPersonCircle />
-                            }
-                            <Title><h1>{`${name}'s posts`}</h1></Title>
-                        </User>
+                        <></>
                 }
                 {filter === "timeline" ? <PostUrl setRefresh = {setRefresh}/> : <></>}
                 {loading ?
@@ -86,7 +79,7 @@ export default function Timeline({ filter }) {
                     : posts !== [] ? <PostsList posts={posts} /> : <NoPosts>There are no posts yet</NoPosts>
                 }
             </PostsArea>
-            {filter === "timeline" ? <TrendingHashtags /> : <></>}
+            {filter !== "hashtag" ? <TrendingHashtags /> : <></>}
         </TimelineStyle>
     </>
     )
@@ -94,12 +87,13 @@ export default function Timeline({ filter }) {
 
 const NoPosts = styled.p`
     font-size: 20px;
-    color: black;
+    color: #000000;
 `
 
 const TimelineStyle = styled.main`
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     margin-top: 113px;
 `
 
@@ -107,31 +101,6 @@ const PostsArea = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    .specific-page{
-        margin-bottom: 45px;
-    }
-`
-
-const User = styled.div`
-    display: flex;
-    margin-left: 69px;
-    align-items: center;
-
-    svg{
-        width: 60px;
-        height: 60px;
-        color:#fff;
-        margin: 10px 18px 0 0;
-    }
-`
-
-const Image = styled.img`
-    width: 50px;
-    height: 50px;
-    border-radius: 25px;
-    margin-right: 18px;
-    object-fit: cover;
 `
 
 const Title = styled.div`
@@ -157,6 +126,5 @@ const LoadingStyle = styled.div`
     -webkit-animation: spin 2s linear infinite; /* Safari */
     animation: spin 2s linear infinite;
     animation-name: ${loadingAnimation};
-    
 `
 
