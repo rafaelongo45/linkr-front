@@ -1,6 +1,6 @@
 import axios from "axios";
 import styled from "styled-components";
-import { IoPaperPlaneOutline } from "react-icons/io5";
+import { IoPaperPlaneOutline, IoPersonCircle } from "react-icons/io5";
 import { useContext, useEffect, useState } from "react";
 import UrlContext from "../Contexts/UrlContext";
 import RenderComments from "./RenderComments";
@@ -8,6 +8,7 @@ import RenderComments from "./RenderComments";
 function CommentsContainer({ posts }){
   const BASE_URL = useContext(UrlContext);
   const [comments, setComments] = useState([]);
+  const userPhoto = localStorage.getItem('userImage');
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -37,7 +38,12 @@ function CommentsContainer({ posts }){
       }
       
       <Form>
-        <img src = {posts.photoLink} />
+        {
+          userPhoto ?
+          <img src = {userPhoto} />
+          :
+          <b><IoPersonCircle /> </b>
+        }
         <input placeholder="write a comment..."></input>
         <button type="submit"> < IoPaperPlaneOutline /></button>
       </Form>
@@ -84,6 +90,13 @@ const Form = styled.form`
     border-radius: 50%;
     object-fit: cover;
     margin-right: 15px;
+  }
+
+  b svg{
+    color: white;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
   }
 
   button{

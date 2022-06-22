@@ -1,20 +1,34 @@
 import styled from "styled-components";
+import { IoPersonCircle } from 'react-icons/io5';
 
 function RenderComments( { comment, posts } ){
-  console.log(comment)
-  console.log(posts)
-
   const authorId = comment.commenter.id;
   const userId = posts.userId;
   return (
     <>
       <Comment>
-        <img src={comment.commenter.image}/>
+        {
+          comment.commenter.image ? 
+          <img src={comment.commenter.image}/>
+          :
+          <IoPersonCircle />
+        }
+        
 
         <CommentInfo>
           <Commenter>
             <h1>{comment.commenter.username}</h1>
-            <h2>{authorId === userId ? '• post’s author' : ''}</h2>
+            <h2>
+              {
+                authorId === userId ? 
+                '• post’s author' 
+                : 
+                  comment.commenter.isFollower ? 
+                '• following'
+                :
+                ''
+              }
+            </h2>
           </Commenter>
           
           <Text>{comment.commenter.comment}</Text>
@@ -50,6 +64,13 @@ const Comment = styled.section`
     border-radius: 50%;
     object-fit: cover;
     margin-right: 15px;
+  }
+
+  svg{
+    color: white;
+    width: 45px;
+    height: 45px;
+    margin-right: 10px;
   }
 `
 
