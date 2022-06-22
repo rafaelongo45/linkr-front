@@ -91,7 +91,7 @@ export default function Card(data) {
         const promise = axios.put(URL, {description: inputDescription}, config);
 
         setEditLoading(true);
-      
+
         promise.then(() => {
             setDescription(inputDescription);
             setEditLoading(false);
@@ -279,9 +279,10 @@ const PostUsername = styled.div`
     justify-content: space-between;
 
     h1 {
+        font-family: 'Lato';
         width: auto;
         color: white;
-        font-size: 18px;
+        font-size: 20px;
     }
 
     h1:hover{
@@ -306,23 +307,30 @@ const EditAndDeleteDiv = styled.div`
 `;
 
 const PostDescription = styled.div`
-    font-size: 14px;
+    height: 44px;
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 20px;
     color: #B7B7B7;
-    min-height: 40px;
     position: relative;
 `
 
 const EditInput = styled.input`
     box-sizing: border-box;
     width: 100%;
-    height: 100%;
+    height: 44px;
     background-color: #FFFFFF;
+    display: flex;
     border: none;
     border-radius: 7px;
     position: absolute;
     top: 0px;
     left: 0px;
     padding: 8px;
+    padding-bottom: 10px;
+    font-family: 'Lato';
     font-size: 14px;
     line-height: 17px;
     color: #4C4C4C;
