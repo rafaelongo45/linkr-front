@@ -85,7 +85,7 @@ export default function Card(data) {
         const promise = axios.put(URL, {description: inputDescription}, config);
 
         setEditLoading(true);
-      
+
         promise.then(() => {
             setDescription(inputDescription);
             setEditLoading(false);

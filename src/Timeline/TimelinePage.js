@@ -8,6 +8,7 @@ import Header from "../Header";
 import PostUrl from "../PostsUrl/PostUrl";
 import TrendingHashtags from "../TrendingHashtags";
 import UrlContext from "../Contexts/UrlContext";
+import UserInfo from "../UserPage/RenderUserPage";
 
 export default function Timeline({ filter }) {
     const [posts, setPosts] = useState([]);
@@ -59,16 +60,14 @@ export default function Timeline({ filter }) {
     return (<>
         <TimelineStyle >
             <Header />
+            {filter === "posts" ? <UserInfo /> : <></>}
             <PostsArea>
                 {filter === "timeline" ?
                     <Title><h1>timeline</h1></Title> :
                     filter === "hashtag" ?
                         <Title><h1>{`#${name}`}</h1></Title>
                         :
-                        <User>
-                            <Image src={image} />
-                            <Title><h1>{`${name}'s posts`}</h1></Title>
-                        </User>
+                        <></>
                 }
                 {filter === "timeline" ? <PostUrl setRefresh = {setRefresh}/> : <></>}
                 {loading ?
@@ -93,6 +92,7 @@ const NoPosts = styled.p`
 const TimelineStyle = styled.main`
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     margin-top: 113px;
 `
 
@@ -100,26 +100,6 @@ const PostsArea = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-`
-
-const User = styled.div`
-    display: flex;
-    margin-left: 69px;
-`
-
-const Image = styled.img`
-    width: 50px;
-    height: 50px;
-    border-radius: 25px;
-    margin-right: 18px;
-`
-
-const Title = styled.div`
-    width: 651px;
-    font-family: var(--input-font);
-    font-weight: bold;
-    font-size: 43px;
-    color: #FFFFFF;
 `
 
 const loadingAnimation = keyframes`
@@ -137,6 +117,5 @@ const LoadingStyle = styled.div`
     -webkit-animation: spin 2s linear infinite; /* Safari */
     animation: spin 2s linear infinite;
     animation-name: ${loadingAnimation};
-    
 `
 
