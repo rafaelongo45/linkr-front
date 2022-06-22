@@ -116,7 +116,8 @@ export default function Card(data) {
             bottom: 'auto',
             marginRight: '-50%',
             transform: 'translate(-50%, -50%)',
-            backgroundColor: 'rgba(255, 255, 255, 0)'
+            backgroundColor: 'rgba(255, 255, 255, 0)',
+            border: 'none'
         },
     };
 
@@ -238,7 +239,7 @@ const CardDiv = styled.div`
     border-radius: 15px;
     padding: 10px;
     position:relative;
-    z-index:1;
+    z-index:0;
 
     span{
         color:#fff;
@@ -273,6 +274,7 @@ const CardDetails = styled.div`
     justify-content: space-between;
     width: 100%;
     margin-left: 20px;
+    z-index: 0;
 `
 
 const PostUsername = styled.div`
