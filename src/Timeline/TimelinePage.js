@@ -12,12 +12,12 @@ import UrlContext from "../Contexts/UrlContext";
 
 export default function Timeline({ filter }) {
     const [posts, setPosts] = useState([]);
+    const [follows, setFollows] = useState('');
     const [loading, setLoading] = useState(false);
     const [refresh, setRefresh] = useState(false);
     const params = useParams();
     const location = useLocation();
     const BASE_URL = useContext(UrlContext);
-
 
     let URL = BASE_URL + filter; let image; let name;
     if (filter === "hashtag") {
@@ -33,16 +33,23 @@ export default function Timeline({ filter }) {
     }
 
     useEffect(() => {
+        if(filter === 'timeline'){
+            getFollows();
+        };
         getPosts()
     }, [filter, refresh])
 
     function getPosts() {
-        setLoading(true)
-
+        setLoading(true);
+        const userId = localStorage.getItem('user');
         const token = localStorage.getItem('token');
         const header = { headers: { authorization: `Bearer ${token}` } }
 
-        const promise = axios.get(URL, header)
+        const promise = axios.get(
+        filter === 'timeline' ? 
+        URL + `/${userId}`
+        :
+        URL, header)
 
         promise.then(res => {
             setPosts(res.data)
@@ -56,7 +63,22 @@ export default function Timeline({ filter }) {
         })
     };
 
-    console.log(posts)
+    function getFollows(){
+        const userId = localStorage.getItem('user');
+        const token = localStorage.getItem('token');
+        const header = { headers: { authorization: `Bearer ${token}` } }
+        
+        const promise = axios.get(BASE_URL + `followers/${userId}`, header)
+    
+        promise.then(res => {
+            setFollows(res.data)
+        });
+
+        promise.catch(err => {
+            console.log(err)
+            alert("An error occured while trying to fetch the posts, please refresh the page")
+        })
+    };
 
     return (<>
         <TimelineStyle >
@@ -85,6 +107,18 @@ export default function Timeline({ filter }) {
                     </>
                     : posts !== [] ? <PostsList posts={posts} /> : <NoPosts>There are no posts yet</NoPosts>
                 }
+                {
+                    !follows ? 
+                    ''
+                    :
+                    posts.length === 0 && follows[0].followsAmmount === '0' ?
+                    <NoPosts>You don't follow anyone yet. Search for new friends!</NoPosts>
+                    :
+                    posts.length === 0 && follows[0].postsAmmount === '0' ?
+                    <NoPosts>No posts found from your friends</NoPosts>
+                    :
+                    ''
+                }
             </PostsArea>
             {filter === "timeline" ? <TrendingHashtags /> : <></>}
         </TimelineStyle>
@@ -94,7 +128,7 @@ export default function Timeline({ filter }) {
 
 const NoPosts = styled.p`
     font-size: 20px;
-    color: black;
+    color: #fff;
 `
 
 const TimelineStyle = styled.main`
