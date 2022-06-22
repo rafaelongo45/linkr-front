@@ -7,24 +7,42 @@ import RenderComments from "./RenderComments";
 
 function CommentsContainer({ posts }){
   const BASE_URL = useContext(UrlContext);
+  const [disable, setDisable] = useState(false)
+  const [comment, setComment] = useState('')
   const [comments, setComments] = useState([]);
   const userPhoto = localStorage.getItem('userImage');
+  const token = localStorage.getItem("token");
+  const config = {
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const config = {
-      headers: {
-        "Authorization": `Bearer ${token}`
-      }
-    };
-
     URL = BASE_URL + `comments/${posts.id}`;
 
     const promise = axios.get(URL, config);
 
     promise.then(response => setComments(response.data));
     promise.catch(e => console.log(e));
-  }, []);
+  }, [disable]);
+
+  function postComment (e) {
+    e.preventDefault()
+    setDisable(true)
+    URL = BASE_URL + `comment`;
+
+    const promise = axios.post(URL, {postId: posts.id, comment, authorId: posts.userId}, config);
+    promise.then(response => {
+      setComment('')
+      setDisable(false)
+    });
+    promise.catch(e => {
+      console.log(e)
+      setDisable(false)
+    });
+    
+  }
 
   return (
     <Container>
@@ -37,15 +55,15 @@ function CommentsContainer({ posts }){
         })
       }
       
-      <Form>
+      <Form onSubmit={postComment}>
         {
           userPhoto ?
           <img src = {userPhoto} />
           :
           <b><IoPersonCircle /> </b>
         }
-        <input placeholder="write a comment..."></input>
-        <button type="submit"> < IoPaperPlaneOutline /></button>
+        <input placeholder="write a comment..." value={comment} onChange={e => setComment(e.target.value)}></input>
+        <button type="submit" disabled={disable}> < IoPaperPlaneOutline /></button>
       </Form>
     </Container>
   )

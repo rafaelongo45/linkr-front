@@ -162,7 +162,10 @@ export default function Card(data) {
                         likes={likes}
                         posts={posts}
                         setLiked={setUserLiked} />
-                    <CommentsIcon posts={posts} setCommentClick = {setCommentClick} commentClick={commentClick}/>
+                    <CommentsIcon posts={posts} 
+                        setCommentClick = {setCommentClick} 
+                        commentClick={commentClick}
+                        />
                 </IconsDiv>
                 <CardDetails>
                     <PostUsername>

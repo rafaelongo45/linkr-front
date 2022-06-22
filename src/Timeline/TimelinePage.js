@@ -56,8 +56,6 @@ export default function Timeline({ filter }) {
         })
     };
 
-    console.log(posts)
-
     return (<>
         <TimelineStyle >
             <Header />
