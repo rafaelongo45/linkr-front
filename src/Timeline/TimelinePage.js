@@ -62,10 +62,14 @@ export default function Timeline({ filter }) {
             const token = localStorage.getItem('token');
             const header = { headers: { authorization: `Bearer ${token}` } };
 
-            const promise = axios.get(BASE_URL + `new-posts/17`, header);
-            promise.then((res) => setNewPosts(res.data.count));
+            const promise = axios.get(BASE_URL + `new-posts/${posts[0].id}`, header);
+            promise.then((res) => setNewPosts(parseInt(res.data.count)));
         }
-    }, 5000);
+    }, 15000);
+
+    function getNewPosts(){
+        
+    }
 
     return (<>
         <TimelineStyle >
@@ -94,7 +98,7 @@ export default function Timeline({ filter }) {
                     </>
                     : posts !== [] ?
                         <>
-                            {newPosts ? <NewPosts>{`${newPosts} new posts, load more!`}</NewPosts>:<></>}
+                            {newPosts !== 0 ? <NewPosts onClick={() => {getPosts(); setNewPosts(0);}} >{`${newPosts} new posts, load more!`}</NewPosts>:<></>}
                             <PostsList posts={posts} />
                         </>
                         :
@@ -180,6 +184,7 @@ const NewPosts = styled.div`
     justify-content: center;
     width: 611px;
     height: 61px;
+    margin-bottom: 17px;
     font-family: var(--link-font);
     font-size: 16px;
     border-radius: 16px;
