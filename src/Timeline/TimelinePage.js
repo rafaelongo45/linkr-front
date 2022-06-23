@@ -1,6 +1,7 @@
 import styled, { keyframes } from "styled-components";
 import { useContext, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router";
+import useInterval from "use-interval";
 import axios from "axios";
 
 import PostsList from "./PostsList";
@@ -15,6 +16,7 @@ export default function Timeline({ filter }) {
     const [follows, setFollows] = useState('');
     const [loading, setLoading] = useState(false);
     const [refresh, setRefresh] = useState(false);
+    const [newPosts, setNewPosts] = useState(0);
     const params = useParams();
     const location = useLocation();
     const BASE_URL = useContext(UrlContext);
@@ -33,7 +35,7 @@ export default function Timeline({ filter }) {
     }
 
     useEffect(() => {
-        if(filter === 'timeline'){
+        if (filter === 'timeline') {
             getFollows();
         };
         getPosts()
@@ -46,10 +48,10 @@ export default function Timeline({ filter }) {
         const header = { headers: { authorization: `Bearer ${token}` } }
 
         const promise = axios.get(
-        filter === 'timeline' ? 
-        URL + `/${userId}`
-        :
-        URL, header)
+            filter === 'timeline' ?
+                URL + `/${userId}`
+                :
+                URL, header)
 
         promise.then(res => {
             setPosts(res.data)
@@ -63,13 +65,13 @@ export default function Timeline({ filter }) {
         })
     };
 
-    function getFollows(){
+    function getFollows() {
         const userId = localStorage.getItem('user');
         const token = localStorage.getItem('token');
         const header = { headers: { authorization: `Bearer ${token}` } }
-        
+
         const promise = axios.get(BASE_URL + `followers/${userId}`, header)
-    
+
         promise.then(res => {
             setFollows(res.data)
         });
@@ -79,6 +81,20 @@ export default function Timeline({ filter }) {
             alert("An error occured while trying to fetch the posts, please refresh the page")
         })
     };
+
+    useInterval(() => {
+        if (filter === "timeline" && !loading) {
+            const token = localStorage.getItem('token');
+            const header = { headers: { authorization: `Bearer ${token}` } };
+
+            const promise = axios.get(BASE_URL + `new-posts/${posts[0].id}`, header);
+            promise.then((res) => setNewPosts(parseInt(res.data.count)));
+        }
+    }, 15000);
+
+    function getNewPosts() {
+
+    }
 
     return (<>
         <TimelineStyle >
@@ -92,25 +108,31 @@ export default function Timeline({ filter }) {
                         :
                         <></>
                 }
-                {filter === "timeline" ? <PostUrl setRefresh = {setRefresh}/> : <></>}
+                {filter === "timeline" ? <PostUrl setRefresh={setRefresh} /> : <></>}
                 {loading ?
                     <>
                         Loading
                         <LoadingStyle ></LoadingStyle>
                     </>
-                    : posts !== [] ? <PostsList posts={posts} /> : <NoPosts>There are no posts yet</NoPosts>
+                    : posts !== [] ?
+                        <>
+                            {newPosts !== 0 ? <NewPosts onClick={() => { getPosts(); setNewPosts(0); }} >{`${newPosts} new posts, load more!`}</NewPosts> : <></>}
+                            <PostsList posts={posts} />
+                        </>
+                        :
+                        <NoPosts>There are no posts yet</NoPosts>
                 }
                 {
-                    !follows ? 
-                    ''
-                    :
-                    posts.length === 0 && follows[0].followsAmmount === '0' ?
-                    <NoPosts>You don't follow anyone yet. Search for new friends!</NoPosts>
-                    :
-                    posts.length === 0 && follows[0].postsAmmount === '0' ?
-                    <NoPosts>No posts found from your friends</NoPosts>
-                    :
-                    ''
+                    !follows ?
+                        ''
+                        :
+                        posts.length === 0 && follows[0].followsAmmount === '0' ?
+                            <NoPosts>You don't follow anyone yet. Search for new friends!</NoPosts>
+                            :
+                            posts.length === 0 && follows[0].postsAmmount === '0' ?
+                                <NoPosts>No posts found from your friends</NoPosts>
+                                :
+                                ''
                 }
             </PostsArea>
             {filter !== "hashtag" ? <TrendingHashtags /> : <></>}
@@ -160,5 +182,19 @@ const LoadingStyle = styled.div`
     -webkit-animation: spin 2s linear infinite; /* Safari */
     animation: spin 2s linear infinite;
     animation-name: ${loadingAnimation};
+`
+const NewPosts = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 611px;
+    height: 61px;
+    margin-bottom: 17px;
+    font-family: var(--link-font);
+    font-size: 16px;
+    border-radius: 16px;
+    color: #FFFFFF;
+    background-color: var(--background-button);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `
 
