@@ -47,6 +47,8 @@ const TrendingArea = styled.aside`
   padding-top: 20px;
   background-color: var(--background-color);
   border-radius: 14px;
+  position: sticky;
+  top: 200px;
   
   h1{
     color: #fff;

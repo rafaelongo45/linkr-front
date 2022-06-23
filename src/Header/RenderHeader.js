@@ -20,7 +20,7 @@ function RenderHeader(){
         <h1 onClick={() => navigate('/timeline')}>linkr</h1>
       </Logo>
 
-      <SearchBar /> 
+      <b><SearchBar /></b> 
 
       <User onClick = {() => setClick(click ? false : true)}>
         {
@@ -58,6 +58,16 @@ const Header = styled.header`
   align-items:center;
   justify-content: space-between;
   z-index: 3;
+
+  b{
+    width: 40%;
+  }
+
+  @media(max-width: 460px){
+    b{
+      display: none;
+    }
+  }
 `;
 
 const Logo = styled.div`

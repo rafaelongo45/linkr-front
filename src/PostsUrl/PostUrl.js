@@ -134,6 +134,27 @@ const Post = styled.div`
             color: var(--post-color);
         }
     }
+
+    @media(max-width: 460px){
+        width: 100%;
+        height: 230px;
+        max-width: 425px;
+        border-radius: 0;
+        padding: 0;
+
+        div:first-child{
+            display: none;
+        }
+
+        div:nth-child(2){
+            width: 90%;
+            margin: 10px auto;
+
+            p{
+                text-align: center;
+            }
+        }
+    }
 `
 const Image = styled.img`
     width: 58px;
@@ -159,6 +180,9 @@ const Url = styled.input`
         font-size: 15px;
         color: var(--placeholder-color);
     }
+
+    @media(max-width: 460px){
+    }
 `
 
 const Description = styled.input`
@@ -179,6 +203,13 @@ const Description = styled.input`
         color: var(--placeholder-color);
     };
 
+    @media(max-width: 460px){
+        height: 75px;
+        
+        ::placeholder{
+            padding: 3px;
+        }
+    }
 `
 
 const Button = styled.button`
@@ -193,4 +224,8 @@ const Button = styled.button`
     border-radius: 5px;
     color: var(--button-text);
     background-color: var(--background-button);
+
+    @media(max-width: 460px){
+        height: 35px;
+    }
 `

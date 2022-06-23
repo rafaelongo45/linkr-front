@@ -95,6 +95,11 @@ const UserInfoBody = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 33px;
+
+  @media(max-width: 460px){
+    width: 95%;
+  }
+  
 `;
 
 const Title = styled.div`
@@ -126,6 +131,21 @@ const Title = styled.div`
     margin-left: 18px;
     padding-bottom: 6px;
   }
+
+  @media(max-width: 460px){
+    
+    img{
+      width: 50px;
+      height: 50px;
+      margin-left: 5px;
+    }
+
+    h1{
+      font-size: 26px;
+      line-height: 22px;
+      margin-left: 10px;
+    }
+  }
 `;
 
 const FollowButton = styled.button`
@@ -143,4 +163,10 @@ const FollowButton = styled.button`
   font-size: 14px;
   line-height: 17px;
   cursor: pointer;
+
+  @media(max-width: 460px){
+    width: 60px;
+    height: 26px;
+    margin-right: 5px;
+  }
 `;

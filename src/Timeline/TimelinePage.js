@@ -9,6 +9,7 @@ import PostUrl from "../PostsUrl/PostUrl";
 import TrendingHashtags from "../TrendingHashtags";
 import UrlContext from "../Contexts/UrlContext";
 import UserInfo from "../UserPage/RenderUserPage";
+import SearchBar from "../Header/SearchBar";
 
 export default function Timeline({ filter }) {
     const [posts, setPosts] = useState([]);
@@ -85,6 +86,7 @@ export default function Timeline({ filter }) {
     return (<>
         <TimelineStyle >
             <Header />
+            <em><SearchBar /></em>
             <PostsArea>
                 {filter !== "timeline" && filter !== "hashtag" ? <UserInfo userId={params.id} /> : <></>}
                 {filter === "timeline" ?
@@ -134,12 +136,24 @@ const TimelineStyle = styled.main`
     justify-content: center;
     flex-wrap: wrap;
     margin-top: 113px;
+
+    em{
+        display: none;
+    }
+
+    @media(max-width: 460px){
+        width: 100%;
+    }
 `
 
 const PostsArea = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    @media(max-width: 460px){
+        width: 100%;
+    }
 `
 
 const Title = styled.div`
@@ -152,11 +166,17 @@ const Title = styled.div`
     .hashtagTitle{
         margin-bottom: 30px;
     }
+
+    @media(max-width: 460px){
+        width: 90%;
+        margin-left: 0px;
+    }
 `
 
 const loadingAnimation = keyframes`
     0% { -webkit-transform: rotate(0deg); }
     100% { -webkit-transform: rotate(360deg); }
+    
 `
 
 const LoadingStyle = styled.div`

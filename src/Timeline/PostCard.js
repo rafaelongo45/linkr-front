@@ -240,9 +240,18 @@ const CardDiv = styled.div`
     padding: 10px;
     position:relative;
     z-index: 1;
+
     span{
         color:#fff;
         font-weight: 700;
+    }
+
+    @media(max-width: 460px){
+        width: 100%;
+        min-width:320px;
+        border-radius: 0;
+        max-width: 425px;
+        padding: 0;
     }
 `
 
@@ -266,6 +275,22 @@ const IconsDiv = styled.div`
         color: #fff;
         margin:0;
     }
+
+    @media(max-width: 460px){
+        margin-left: 5px;
+        margin-top: 10px;
+
+        .userIcon{
+            width: 60px;
+            height: 60px;
+            color: #fff;
+            margin:0;
+        }
+
+        svg{
+            font-size: 20px;
+        }
+    }
 `;
 
 const CardDetails = styled.div`
@@ -275,6 +300,10 @@ const CardDetails = styled.div`
     width: 100%;
     margin-left: 20px;
     z-index: 0;
+
+    @media(max-width: 460px){
+        width: 75%;
+    }
 `
 
 const PostUsername = styled.div`
@@ -293,6 +322,10 @@ const PostUsername = styled.div`
     h1:hover{
         cursor:pointer;
         text-decoration: underline;
+    }
+    
+    @media(max-width: 460px){
+        width: 100%;
     }
 `
 
@@ -349,6 +382,11 @@ const ProfileImgStyle = styled.img`
     height: 55px;
     border-radius: 50%;
     object-fit: cover;
+    
+    @media(max-width: 460px){
+        width: 50px;
+        height: 50px;
+    }
 `
 
 const LinkSnnipet = styled.div`
@@ -361,6 +399,10 @@ const LinkSnnipet = styled.div`
     max-width: 530px;
     margin-bottom: 10px;
     cursor: pointer;
+
+    @media(max-width: 460px){
+        width: 98%;
+    }
 `
 
 const SnippetImg = styled.img`
@@ -390,6 +432,26 @@ const SnippetDesc = styled.div`
         font-size: 12px;
         opacity: 0.7;
         margin-bottom: 10px;
+
+    }
+
+    @media(max-width: 460px){
+        height: 70%;
+        justify-content: space-between;
+        
+        h3{
+            overflow: hidden;
+            overflow-wrap: break-word;
+            max-height: 35px;
+            text-overflow: ellipsis;   
+
+        }
+
+        h2{
+            white-space:nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
     }
 `
 

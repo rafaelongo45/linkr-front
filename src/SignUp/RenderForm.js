@@ -86,11 +86,16 @@ const Form = styled.form`
     font-size: 22px;
     font-weight: 700;  
     font-family: var(--input-font);
+
+    :hover{
+      cursor:pointer;
+    }
   }
 
   @media(max-width: 460px){
     margin-top: 50px;
   }
+  
 `
 
 const Button =styled.button`
