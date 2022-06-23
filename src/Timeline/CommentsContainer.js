@@ -100,6 +100,7 @@ const Form = styled.form`
     background-color: #333333;
     font-family: 'Lato';
     font-size: 14px;
+    color: white;
   }
 
   img{
