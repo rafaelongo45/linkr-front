@@ -80,6 +80,7 @@ const Container = styled.article`
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
   margin-bottom: 10px;
+  z-index: 0;
 `
 
 const Form = styled.form`

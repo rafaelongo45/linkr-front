@@ -80,15 +80,17 @@ export default function Timeline({ filter }) {
         })
     };
 
+    console.log(posts)
+
     return (<>
         <TimelineStyle >
             <Header />
-            {filter !== "timeline" && filter !== "hashtag" ? <UserInfo userId={params.id} /> : <></>}
             <PostsArea>
+                {filter !== "timeline" && filter !== "hashtag" ? <UserInfo userId={params.id} /> : <></>}
                 {filter === "timeline" ?
                     <Title><h1>timeline</h1></Title> :
                     filter === "hashtag" ?
-                        <Title><h1>{`#${name}`}</h1></Title>
+                        <Title><h1 className="hashtagTitle">{`#${name}`}</h1></Title>
                         :
                         <></>
                 }
@@ -101,6 +103,9 @@ export default function Timeline({ filter }) {
                     : posts !== [] ? <PostsList posts={posts} /> : <NoPosts>There are no posts yet</NoPosts>
                 }
                 {
+                    filter !== 'hashtag' ?
+                    ''
+                    :
                     !follows ? 
                     ''
                     :
@@ -143,6 +148,10 @@ const Title = styled.div`
     font-weight: bold;
     font-size: 43px;
     color: #FFFFFF;
+
+    .hashtagTitle{
+        margin-bottom: 30px;
+    }
 `
 
 const loadingAnimation = keyframes`

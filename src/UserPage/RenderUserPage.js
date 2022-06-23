@@ -66,8 +66,8 @@ function UserInfo(props) {
     <UserInfoBody>
       <Title>
         {
-          user.photo ?
-            <img src={user.photo}/>
+          user.photoLink ?
+            <img src={user.photoLink}/>
             :
             <IoPersonCircle className="userIcon" />
         }
@@ -89,7 +89,7 @@ export default UserInfo;
 
 const UserInfoBody = styled.div`
   box-sizing: border-box;
-  width: 975px;
+  width: 650px;
   height: 64px;
   display: flex;
   align-items: center;
@@ -102,7 +102,6 @@ const Title = styled.div`
   height: 64px;
   display: flex;
   align-items: center;
-  margin-left: 16px;
 
   svg {
     width:50px;
@@ -112,10 +111,10 @@ const Title = styled.div`
   }
 
   img {
-    width: 50px;
-    height: 50px;
+    width: 58px;
+    height: 58px;
     object-fit: cover;
-    border-radius: 25px;
+    border-radius: 50%;
   }
 
   h1 {

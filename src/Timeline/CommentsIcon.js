@@ -51,7 +51,6 @@ const Comments = styled.article`
   justify-content:center;
 
   b svg{
-    font-size: 26px;
     color: #fff;
 
     :hover{

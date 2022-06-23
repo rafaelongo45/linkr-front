@@ -136,9 +136,9 @@ const Post = styled.div`
     }
 `
 const Image = styled.img`
-    width: 50px;
-    height: 50px;
-    border-radius: 25px;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
     object-fit: cover;
 `
 
@@ -149,7 +149,7 @@ const Url = styled.input`
     height: 30px;
     width: 100%;
     padding: 0 13px;
-    margin-bottom: 5px;
+    margin-bottom: 7px;
     border: none;
     border-radius: 5px;
     background-color: var(--background-input);

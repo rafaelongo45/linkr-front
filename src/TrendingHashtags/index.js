@@ -61,6 +61,10 @@ const TrendingArea = styled.aside`
     height: 2px;
     background-color:var(--background-color-header);
   }
+
+  @media(max-width: 1024px){
+    display: none;
+  }
 `;
 
 const Hashtags = styled.ul`
