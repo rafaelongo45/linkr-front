@@ -47,7 +47,7 @@ const TrendingArea = styled.aside`
   padding-top: 20px;
   background-color: var(--background-color);
   border-radius: 14px;
-
+  
   h1{
     color: #fff;
     font-family: var(--input-font);
