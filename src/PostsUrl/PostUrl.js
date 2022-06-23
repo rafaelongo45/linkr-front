@@ -104,13 +104,14 @@ export default PostUrl;
 const Post = styled.div`
     position: relative;
     display: flex;
-    height: 190px;
+    height: 170px;
     max-height: 490px;
-    width: 611px;
+    width: 590px;
     margin: 43px 0 29px 0;
     padding: 16px 20px 55px 20px;
     border-radius: 16px;
     background-color: var(--background-post-url);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
     div>svg{
         width: 50px;

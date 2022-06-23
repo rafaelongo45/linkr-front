@@ -2,6 +2,7 @@ import styled, { keyframes } from "styled-components";
 import { IoPersonCircle } from 'react-icons/io5';
 import { useContext, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router";
+import useInterval from "use-interval";
 import axios from "axios";
 
 import PostsList from "./PostsList";
@@ -14,10 +15,10 @@ export default function Timeline({ filter }) {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [refresh, setRefresh] = useState(false);
+    const [newPosts, setNewPosts] = useState(0);
     const params = useParams();
     const location = useLocation();
     const BASE_URL = useContext(UrlContext);
-
 
     let URL = BASE_URL + filter; let image; let name;
     if (filter === "hashtag") {
@@ -56,7 +57,15 @@ export default function Timeline({ filter }) {
         })
     };
 
-    console.log(posts)
+    useInterval(() => {
+        if (filter === "timeline" && !loading) {
+            const token = localStorage.getItem('token');
+            const header = { headers: { authorization: `Bearer ${token}` } };
+
+            const promise = axios.get(BASE_URL + `new-posts/17`, header);
+            promise.then((res) => setNewPosts(res.data.count));
+        }
+    }, 5000);
 
     return (<>
         <TimelineStyle >
@@ -70,20 +79,26 @@ export default function Timeline({ filter }) {
                         <User className="specific-page">
                             {
                                 image ?
-                                <Image src={image} />
-                                :
-                                <IoPersonCircle />
+                                    <Image src={image} />
+                                    :
+                                    <IoPersonCircle />
                             }
                             <Title><h1>{`${name}'s posts`}</h1></Title>
                         </User>
                 }
-                {filter === "timeline" ? <PostUrl setRefresh = {setRefresh}/> : <></>}
+                {filter === "timeline" ? <PostUrl setRefresh={setRefresh} /> : <></>}
                 {loading ?
                     <>
                         Loading
                         <LoadingStyle ></LoadingStyle>
                     </>
-                    : posts !== [] ? <PostsList posts={posts} /> : <NoPosts>There are no posts yet</NoPosts>
+                    : posts !== [] ?
+                        <>
+                            {newPosts ? <NewPosts>{`${newPosts} new posts, load more!`}</NewPosts>:<></>}
+                            <PostsList posts={posts} />
+                        </>
+                        :
+                        <NoPosts>There are no posts yet</NoPosts>
                 }
             </PostsArea>
             {filter === "timeline" ? <TrendingHashtags /> : <></>}
@@ -158,5 +173,18 @@ const LoadingStyle = styled.div`
     animation: spin 2s linear infinite;
     animation-name: ${loadingAnimation};
     
+`
+const NewPosts = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 611px;
+    height: 61px;
+    font-family: var(--link-font);
+    font-size: 16px;
+    border-radius: 16px;
+    color: #FFFFFF;
+    background-color: var(--background-button);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `
 
