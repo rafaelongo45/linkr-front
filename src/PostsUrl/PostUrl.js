@@ -181,9 +181,6 @@ const Url = styled.input`
         font-size: 15px;
         color: var(--placeholder-color);
     }
-
-    @media(max-width: 460px){
-    }
 `
 
 const Description = styled.input`
@@ -205,7 +202,7 @@ const Description = styled.input`
     };
 
     @media(max-width: 460px){
-        height: 75px;
+        height: 70px;
         
         ::placeholder{
             padding: 3px;
@@ -227,6 +224,6 @@ const Button = styled.button`
     background-color: var(--background-button);
 
     @media(max-width: 460px){
-        height: 35px;
+        height: 25px;
     }
 `

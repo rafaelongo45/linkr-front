@@ -81,11 +81,15 @@ const Container = styled.article`
   border-bottom-right-radius: 15px;
   margin-bottom: 10px;
   z-index: 0;
+
+  @media(max-width: 460px){
+    width: 100%;
+  }
 `
 
 const Form = styled.form`
   position: absolute;
-  bottom:0;
+  bottom: 0;
   left: 0;
   width: 95%;
   padding: 0 18px 18px 18px;
@@ -128,5 +132,23 @@ const Form = styled.form`
     color: #fff;
     font-size: 18px;
     background:none;
+  }
+
+  @media(max-width: 460px){
+    padding: 0px;
+    margin-bottom: 20px;
+
+    img{
+      margin-left: 10px;
+    }
+
+    input{
+      width: 80%;
+    }
+
+    button{
+      right: 2px;
+      bottom: 8px;
+    } 
   }
 `
