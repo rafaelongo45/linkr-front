@@ -23,8 +23,6 @@ function RenderForm(){
       return alert('Please insert a valid link for the image!');
     }
 
-    console.log('passei')
-
     const URL = BASE_URL + 'signup';
     const promise = axios.post(URL, userData);
 
