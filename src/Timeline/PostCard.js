@@ -119,6 +119,7 @@ export default function Card(data) {
             backgroundColor: 'rgba(255, 255, 255, 0)',
             border: 'none'
         },
+        overlay: {zIndex: 2}
     };
 
     const [modalIsOpen, setIsOpen] = useState(false);
@@ -131,7 +132,6 @@ export default function Card(data) {
 
     function sendDeleteRequisition() {
         setDeleteLoading(<ThreeDots color="#FFFFFF" height={23} width={23} />);
-
 
         URL = BASE_URL + `posts/${posts.id}`;
         const promise = axios.delete(URL, config);
@@ -170,7 +170,7 @@ export default function Card(data) {
                 </IconsDiv>
                 <CardDetails>
                     <PostUsername>
-                        <h1 onClick={() => navigate(`/user/${posts.userId}`, { state: user })}>{posts.username}</h1>
+                        <h1 onClick={() => navigate(`/user/${posts.userId}`, { state: user })}>{posts.username ? posts.username : posts.name}</h1>
                         <EditAndDeleteDiv visibility={posts.userId === localUserId ? "default" : "hidden"}>
                             <img onClick={() => editPost()} src={editIcon} />
                             <img onClick={() => openModal()} src={deleteIcon} />
@@ -230,7 +230,7 @@ export default function Card(data) {
 const CardDiv = styled.div`
     background-color: #171717;
     width: 631px;
-    height: 270px;
+    height: 260px;
     min-height: 230px;
     display: flex;
     min-width: 500px;
@@ -239,11 +239,19 @@ const CardDiv = styled.div`
     border-radius: 15px;
     padding: 10px;
     position:relative;
-    z-index:0;
+    z-index: 1;
 
     span{
         color:#fff;
         font-weight: 700;
+    }
+
+    @media(max-width: 460px){
+        width: 100%;
+        min-width:320px;
+        border-radius: 0;
+        max-width: 425px;
+        padding: 0;
     }
 `
 
@@ -252,19 +260,36 @@ const IconsDiv = styled.div`
     flex-direction: column;
     align-items: center;
     font-size: 12px;
+    margin-top: 5px;
     
     svg {
-        font-size: 20px;
+        font-size: 24px;
         margin-top: 20px;
-        margin-bottom: 10px;
+        margin-bottom: 2px;
         color: red;
     }
 
     .userIcon{
-        width:50px;
-        height: 50px;
+        width: 60px;
+        height: 60px;
         color: #fff;
         margin:0;
+    }
+
+    @media(max-width: 460px){
+        margin-left: 5px;
+        margin-top: 10px;
+
+        .userIcon{
+            width: 60px;
+            height: 60px;
+            color: #fff;
+            margin:0;
+        }
+
+        svg{
+            font-size: 20px;
+        }
     }
 `;
 
@@ -275,10 +300,13 @@ const CardDetails = styled.div`
     width: 100%;
     margin-left: 20px;
     z-index: 0;
+
+    @media(max-width: 460px){
+        width: 75%;
+    }
 `
 
 const PostUsername = styled.div`
-    height: 40px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -288,11 +316,16 @@ const PostUsername = styled.div`
         width: auto;
         color: white;
         font-size: 20px;
+        padding-bottom: 3px;
     }
 
     h1:hover{
         cursor:pointer;
         text-decoration: underline;
+    }
+    
+    @media(max-width: 460px){
+        width: 100%;
     }
 `
 
@@ -303,6 +336,7 @@ const EditAndDeleteDiv = styled.div`
     align-items: center;
     justify-content: space-between;
     visibility: ${props => props.visibility};
+    margin-right: 12px;
 
     img {
         width: 16px;
@@ -312,14 +346,15 @@ const EditAndDeleteDiv = styled.div`
 `;
 
 const PostDescription = styled.div`
-    height: 44px;
     font-family: 'Lato';
     font-style: normal;
     font-weight: 400;
-    font-size: 17px;
+    font-size: 16px;
     line-height: 20px;
     color: #B7B7B7;
     position: relative;
+    margin-bottom: 18px;
+    height: 30px;
 `
 
 const EditInput = styled.input`
@@ -343,36 +378,51 @@ const EditInput = styled.input`
 `
 
 const ProfileImgStyle = styled.img`
-    width: 40px;
-    height: 40px;
+    width: 55px;
+    height: 55px;
     border-radius: 50%;
     object-fit: cover;
+    
+    @media(max-width: 460px){
+        width: 50px;
+        height: 50px;
+    }
 `
 
 const LinkSnnipet = styled.div`
-    border: 1px solid #C4C4C4;
+    border: 1px solid #4C4C4C;
     height: 160px;
     border-radius: 10px;
     width: 100%;
     display: flex;
     justify-content:center;
+    max-width: 530px;
+    margin-bottom: 10px;
     cursor: pointer;
+
+    @media(max-width: 460px){
+        width: 98%;
+    }
 `
 
 const SnippetImg = styled.img`
-    width: 30%;
+    width: 32%;
     border-bottom-right-radius: 10px;
     border-top-right-radius: 10px;
+    object-fit: cover;
 `
 
 const SnippetDesc = styled.div`
     color: #CECECE;
-    margin: 10px;
+    margin: auto 15px;
     display: flex;
-    justify-content: space-between;
     flex-direction: column;
+    max-width: 66%;
+    overflow:hidden;
+
     h1 {
         font-size: 18px;
+        margin-bottom: 10px;
     }
     h2{
         font-size: 14px;
@@ -381,6 +431,27 @@ const SnippetDesc = styled.div`
     h3 {
         font-size: 12px;
         opacity: 0.7;
+        margin-bottom: 10px;
+
+    }
+
+    @media(max-width: 460px){
+        height: 70%;
+        justify-content: space-between;
+        
+        h3{
+            overflow: hidden;
+            overflow-wrap: break-word;
+            max-height: 35px;
+            text-overflow: ellipsis;   
+
+        }
+
+        h2{
+            white-space:nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
     }
 `
 

@@ -10,6 +10,7 @@ import PostUrl from "../PostsUrl/PostUrl";
 import TrendingHashtags from "../TrendingHashtags";
 import UrlContext from "../Contexts/UrlContext";
 import UserInfo from "../UserPage/RenderUserPage";
+import SearchBar from "../Header/SearchBar";
 
 export default function Timeline({ filter }) {
     const [posts, setPosts] = useState([]);
@@ -95,16 +96,17 @@ export default function Timeline({ filter }) {
     function getNewPosts() {
 
     }
-
+  
     return (<>
         <TimelineStyle >
             <Header />
-            {filter !== "timeline" && filter !== "hashtag" ? <UserInfo userId={params.id} /> : <></>}
+            <em><SearchBar /></em>
             <PostsArea>
+                {filter !== "timeline" && filter !== "hashtag" ? <UserInfo userId={params.id} /> : <></>}
                 {filter === "timeline" ?
                     <Title><h1>timeline</h1></Title> :
                     filter === "hashtag" ?
-                        <Title><h1>{`#${name}`}</h1></Title>
+                        <Title><h1 className="hashtagTitle">{`#${name}`}</h1></Title>
                         :
                         <></>
                 }
@@ -123,16 +125,19 @@ export default function Timeline({ filter }) {
                         <NoPosts>There are no posts yet</NoPosts>
                 }
                 {
-                    !follows ?
-                        ''
-                        :
-                        posts.length === 0 && follows[0].followsAmmount === '0' ?
-                            <NoPosts>You don't follow anyone yet. Search for new friends!</NoPosts>
-                            :
-                            posts.length === 0 && follows[0].postsAmmount === '0' ?
-                                <NoPosts>No posts found from your friends</NoPosts>
-                                :
-                                ''
+                    filter !== 'hashtag' ?
+                    ''
+                    :
+                    !follows ? 
+                    ''
+                    :
+                    posts.length === 0 && follows[0].followsAmmount === '0' ?
+                    <NoPosts>You don't follow anyone yet. Search for new friends!</NoPosts>
+                    :
+                    posts.length === 0 && follows[0].postsAmmount === '0' ?
+                    <NoPosts>No posts found from your friends</NoPosts>
+                    :
+                    ''
                 }
             </PostsArea>
             {filter !== "hashtag" ? <TrendingHashtags /> : <></>}
@@ -151,12 +156,24 @@ const TimelineStyle = styled.main`
     justify-content: center;
     flex-wrap: wrap;
     margin-top: 113px;
+
+    em{
+        display: none;
+    }
+
+    @media(max-width: 460px){
+        width: 100%;
+    }
 `
 
 const PostsArea = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    @media(max-width: 460px){
+        width: 100%;
+    }
 `
 
 const Title = styled.div`
@@ -165,11 +182,21 @@ const Title = styled.div`
     font-weight: bold;
     font-size: 43px;
     color: #FFFFFF;
+
+    .hashtagTitle{
+        margin-bottom: 30px;
+    }
+
+    @media(max-width: 460px){
+        width: 90%;
+        margin-left: 0px;
+    }
 `
 
 const loadingAnimation = keyframes`
     0% { -webkit-transform: rotate(0deg); }
     100% { -webkit-transform: rotate(360deg); }
+    
 `
 
 const LoadingStyle = styled.div`

@@ -45,13 +45,13 @@ export default CommentsIcon;
 
 const Comments = styled.article`
   color: #fff;
-  text-align:center;
   display: flex;
   flex-wrap:wrap;
+  flex-direction: column;
+  text-align:center;
   justify-content:center;
 
   b svg{
-    font-size: 26px;
     color: #fff;
 
     :hover{

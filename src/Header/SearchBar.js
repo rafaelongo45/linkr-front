@@ -80,7 +80,7 @@ function SearchBar() {
 export default SearchBar;
 
 const Form = styled.form`
-  width: 30%;
+  width: 100%;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -115,10 +115,18 @@ const Form = styled.form`
       outline:none;
     }
   }
+
+  @media(max-width: 460px){
+    position: absolute;
+    z-index: 0;
+    top: 70px;
+    left: 10px;
+    width: 95%; 
+  }
 `
 
 const Results = styled.section`
-  position:absolute;
+  position: absolute;
   top: 30px;
   left:0;
   width: 100%;

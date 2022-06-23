@@ -47,7 +47,9 @@ const TrendingArea = styled.aside`
   padding-top: 20px;
   background-color: var(--background-color);
   border-radius: 14px;
-
+  position: sticky;
+  top: 200px;
+  
   h1{
     color: #fff;
     font-family: var(--input-font);
@@ -60,6 +62,10 @@ const TrendingArea = styled.aside`
     width: 100%;
     height: 2px;
     background-color:var(--background-color-header);
+  }
+
+  @media(max-width: 1024px){
+    display: none;
   }
 `;
 

@@ -66,8 +66,8 @@ function UserInfo(props) {
     <UserInfoBody>
       <Title>
         {
-          user.photo ?
-            <img src={user.photo}/>
+          user.photoLink ?
+            <img src={user.photoLink}/>
             :
             <IoPersonCircle className="userIcon" />
         }
@@ -89,12 +89,17 @@ export default UserInfo;
 
 const UserInfoBody = styled.div`
   box-sizing: border-box;
-  width: 975px;
+  width: 650px;
   height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 33px;
+
+  @media(max-width: 460px){
+    width: 95%;
+  }
+  
 `;
 
 const Title = styled.div`
@@ -102,7 +107,6 @@ const Title = styled.div`
   height: 64px;
   display: flex;
   align-items: center;
-  margin-left: 16px;
 
   svg {
     width:50px;
@@ -112,10 +116,10 @@ const Title = styled.div`
   }
 
   img {
-    width: 50px;
-    height: 50px;
+    width: 58px;
+    height: 58px;
     object-fit: cover;
-    border-radius: 25px;
+    border-radius: 50%;
   }
 
   h1 {
@@ -126,6 +130,21 @@ const Title = styled.div`
     color: #FFFFFF;
     margin-left: 18px;
     padding-bottom: 6px;
+  }
+
+  @media(max-width: 460px){
+    
+    img{
+      width: 50px;
+      height: 50px;
+      margin-left: 5px;
+    }
+
+    h1{
+      font-size: 26px;
+      line-height: 22px;
+      margin-left: 10px;
+    }
   }
 `;
 
@@ -144,4 +163,10 @@ const FollowButton = styled.button`
   font-size: 14px;
   line-height: 17px;
   cursor: pointer;
+
+  @media(max-width: 460px){
+    width: 60px;
+    height: 26px;
+    margin-right: 5px;
+  }
 `;
