@@ -10,6 +10,7 @@ import { ThreeDots } from "react-loader-spinner";
 import LikesContainer from "./LikesContainer.js";
 import editIcon from "../assets/img/edit-icon.svg";
 import deleteIcon from "../assets/img/delete-icon.svg";
+import shareIcon from "../assets/img/share-icon.svg";
 import UrlContext from "../Contexts/UrlContext.js";
 import CommentsIcon from "./CommentsIcon.js";
 import CommentsContainer from "./CommentsContainer.js";
@@ -50,7 +51,6 @@ export default function Card(data) {
     const [commentClick, setCommentClick] = useState(false);
     const [editClicked, setEditClicked] = useState(false);
     const [editLoading, setEditLoading] = useState(false);
-    const [deleteLoading, setDeleteLoading] = useState("Yes, delete it");
     const [description, setDescription] = useState(posts.description);
     const [inputDescription, setInputDescription] = useState(posts.description);
     const [userLiked, setUserLiked] = useState(false);
@@ -120,6 +120,7 @@ export default function Card(data) {
         },
     };
 
+    const [modalType, setModalType] = useState("");
     const [modalIsOpen, setIsOpen] = useState(false);
     function openModal() {
         setIsOpen(true);
@@ -128,9 +129,9 @@ export default function Card(data) {
         setIsOpen(false);
     }
 
+    const [deleteLoading, setDeleteLoading] = useState("Yes, delete it");
     function sendDeleteRequisition() {
         setDeleteLoading(<ThreeDots color="#FFFFFF" height={23} width={23} />);
-
 
         URL = BASE_URL + `posts/${posts.id}`;
         const promise = axios.delete(URL, config);
@@ -141,6 +142,22 @@ export default function Card(data) {
             alert("Houve um erro ao deletar o post!");
             console.log(e);
             setDeleteLoading("Yes, delete it");
+        });
+    }
+
+    const [repostLoading, setRepostLoading] = useState("Yes, share!");
+    function sendRepostRequest() {
+        setRepostLoading(<ThreeDots color="#FFFFFF" height={23} width={23} />);
+
+        URL = BASE_URL + `shares/${posts.id}`;
+        const promise = axios.post(URL, null, config);
+        promise.then(() => {
+            window.location.reload(true);
+        });
+        promise.catch(e => {
+            alert("Houve um erro ao repostar o post!");
+            console.log(e);
+            setRepostLoading("Yes, share!");
         });
     }
 
@@ -163,13 +180,25 @@ export default function Card(data) {
                         posts={posts}
                         setLiked={setUserLiked} />
                     <CommentsIcon posts={posts} setCommentClick = {setCommentClick} commentClick={commentClick}/>
+                    <SharesIcon onClick={() => {
+                        setModalType("re-post");
+                        openModal();
+                    }}>
+                        <img src={shareIcon}/>
+                        <h1>{posts.shareCount} re-posts</h1>
+                    </SharesIcon>
                 </IconsDiv>
                 <CardDetails>
                     <PostUsername>
                         <h1 onClick={() => navigate(`/user/${posts.userId}`, { state: user })}>{posts.username}</h1>
                         <EditAndDeleteDiv visibility={posts.userId === localUserId ? "default" : "hidden"}>
                             <img onClick={() => editPost()} src={editIcon} />
-                            <img onClick={() => openModal()} src={deleteIcon} />
+                            <img onClick={() => {
+                                setModalType("delete");
+                                openModal();
+                            }}
+                            src={deleteIcon}
+                        />
                         </EditAndDeleteDiv>
                     </PostUsername>
                     <PostDescription>
@@ -204,13 +233,23 @@ export default function Card(data) {
                     
                 </CardDetails>
                 <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles}>
-                    <ModalAlert>
-                        <h1>Are you sure you want to delete this post?</h1>
-                        <YesOrNoDiv>
-                            <button onClick={() => closeModal()}>No, go back</button>
-                            <button onClick={() => sendDeleteRequisition()}>{deleteLoading}</button>
-                        </YesOrNoDiv>
-                    </ModalAlert>
+                    {modalType === "delete" ? 
+                        <ModalAlert>
+                            <h1>Are you sure you want to delete this post?</h1>
+                            <YesOrNoDiv>
+                                <button onClick={() => closeModal()}>No, go back</button>
+                                <button onClick={() => sendDeleteRequisition()}>{deleteLoading}</button>
+                            </YesOrNoDiv>
+                        </ModalAlert>
+                    :
+                        <ModalAlert>
+                            <h1>Are you sure you want to re-post this link?</h1>
+                            <YesOrNoDiv>
+                                <button onClick={() => closeModal()}>No, cancel</button>
+                                <button onClick={() => sendRepostRequest()}>{repostLoading}</button>
+                            </YesOrNoDiv>
+                        </ModalAlert>
+                    }
                 </Modal>
             </CardDiv>
             {
@@ -261,6 +300,29 @@ const IconsDiv = styled.div`
         height: 50px;
         color: #fff;
         margin:0;
+    }
+`;
+
+const SharesIcon = styled.div`
+    width: 55px;
+    height: 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 22px;
+    
+    img {
+        width: 20px;
+        height: 12px;
+    }
+
+    h1 {
+        font-family: 'Lato';
+        font-size: 11px;
+        line-height: 13px;
+        text-align: center;
+        color: #FFFFFF;
     }
 `;
 
