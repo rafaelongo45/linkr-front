@@ -117,7 +117,6 @@ const Form = styled.form`
 
   @media(max-width: 460px){
     position: absolute;
-    z-index: 0;
     top: 70px;
     left: 10px;
     width: 95%; 
@@ -127,13 +126,17 @@ const Form = styled.form`
 const Results = styled.section`
   position: absolute;
   top: 30px;
-  left:0;
+  left: 0;
   width: 100%;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
   background-color: #E7E7E7;
   z-index:1;
   padding-top: 15px;
+
+  @media(max-width: 460px){
+    z-index: 5;
+  }
 `
 
 const Background = styled.div`
@@ -142,4 +145,8 @@ const Background = styled.div`
   height: 100vh;
   top: 0;
   left: 0;
+
+  @media(max-width: 460px){
+    z-index: 3;
+  }
 `

@@ -98,6 +98,7 @@ const UserInfoBody = styled.div`
 
   @media(max-width: 460px){
     width: 95%;
+    margin-top: 40px;
   }
   
 `;
