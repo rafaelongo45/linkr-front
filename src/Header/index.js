@@ -1,9 +1,9 @@
 import IsLoggedIn from "../Utils/CheckLogin.js";
 import RenderHeader from "./RenderHeader.js";
 
-function Header(){
+function Header({setOffset}){
   IsLoggedIn();
-  return <RenderHeader />
+  return <RenderHeader setOffset={setOffset}/>
 };
 
 export default Header;

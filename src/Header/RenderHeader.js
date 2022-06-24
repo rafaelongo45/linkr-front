@@ -8,7 +8,7 @@ import SearchBar from "./SearchBar.js";
 import RenderDropdown from "./RenderDropdown.js";
 import UserContext from "../Contexts/UserContext.js";
 
-function RenderHeader(){
+function RenderHeader({setOffset}){
   const {userInfo} = useContext(UserContext);
   const [click, setClick] = useState(false);
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ function RenderHeader(){
   return (
     <Header>
       <Logo>
-        <h1 onClick={() => navigate('/timeline')}>linkr</h1>
+        <h1 onClick={() => {setOffset(0); navigate('/timeline')}}>linkr</h1>
       </Logo>
 
       <User onClick = {() => setClick(click ? false : true)}>

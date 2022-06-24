@@ -49,10 +49,12 @@ export default function Timeline({ filter }) {
     }, [filter])
 
     function getPosts() {
-        if(!loadingMore) return
-
         setLoading(true);
-    
+        if(!offset) {
+            setLoadingMore(true)
+            setPosts([])
+        }
+
         const promise = axios.get(
             filter === 'timeline' ?
                 URL + `/${userId}?offset=${offset}`
@@ -60,11 +62,10 @@ export default function Timeline({ filter }) {
                 URL + `?offset=${offset}`, header)
 
         promise.then(res => {
-            setPosts(posts.concat(res.data));
+            setPosts(res.data);
             setLoading(false);
-
+            setOffset(offset +1)
             if(posts.length === offset*10) {
-                setOffset(offset + 1)
                 setLoadingMore(true)
             }
             else {
@@ -104,7 +105,15 @@ export default function Timeline({ filter }) {
     }, 15000);
 
     function loadMorePosts() {
-        if(!loadingMore) return
+        if(posts.length === offset*10) {
+            setLoadingMore(true)
+        }
+        else {
+            setOffset(0)
+            setLoadingMore(false)
+            return
+        }
+        if (offset < 2) setOffset(offset + 1)
         
         const promise = axios.get(
             filter === 'timeline' ?
@@ -114,9 +123,9 @@ export default function Timeline({ filter }) {
         
         promise.then(res => {
             setPosts(posts.concat(res.data))
-            
+            console.log(posts)
             if(posts.length === offset*10) {
-                setOffset(offset + 1)
+                
                 setLoadingMore(true)
             } else {
                 setLoadingMore(false)
@@ -131,7 +140,7 @@ export default function Timeline({ filter }) {
 
     return (<>
         <TimelineStyle >
-            <Header />
+            <Header setOffset={setOffset}/>
             <em><SearchBar /></em>
             <PostsArea>
                 {filter !== "timeline" && filter !== "hashtag" ? <UserInfo userId={params.id} /> : <></>}
@@ -151,7 +160,7 @@ export default function Timeline({ filter }) {
                     : posts !== [] ?
                         <>
                             {newPosts !== 0 ? 
-                                <NewPosts onClick={() => { getPosts(); setNewPosts(0); }} >
+                                <NewPosts onClick={() => { getPosts(); setNewPosts(0)}} >
                                     <p>{`${newPosts} new posts, load more!`}</p>
                                     <BiRefresh className="refresh-icon" />
                                 </NewPosts>
