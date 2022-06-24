@@ -8,7 +8,6 @@ import createHashtags from "./createHashtags";
 import UrlContext from "../Contexts/UrlContext";
 
 function PostUrl({setRefresh}){
-
     const BASE_URL = useContext(UrlContext);
     const URL = BASE_URL + "posts";
     const {userInfo} = useContext(UserContext);
