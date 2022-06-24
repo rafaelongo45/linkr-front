@@ -168,6 +168,7 @@ export default function Card(data) {
                         commentClick={commentClick}
                         />
                 </IconsDiv>
+
                 <CardDetails>
                     <PostUsername>
                         <h1 onClick={() => navigate(`/user/${posts.userId}`, { state: user })}>{posts.username ? posts.username : posts.name}</h1>
@@ -178,7 +179,7 @@ export default function Card(data) {
                     </PostUsername>
                     <PostDescription>
                         <ReactHashtag onHashtagClick={name => navigate(`/hashtag/${name.replace('#', '')}`)}>
-                            {description}
+                            {description} 
                         </ReactHashtag >
                         <EditInput
                             ref={inputRef}
@@ -353,7 +354,7 @@ const PostDescription = styled.div`
     line-height: 20px;
     color: #B7B7B7;
     position: relative;
-    margin-bottom: 18px;
+    margin-bottom: 18px;    
     height: 30px;
 `
 
