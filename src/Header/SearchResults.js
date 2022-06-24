@@ -10,7 +10,8 @@ function SearchResults({user, setClick, setSearchString}){
         () => { 
           navigate(`/user/${user.id}`, {state: {userId: user.id}}); 
           setClick(false); 
-          setSearchString('')} }>
+          setSearchString('')
+          window.location.reload()}}>
 
         {
           user.photoLink === null ?
@@ -64,4 +65,5 @@ const Result = styled.section`
     margin-left: 10px;
     color: rgba(86, 86, 86, 1);
   }
+
 `

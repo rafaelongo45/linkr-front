@@ -20,7 +20,8 @@ function RenderForm(){
     setButtonState(true);
 
     if(!isImage()){
-      return alert('Please insert a valid link for the image!');
+      alert('Please insert a valid link for the image!');
+      return window.location.reload();
     }
 
     console.log('passei')
