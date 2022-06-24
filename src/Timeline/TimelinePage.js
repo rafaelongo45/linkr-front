@@ -100,7 +100,9 @@ export default function Timeline({ filter }) {
     return (<>
         <TimelineStyle >
             <Header />
+
             <em><SearchBar /></em>
+
             <PostsArea>
                 {filter !== "timeline" && filter !== "hashtag" ? <UserInfo userId={params.id} /> : <></>}
                 {filter === "timeline" ?
@@ -156,13 +158,23 @@ const TimelineStyle = styled.main`
     justify-content: center;
     flex-wrap: wrap;
     margin-top: 113px;
-
+    
     em{
-        display: none;
+        position: fixed;
+        top: 10px;
+        width: 40%;
+        z-index: 3;
     }
 
     @media(max-width: 460px){
         width: 100%;
+
+        em{
+            position: absolute;
+            left: 0;
+            width: 100%;
+            top: 0;
+        }
     }
 `
 
@@ -189,7 +201,7 @@ const Title = styled.div`
 
     @media(max-width: 460px){
         width: 90%;
-        margin-left: 0px;
+        margin: 40px 0 0 0;
     }
 `
 
