@@ -24,8 +24,6 @@ function RenderForm(){
       return window.location.reload();
     }
 
-    console.log('passei')
-
     const URL = BASE_URL + 'signup';
     const promise = axios.post(URL, userData);
 

@@ -19,7 +19,6 @@ function SearchBar() {
     setClick(false);
   }
 
-
   useEffect(() => {
     if (searchString.length < 3) return;
 

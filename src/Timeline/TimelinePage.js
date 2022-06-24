@@ -17,10 +17,16 @@ export default function Timeline({ filter }) {
     const [posts, setPosts] = useState([]);
     const [follows, setFollows] = useState('');
     const [loading, setLoading] = useState(false);
+    const [loadingMore, setLoadingMore] = useState(true);
+    const [offset, setOffset] = useState(0);
     const [newPosts, setNewPosts] = useState(0);
     const params = useParams();
     const location = useLocation();
+
     const BASE_URL = useContext(UrlContext);
+    const userId = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
+    const header = { headers: { authorization: `Bearer ${token}` } }
 
     let URL = BASE_URL + filter; let image; let name;
     if (filter === "hashtag") {
@@ -43,22 +49,30 @@ export default function Timeline({ filter }) {
     }, [filter])
 
     function getPosts() {
-        setLoading(true);
-        const userId = localStorage.getItem('user');
-        const token = localStorage.getItem('token');
-        const header = { headers: { authorization: `Bearer ${token}` } }
+        if(!loadingMore) return
 
+        setLoading(true);
+    
         const promise = axios.get(
             filter === 'timeline' ?
-                URL + `/${userId}`
+                URL + `/${userId}?offset=${offset}`
                 :
-                URL, header)
+                URL + `?offset=${offset}`, header)
 
         promise.then(res => {
-            setPosts(res.data)
-            setLoading(false)
+            setPosts(posts.concat(res.data));
+            setLoading(false);
+
+            if(posts.length === offset*10) {
+                setOffset(offset + 1)
+                setLoadingMore(true)
+            }
+            else {
+                setLoadingMore(false)
+            }
         });
         promise.catch(err => {
+            setLoadingMore(false)
             setLoading(false)
             console.log(err)
             alert("An error occured while trying to fetch the posts, please refresh the page")
@@ -66,10 +80,7 @@ export default function Timeline({ filter }) {
     };
 
     function getFollows() {
-        const userId = localStorage.getItem('user');
-        const token = localStorage.getItem('token');
-        const header = { headers: { authorization: `Bearer ${token}` } }
-
+        
         const promise = axios.get(BASE_URL + `followers/${userId}`, header)
 
         promise.then(res => {
@@ -92,12 +103,36 @@ export default function Timeline({ filter }) {
         }
     }, 15000);
 
+    function loadMorePosts() {
+        if(!loadingMore) return
+        
+        const promise = axios.get(
+            filter === 'timeline' ?
+                URL + `/${userId}?offset=${offset}`
+                :
+                URL + `?offset=${offset}`, header)
+        
+        promise.then(res => {
+            setPosts(posts.concat(res.data))
+            
+            if(posts.length === offset*10) {
+                setOffset(offset + 1)
+                setLoadingMore(true)
+            } else {
+                setLoadingMore(false)
+            }
+        })
+        promise.catch(err => {
+            setLoadingMore(false)
+            console.log(err)
+            alert("An error occured while trying to fetch the posts, please refresh the page")
+        })
+    }
+
     return (<>
         <TimelineStyle >
             <Header />
-
             <em><SearchBar /></em>
-
             <PostsArea>
                 {filter !== "timeline" && filter !== "hashtag" ? <UserInfo userId={params.id} /> : <></>}
                 {filter === "timeline" ?
@@ -115,13 +150,17 @@ export default function Timeline({ filter }) {
                     </>
                     : posts !== [] ?
                         <>
-                            {newPosts !== 0 ?
+                            {newPosts !== 0 ? 
                                 <NewPosts onClick={() => { getPosts(); setNewPosts(0); }} >
                                     <p>{`${newPosts} new posts, load more!`}</p>
                                     <BiRefresh className="refresh-icon" />
                                 </NewPosts>
                             : <></>}
-                                <PostsList posts={posts} />
+                            <PostsList 
+                                posts={posts} 
+                                loadMorePosts={loadMorePosts} 
+                                loadingMore={loadingMore}
+                                offset={offset} />
                         </>
                         :
                         <NoPosts>There are no posts yet</NoPosts>
@@ -218,7 +257,7 @@ const loadingAnimation = keyframes`
     
 `
 
-const LoadingStyle = styled.div`
+export const LoadingStyle = styled.div`
     margin-top: 20px;
     border: 6px solid #f3f3f3;
     border-radius: 50%;
