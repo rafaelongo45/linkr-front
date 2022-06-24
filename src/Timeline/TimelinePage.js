@@ -17,7 +17,6 @@ export default function Timeline({ filter }) {
     const [posts, setPosts] = useState([]);
     const [follows, setFollows] = useState('');
     const [loading, setLoading] = useState(false);
-    const [refresh, setRefresh] = useState(false);
     const [newPosts, setNewPosts] = useState(0);
     const params = useParams();
     const location = useLocation();
@@ -41,7 +40,7 @@ export default function Timeline({ filter }) {
             getFollows();
         };
         getPosts()
-    }, [filter, refresh])
+    }, [filter])
 
     function getPosts() {
         setLoading(true);
@@ -58,7 +57,6 @@ export default function Timeline({ filter }) {
         promise.then(res => {
             setPosts(res.data)
             setLoading(false)
-            setRefresh(false);
         });
         promise.catch(err => {
             setLoading(false)
@@ -94,10 +92,6 @@ export default function Timeline({ filter }) {
         }
     }, 15000);
 
-    function getNewPosts() {
-
-    }
-
     return (<>
         <TimelineStyle >
             <Header />
@@ -113,10 +107,10 @@ export default function Timeline({ filter }) {
                         :
                         <></>
                 }
-                {filter === "timeline" ? <PostUrl setRefresh={setRefresh} /> : <></>}
+                {filter === "timeline" ? <PostUrl getPosts={getPosts} /> : <></>}
                 {loading ?
                     <>
-                        Loading
+                        <NoPosts>Loading</NoPosts>
                         <LoadingStyle ></LoadingStyle>
                     </>
                     : posts !== [] ?
@@ -133,7 +127,7 @@ export default function Timeline({ filter }) {
                         <NoPosts>There are no posts yet</NoPosts>
                 }
                 {
-                    filter !== 'hashtag' ?
+                    filter === 'hashtag' ?
                         ''
                         :
                         !follows ?
@@ -157,6 +151,12 @@ export default function Timeline({ filter }) {
 const NoPosts = styled.p`
     font-size: 20px;
     color: #fff;
+    font-family: 'Lato';
+    font-weight: 700;
+
+    @media(max-width: 460px){
+        text-align:center;
+    }
 `
 
 const TimelineStyle = styled.main`
@@ -180,6 +180,7 @@ const TimelineStyle = styled.main`
             left: 0;
             width: 100%;
             top: 0;
+            z-index:1;
         }
     }
 `
@@ -218,7 +219,7 @@ const loadingAnimation = keyframes`
 `
 
 const LoadingStyle = styled.div`
-    margin-top: 5px;
+    margin-top: 20px;
     border: 6px solid #f3f3f3;
     border-radius: 50%;
     border-top: 6px solid black;
@@ -247,4 +248,3 @@ const NewPosts = styled.div`
         margin-left: 14px;
     }
 `
-

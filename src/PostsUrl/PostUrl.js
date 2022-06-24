@@ -7,7 +7,7 @@ import UserContext from "../Contexts/UserContext";
 import createHashtags from "./createHashtags";
 import UrlContext from "../Contexts/UrlContext";
 
-function PostUrl({setRefresh}){
+function PostUrl({getPosts}){
     const BASE_URL = useContext(UrlContext);
     const URL = BASE_URL + "posts";
     const {userInfo} = useContext(UserContext);
@@ -20,7 +20,6 @@ function PostUrl({setRefresh}){
 
     function sendUrl(e){
         e.preventDefault();
-        setRefresh(true);
         setData({ ...data, link: "", description: ""});
 
         const token = localStorage.getItem("token");
@@ -34,6 +33,7 @@ function PostUrl({setRefresh}){
         promise.then(() => setDisable(false)); promise.catch(warnError);
         sendHashtags();
         setDisable(true);
+        getPosts();
     }
 
     function sendHashtags(){
@@ -105,7 +105,7 @@ const Post = styled.div`
     display: flex;
     height: 170px;
     max-height: 490px;
-    width: 590px;
+    width: 610px;
     margin: 43px 0 29px 0;
     padding: 16px 20px 55px 20px;
     border-radius: 16px;
@@ -182,7 +182,7 @@ const Url = styled.input`
     }
 `
 
-const Description = styled.input`
+const Description = styled.textarea`
     font-family: var(--link-font);
     font-size: 15px;
     box-sizing: border-box;
@@ -192,7 +192,7 @@ const Description = styled.input`
     border: none;
     border-radius: 5px;
     background-color: var(--background-input);
-    padding-bottom: 50px;
+    resize: none;
 
     ::placeholder{
         font-family: var(--link-font);
@@ -221,6 +221,10 @@ const Button = styled.button`
     border-radius: 5px;
     color: var(--button-text);
     background-color: var(--background-button);
+
+    :hover{
+        cursor: pointer;
+    }
 
     @media(max-width: 460px){
         height: 25px;

@@ -147,10 +147,11 @@ const Form = styled.form`
         border-radius: 6px;
         padding-left: 10px;
         font-weight: 700;  
+        font-size: 18px;
     }
     
     input::placeholder{
-        font-size: 22px;
+        font-size: 18px;
         color: rgba(159, 159, 159, 1);
     }
 
