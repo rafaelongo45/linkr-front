@@ -20,7 +20,7 @@ function UserInfo(props) {
   const BASE_URL = useContext(UrlContext);
 
   useEffect(() => {
-    const URL = BASE_URL + `user/${userId}`;
+    const URL = BASE_URL + `other-user/${userId}`;
     const promise = axios.get(URL, config);
     promise.then(response => setUser(response.data));
     promise.catch(err => console.log(err));
