@@ -12,7 +12,8 @@ function App(){
   const [click, setClick] = useState(false);
   const [userInfo, setUserInfo] = useState({name: '', profileImage: '', userId: ''});
 
-  const BASE_URL = "https://linkrback.herokuapp.com/";
+  // const BASE_URL = "https://linkrback.herokuapp.com/";
+  const BASE_URL = "http://localhost:4000/"
 
   return (
     <BrowserRouter>
