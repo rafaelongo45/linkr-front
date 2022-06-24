@@ -12,9 +12,11 @@ function LikesContainer ({likes, liked, posts, setLiked}) {
 	const [likesPlaceholder, setLikes] = useState(posts.likeCount);
 	const [usersLikes, setUsersLikes] = useState(likes);
 	const [randomID, setRandomID] = useState(String(Math.random()));
+	const [disable, setDisable] = useState(false)
 	const BASE_URL = useContext(UrlContext);
 
 	function likePost(e) {
+		setDisable(true)
 		e.preventDefault();
 
 		if(liked) {
@@ -35,7 +37,7 @@ function LikesContainer ({likes, liked, posts, setLiked}) {
         }
 
 		const promise = axios.post(URL, {id: posts.id}, config);
-        promise.then(); 
+        promise.then(res => setDisable(false)); 
 		promise.catch(warnError);
 
 	}
@@ -59,6 +61,7 @@ function LikesContainer ({likes, liked, posts, setLiked}) {
 	}
 
 	function warnError(error) {
+		setDisable(false)
 		setLiked(!false)
         alert("Houve um erro ao publicar seu link");
     }
@@ -69,7 +72,7 @@ function LikesContainer ({likes, liked, posts, setLiked}) {
 
 	return (
 		<LikesDiv>
-			<AiFillHeart onClick={likePost} style={{color: liked ? "red" : "white"}} />
+			<AiFillHeart disabled={disable} onClick={likePost} style={{color: liked ? "red" : "white"}} />
 			<p data-tip data-for={randomID}>{likesPlaceholder} {posts.likeCount < 2 ? "like" : "likes"}</p>
 			<ReactTooltip id={randomID} place='bottom' effect='solid'>
 				<TooltopMessage>

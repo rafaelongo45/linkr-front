@@ -34,6 +34,7 @@ function PostUrl({getPosts}){
         sendHashtags();
         setDisable(true);
         getPosts();
+        window.location().reload()
     }
 
     function sendHashtags(){
