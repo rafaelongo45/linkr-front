@@ -293,6 +293,15 @@ const CardDiv = styled.div`
         max-width: 425px;
         padding: 0;
     }
+
+    @media(max-width: 375px){
+        width: 375px;
+    }
+
+    @media(max-width: 320px){
+        width:320px;
+    }
+    
 `
 
 const IconsDiv = styled.div`

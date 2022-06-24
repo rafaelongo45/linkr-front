@@ -54,10 +54,6 @@ const Comment = styled.section`
   font-family: 'Lato';
   font-size: 16px;
 
-  :first-child{
-    margin-top: 20px;
-  }
-
   img{
     width: 40px;
     height: 40px;
@@ -113,6 +109,6 @@ const Bar = styled.div`
   margin: auto;
 
   :last-of-type{
-    margin-bottom: 80px;
+    margin-bottom: 20px;
   }
 `
