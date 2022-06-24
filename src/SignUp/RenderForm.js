@@ -11,7 +11,7 @@ function RenderForm(){
   const BASE_URL = useContext(UrlContext);
 
   function isImage() {
-    const image = /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(userData.photoLink);
+    const image = /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(userData.photoLink) || '';
     return image
   }
 
