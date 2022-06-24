@@ -11,6 +11,7 @@ import PostUrl from "../PostsUrl/PostUrl";
 import TrendingHashtags from "../TrendingHashtags";
 import UrlContext from "../Contexts/UrlContext";
 import UserInfo from "../UserPage/RenderUserPage";
+import SearchBar from "../Header/SearchBar";
 
 export default function Timeline({ filter }) {
     const [posts, setPosts] = useState([]);
@@ -63,7 +64,7 @@ export default function Timeline({ filter }) {
             setPosts(posts.concat(res.data));
             setLoading(false);
             setRefresh(false);
-            
+
             if(posts.length === offset*10) {
                 setOffset(offset + 1)
                 setLoadingMore(true)
@@ -133,6 +134,7 @@ export default function Timeline({ filter }) {
     return (<>
         <TimelineStyle >
             <Header />
+            <em><SearchBar /></em>
             <PostsArea>
                 {filter !== "timeline" && filter !== "hashtag" ? <UserInfo userId={params.id} /> : <></>}
                 {filter === "timeline" ?
