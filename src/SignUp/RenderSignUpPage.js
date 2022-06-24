@@ -56,7 +56,7 @@ const LogoSide = styled.section`
 
   @media(max-width: 460px){
     width: 100%;
-    height: 25%;
+    height: 22%;
     display:flex;
     flex-wrap:wrap;
     flex-direction:column;
@@ -91,7 +91,7 @@ const FormSide = styled.section`
 
   @media(max-width: 460px){
     width: 100%;
-    height: 75%;
+    height: 78%;
     position: static;
     justify-content:flex-start;
   }

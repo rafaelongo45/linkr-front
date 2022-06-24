@@ -40,10 +40,8 @@ export default function Login() {
     return (
         <Main>
             <LogoSection>
-                <Logo>
-                    <h1>linkr</h1>
-                    <h2>save, share and discover the best links on the web</h2>
-                </Logo>
+                <h1>linkr</h1>
+                <h2>save, share and discover the best links on the web</h2>
             </LogoSection>
             <FormSection>
                 <Form onSubmit={sendData}>
@@ -76,64 +74,51 @@ const LogoSection = styled.section`
     width: 60%;
     height: 100%;
 
-    @media(max-width: 460px) {
-        width: 100%;
-        height: 30%;
-        position: static;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-`
-
-const Logo = styled.div`
-    width: 300px;
-    height: 100px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: space-between;
-    position: absolute;
-    top: 29%;
-    left: 20%;
-
     h1{
+        position:absolute;
         font-size: 100px;
+        top: 270px;
+        left: 20%;
     }
 
     h2{
+        position:absolute;
         font-size: 28px;
         width: 300px;
         font-family:var(--input-font);
+        top: 360px;
+        left: 20%;
+        line-height: 45px;
     }
 
-    @media(max-width: 460px) {
-        width: 230px;
-        height: 110px;
+    @media(max-width: 460px){
+        width: 100%;
+        height: 22%;
+        display:flex;
+        flex-wrap:wrap;
+        flex-direction:column;
+        align-items:center;
+
+        h1{
+        font-size: 80px;
         position: static;
-        align-items: center;
-        justify-content: center;
-
-        h1 {
-            font-size: 68px;
-            line-height: 58px;
-            padding: 0px;
+        margin-top: 15px;
         }
 
-        h2 {
-            font-size: 20px;
-            line-height: 28px;
-            width: 220px;
-            font-family:var(--input-font);
-            text-align: center;
+        h2{
+        font-size: 24px;
+        position: static;
+        text-align:center;
+        width: 80%;
+        line-height: 30px;
         }
     }
-`;
+`
 
 const FormSection = styled.section`
     position:relative;
     right: 0;
-    width:40%;
+    width: 40%;
     height: 100%;
     background-color:var(--background-color-header);
     display:flex;
@@ -143,40 +128,46 @@ const FormSection = styled.section`
 
     @media(max-width: 460px) {
         width: 100%;
-        height: 70%;
+        height: 78%;
         position: static;
         justify-content:flex-start;
     }
 `
 
 const Form = styled.form`
-    width: 80%;
+    width:90%;
     display:flex;
     flex-direction:column;
-    font-family: var(--input-font);
+    font-family: var(-put-font);
 
     input{
-        height: 50px;
-        margin-bottom: 20px;
+        height: 60px;
+        margin-bottom: 10px;
         border:none;
         border-radius: 6px;
         padding-left: 10px;
-        font-weight: 700;
+        font-weight: 700;  
+        font-size: 18px;
     }
     
     input::placeholder{
-        font-size: 22px;
+        font-size: 18px;
         color: rgba(159, 159, 159, 1);
     }
 
     button{
-        height: 50px;
+        height: 60px;
         border:none;
         border-radius: 6px;
         background-color: rgba(24, 119, 242, 1);
         color: #fff;
         font-size: 22px;
         font-weight: 700;  
+        font-family: var(--input-font);
+
+        :hover{
+        cursor:pointer;
+        }
     }
 
     @media(max-width: 460px) {
@@ -199,6 +190,10 @@ const Button = styled.button`
     border:none;
     background-color:transparent;
     color:white;
+
+    :hover{
+        cursor: pointer;
+    }
 
     @media(max-width: 460px) {
         margin-top: 21px;

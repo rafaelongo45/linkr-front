@@ -19,7 +19,6 @@ function SearchBar() {
     setClick(false);
   }
 
-
   useEffect(() => {
     if (searchString.length < 3) return;
 
@@ -80,11 +79,15 @@ function SearchBar() {
 export default SearchBar;
 
 const Form = styled.form`
-  width: 30%;
+  width: 100%;
   display:flex;
   align-items:center;
   justify-content:center;
   position:relative;
+  font-size: 15px;
+  color: rgba(81, 81, 81, 1);
+  font-weight: 600;
+  font-family: 'Lato';
 
   svg{
     position:absolute;
@@ -102,6 +105,9 @@ const Form = styled.form`
     padding:0 10px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     z-index:2;
+    font-size: 15px;
+    font-family:var(--link-font);
+    font-size: 16px;
     
     ::placeholder{
       display:flex;
@@ -115,18 +121,29 @@ const Form = styled.form`
       outline:none;
     }
   }
+
+  @media(max-width: 460px){
+    position: absolute;
+    top: 70px;
+    left: 10px;
+    width: 95%; 
+  }
 `
 
 const Results = styled.section`
-  position:absolute;
+  position: absolute;
   top: 30px;
-  left:0;
+  left: 0;
   width: 100%;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
   background-color: #E7E7E7;
   z-index:1;
   padding-top: 15px;
+
+  @media(max-width: 460px){
+    z-index: 5;
+  }
 `
 
 const Background = styled.div`
@@ -135,4 +152,8 @@ const Background = styled.div`
   height: 100vh;
   top: 0;
   left: 0;
+
+  @media(max-width: 460px){
+    z-index: 3;
+  }
 `

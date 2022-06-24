@@ -72,6 +72,11 @@ const Comment = styled.section`
     height: 45px;
     margin-right: 10px;
   }
+
+  @media(max-width: 460px){
+    padding: 0;
+    margin-left: 10px;
+  }
 `
 
 const CommentInfo = styled.div`

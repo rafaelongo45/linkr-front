@@ -7,8 +7,7 @@ import UserContext from "../Contexts/UserContext";
 import createHashtags from "./createHashtags";
 import UrlContext from "../Contexts/UrlContext";
 
-function PostUrl({setRefresh}){
-
+function PostUrl({getPosts}){
     const BASE_URL = useContext(UrlContext);
     const URL = BASE_URL + "posts";
     const {userInfo} = useContext(UserContext);
@@ -21,7 +20,6 @@ function PostUrl({setRefresh}){
 
     function sendUrl(e){
         e.preventDefault();
-        setRefresh(true);
         setData({ ...data, link: "", description: ""});
 
         const token = localStorage.getItem("token");
@@ -35,6 +33,7 @@ function PostUrl({setRefresh}){
         promise.then(() => setDisable(false)); promise.catch(warnError);
         sendHashtags();
         setDisable(true);
+        getPosts();
     }
 
     function sendHashtags(){
@@ -104,13 +103,14 @@ export default PostUrl;
 const Post = styled.div`
     position: relative;
     display: flex;
-    height: 190px;
+    height: 170px;
     max-height: 490px;
-    width: 611px;
+    width: 610px;
     margin: 43px 0 29px 0;
     padding: 16px 20px 55px 20px;
     border-radius: 16px;
     background-color: var(--background-post-url);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
     div>svg{
         width: 50px;
@@ -134,11 +134,32 @@ const Post = styled.div`
             color: var(--post-color);
         }
     }
+
+    @media(max-width: 460px){
+        width: 100%;
+        height: 230px;
+        max-width: 425px;
+        border-radius: 0;
+        padding: 0;
+
+        div:first-child{
+            display: none;
+        }
+
+        div:nth-child(2){
+            width: 90%;
+            margin: 10px auto;
+
+            p{
+                text-align: center;
+            }
+        }
+    }
 `
 const Image = styled.img`
-    width: 50px;
-    height: 50px;
-    border-radius: 25px;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
     object-fit: cover;
 `
 
@@ -149,7 +170,7 @@ const Url = styled.input`
     height: 30px;
     width: 100%;
     padding: 0 13px;
-    margin-bottom: 5px;
+    margin-bottom: 7px;
     border: none;
     border-radius: 5px;
     background-color: var(--background-input);
@@ -161,7 +182,7 @@ const Url = styled.input`
     }
 `
 
-const Description = styled.input`
+const Description = styled.textarea`
     font-family: var(--link-font);
     font-size: 15px;
     box-sizing: border-box;
@@ -171,7 +192,7 @@ const Description = styled.input`
     border: none;
     border-radius: 5px;
     background-color: var(--background-input);
-    padding-bottom: 50px;
+    resize: none;
 
     ::placeholder{
         font-family: var(--link-font);
@@ -179,6 +200,13 @@ const Description = styled.input`
         color: var(--placeholder-color);
     };
 
+    @media(max-width: 460px){
+        height: 70px;
+        
+        ::placeholder{
+            padding: 3px;
+        }
+    }
 `
 
 const Button = styled.button`
@@ -193,4 +221,12 @@ const Button = styled.button`
     border-radius: 5px;
     color: var(--button-text);
     background-color: var(--background-button);
+
+    :hover{
+        cursor: pointer;
+    }
+
+    @media(max-width: 460px){
+        height: 25px;
+    }
 `

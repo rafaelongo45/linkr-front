@@ -43,11 +43,13 @@ export default TrendingHashtags;
 const TrendingArea = styled.aside`
   height: 406px;
   width: 301px;
-  margin: 0 0 0 25px;
+  margin: 83px 0 0 25px;
   padding-top: 20px;
   background-color: var(--background-color);
   border-radius: 14px;
-
+  position: sticky;
+  top: 74px;
+  
   h1{
     color: #fff;
     font-family: var(--input-font);
@@ -60,6 +62,10 @@ const TrendingArea = styled.aside`
     width: 100%;
     height: 2px;
     background-color:var(--background-color-header);
+  }
+
+  @media(max-width: 1024px){
+    display: none;
   }
 `;
 

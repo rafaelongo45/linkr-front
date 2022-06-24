@@ -10,10 +10,19 @@ function RenderForm(){
   const [buttonState, setButtonState] = useState(false);
   const BASE_URL = useContext(UrlContext);
 
+  function isImage() {
+    const image = /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(userData.photoLink);
+    return image
+  }
+
   function sendData(e){
     e.preventDefault();
     setButtonState(true);
 
+    if(!isImage()){
+      alert('Please insert a valid link for the image!');
+      return window.location.reload();
+    }
 
     const URL = BASE_URL + 'signup';
     const promise = axios.post(URL, userData);
@@ -27,7 +36,8 @@ function RenderForm(){
       console.log(err);
     });
 
-  }
+  };
+  
   return (
     <>
       <Form onSubmit={sendData}>
@@ -58,11 +68,12 @@ const Form = styled.form`
     border:none;
     border-radius: 6px;
     padding-left: 10px;
-    font-weight: 700;  
+    font-weight: 700; 
+    font-size: 18px;
   }
   
   input::placeholder{
-    font-size: 22px;
+    font-size: 18px;
     color: rgba(159, 159, 159, 1);
   }
 
@@ -75,11 +86,16 @@ const Form = styled.form`
     font-size: 22px;
     font-weight: 700;  
     font-family: var(--input-font);
+
+    :hover{
+      cursor:pointer;
+    }
   }
 
   @media(max-width: 460px){
     margin-top: 50px;
   }
+  
 `
 
 const Button =styled.button`
