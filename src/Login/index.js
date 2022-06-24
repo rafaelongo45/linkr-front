@@ -40,8 +40,10 @@ export default function Login() {
     return (
         <Main>
             <LogoSection>
-                <h1>linkr</h1>
-                <h2>save, share and discover the best links on the web</h2>
+                <div>
+                    <h1>linkr</h1>
+                    <h2>save, share and discover the best links on the web</h2>
+                </div>
             </LogoSection>
             <FormSection>
                 <Form onSubmit={sendData}>
@@ -67,22 +69,22 @@ const Main = styled.main`
 `
 
 const LogoSection = styled.section`
+    display: flex;
+    align-items: center;
+    margin-left: 100px;
     font-family: var(--logo-font);
     font-weight:700;
     color:#fff;
-    position:relative;
     width: 60%;
     height: 100%;
 
     h1{
-        position:absolute;
         font-size: 100px;
         top: 270px;
         left: 20%;
     }
 
     h2{
-        position:absolute;
         font-size: 28px;
         width: 300px;
         font-family:var(--input-font);
