@@ -46,14 +46,16 @@ function CommentsContainer({ posts }){
 
   return (
     <Container>
-      {
-        comments.length === 0 ?
-        ''
-        :
-        comments.map(comment => {
-          return <RenderComments comment = {comment} posts = {posts}/>
-        })
-      }
+      <CommentsDiv>
+        {
+          comments.length === 0 ?
+          ''
+          :
+          comments.map(comment => {
+            return <RenderComments comment = {comment} posts = {posts}/>
+          })
+        }
+      </CommentsDiv>
       
       <Form onSubmit={postComment}>
         {
@@ -70,6 +72,10 @@ function CommentsContainer({ posts }){
 }
 
 export default CommentsContainer;
+
+const CommentsDiv = styled.div`
+
+`; 
 
 const Container = styled.article`
   background-color: #1E1E1E;
