@@ -80,7 +80,8 @@ const CommentsDiv = styled.div`
 const Container = styled.article`
   background-color: #1E1E1E;
   width: 651px;
-  min-height: 100px;
+  min-height: 185px;
+  height: fit-content;
   position:relative;
   top: -35px;
   border-bottom-left-radius: 15px;
@@ -88,15 +89,16 @@ const Container = styled.article`
   margin-bottom: 10px;
   z-index: 0;
 
+  section:first-child{
+    padding-top: 15px;
+  }
+
   @media(max-width: 460px){
     width: 100%;
   }
 `
 
 const Form = styled.form`
-  position: absolute;
-  bottom: 0;
-  left: 0;
   width: 95%;
   padding: 0 18px 18px 18px;
   display:flex;
@@ -141,7 +143,8 @@ const Form = styled.form`
   }
 
   @media(max-width: 460px){
-    padding: 0px;
+    width: 97%;
+    padding: 0 0 10px 0px;
     margin-bottom: 20px;
 
     img{
@@ -153,8 +156,8 @@ const Form = styled.form`
     }
 
     button{
-      right: 2px;
-      bottom: 8px;
+      right: 5%;
+      bottom: 18px;
     } 
   }
 `

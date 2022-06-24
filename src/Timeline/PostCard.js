@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router";
 import ReactHashtag from "@mdnm/react-hashtag";
-import {IoPersonCircle} from 'react-icons/io5';
+import { IoPersonCircle } from 'react-icons/io5';
 import { useEffect, useState, useRef, useContext } from "react";
 import axios from "axios";
 import Modal from "react-modal";
@@ -10,6 +10,7 @@ import { ThreeDots } from "react-loader-spinner";
 import LikesContainer from "./LikesContainer.js";
 import editIcon from "../assets/img/edit-icon.svg";
 import deleteIcon from "../assets/img/delete-icon.svg";
+import shareIcon from "../assets/img/shares-icon.svg";
 import UrlContext from "../Contexts/UrlContext.js";
 import CommentsIcon from "./CommentsIcon.js";
 import CommentsContainer from "./CommentsContainer.js";
@@ -50,7 +51,6 @@ export default function Card(data) {
     const [commentClick, setCommentClick] = useState(false);
     const [editClicked, setEditClicked] = useState(false);
     const [editLoading, setEditLoading] = useState(false);
-    const [deleteLoading, setDeleteLoading] = useState("Yes, delete it");
     const [description, setDescription] = useState(posts.description);
     const [inputDescription, setInputDescription] = useState(posts.description);
     const [userLiked, setUserLiked] = useState(false);
@@ -60,10 +60,10 @@ export default function Card(data) {
         peopleWhoLiked()
     }, [userLiked])
 
-    function peopleWhoLiked () {
+    function peopleWhoLiked() {
 
         URL = BASE_URL + `post-likes/${posts.id}`;
-		const promise = axios.get(URL, config);
+        const promise = axios.get(URL, config);
 
         promise.then((res) => {
             setLikes(res.data)
@@ -85,10 +85,10 @@ export default function Card(data) {
         }
     }
 
-    function sendEditRequisition() {        
+    function sendEditRequisition() {
 
         URL = BASE_URL + `posts/${posts.id}`;
-        const promise = axios.put(URL, {description: inputDescription}, config);
+        const promise = axios.put(URL, { description: inputDescription }, config);
 
         setEditLoading(true);
 
@@ -119,9 +119,10 @@ export default function Card(data) {
             backgroundColor: 'rgba(255, 255, 255, 0)',
             border: 'none'
         },
-        overlay: {zIndex: 2}
+        overlay: { zIndex: 2 }
     };
 
+    const [modalType, setModalType] = useState("");
     const [modalIsOpen, setIsOpen] = useState(false);
     function openModal() {
         setIsOpen(true);
@@ -130,6 +131,7 @@ export default function Card(data) {
         setIsOpen(false);
     }
 
+    const [deleteLoading, setDeleteLoading] = useState("Yes, delete it");
     function sendDeleteRequisition() {
         setDeleteLoading(<ThreeDots color="#FFFFFF" height={23} width={23} />);
 
@@ -145,6 +147,22 @@ export default function Card(data) {
         });
     }
 
+    const [repostLoading, setRepostLoading] = useState("Yes, share!");
+    function sendRepostRequest() {
+        setRepostLoading(<ThreeDots color="#FFFFFF" height={23} width={23} />);
+
+        URL = BASE_URL + `shares/${posts.id}`;
+        const promise = axios.post(URL, null, config);
+        promise.then(() => {
+            window.location.reload(true);
+        });
+        promise.catch(e => {
+            alert("Houve um erro ao repostar o post!");
+            console.log(e);
+            setRepostLoading("Yes, share!");
+        });
+    }
+
     const user = { userId: posts.userId, name: posts.username, image: posts.photoLink };
 
     return (
@@ -152,34 +170,45 @@ export default function Card(data) {
             <CardDiv>
                 <IconsDiv>
                     {
-                        posts.photoLink ? 
-                        <ProfileImg img={posts.photoLink} />
-                        :
-                        <IoPersonCircle className="userIcon"/>
+                        posts.photoLink ?
+                            <ProfileImg img={posts.photoLink} />
+                            :
+                            <IoPersonCircle className="userIcon" />
                     }
-                    <LikesContainer 
-                        liked={userLiked} 
+                    <LikesContainer
+                        liked={userLiked}
 
                         likes={likes}
                         posts={posts}
                         setLiked={setUserLiked} />
-                    <CommentsIcon posts={posts} 
-                        setCommentClick = {setCommentClick} 
+                    <CommentsIcon posts={posts}
+                        setCommentClick={setCommentClick}
                         commentClick={commentClick}
-                        />
+                    />
+                    <SharesIcon onClick={() => {
+                        setModalType("re-post");
+                        openModal();
+                    }}>
+                        <img src={shareIcon} />
+                        <h1>{posts.shareCount} re-posts</h1>
+                    </SharesIcon>
                 </IconsDiv>
-
                 <CardDetails>
                     <PostUsername>
                         <h1 onClick={() => navigate(`/user/${posts.userId}`, { state: user })}>{posts.username ? posts.username : posts.name}</h1>
                         <EditAndDeleteDiv visibility={posts.userId === localUserId ? "default" : "hidden"}>
                             <img onClick={() => editPost()} src={editIcon} />
-                            <img onClick={() => openModal()} src={deleteIcon} />
+                            <img onClick={() => {
+                                setModalType("delete");
+                                openModal();
+                            }}
+                                src={deleteIcon}
+                            />
                         </EditAndDeleteDiv>
                     </PostUsername>
                     <PostDescription>
                         <ReactHashtag onHashtagClick={name => navigate(`/hashtag/${name.replace('#', '')}`)}>
-                            {description} 
+                            {description}
                         </ReactHashtag >
                         <EditInput
                             ref={inputRef}
@@ -206,23 +235,33 @@ export default function Card(data) {
                         linkDesc={posts.linkDesc}
                         linkImg={posts.linkImg}
                         link={posts.link} />
-                    
+
                 </CardDetails>
                 <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles}>
-                    <ModalAlert>
-                        <h1>Are you sure you want to delete this post?</h1>
-                        <YesOrNoDiv>
-                            <button onClick={() => closeModal()}>No, go back</button>
-                            <button onClick={() => sendDeleteRequisition()}>{deleteLoading}</button>
-                        </YesOrNoDiv>
-                    </ModalAlert>
+                    {modalType === "delete" ?
+                        <ModalAlert>
+                            <h1>Are you sure you want to delete this post?</h1>
+                            <YesOrNoDiv>
+                                <button onClick={() => closeModal()}>No, go back</button>
+                                <button onClick={() => sendDeleteRequisition()}>{deleteLoading}</button>
+                            </YesOrNoDiv>
+                        </ModalAlert>
+                        :
+                        <ModalAlert>
+                            <h1>Are you sure you want to re-post this link?</h1>
+                            <YesOrNoDiv>
+                                <button onClick={() => closeModal()}>No, cancel</button>
+                                <button onClick={() => sendRepostRequest()}>{repostLoading}</button>
+                            </YesOrNoDiv>
+                        </ModalAlert>
+                    }
                 </Modal>
             </CardDiv>
             {
-                commentClick ? 
-                <CommentsContainer posts = {posts}/>
-                :
-                ''
+                commentClick ?
+                    <CommentsContainer posts={posts} />
+                    :
+                    ''
             }
         </>
     )
@@ -254,6 +293,15 @@ const CardDiv = styled.div`
         max-width: 425px;
         padding: 0;
     }
+
+    @media(max-width: 375px){
+        width: 375px;
+    }
+
+    @media(max-width: 320px){
+        width:320px;
+    }
+    
 `
 
 const IconsDiv = styled.div`
@@ -291,6 +339,31 @@ const IconsDiv = styled.div`
         svg{
             font-size: 20px;
         }
+    }
+`;
+
+const SharesIcon = styled.div`
+    width: 55px;
+    height: 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 18px;
+    cursor: pointer;
+    
+    img {
+        width: 20px;
+        height: 12px;
+        margin-bottom: 5px;
+    }
+
+    h1 {
+        font-family: 'Lato';
+        font-size: 11px;
+        line-height: 13px;
+        text-align: center;
+        color: #FFFFFF;
     }
 `;
 

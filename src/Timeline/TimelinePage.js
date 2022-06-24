@@ -72,6 +72,7 @@ export default function Timeline({ filter }) {
                 setLoadingMore(false)
             }
         });
+
         promise.catch(err => {
             setLoadingMore(false)
             setLoading(false)
@@ -96,9 +97,6 @@ export default function Timeline({ filter }) {
 
     useInterval(() => {
         if (filter === "timeline" && !loading) {
-            const token = localStorage.getItem('token');
-            const header = { headers: { authorization: `Bearer ${token}` } };
-
             const promise = axios.get(BASE_URL + `new-posts/${posts[0].id}`, header);
             promise.then((res) => setNewPosts(parseInt(res.data.count)));
         }
@@ -165,6 +163,7 @@ export default function Timeline({ filter }) {
                                     <BiRefresh className="refresh-icon" />
                                 </NewPosts>
                             : <></>}
+                            <></>
                             <PostsList 
                                 posts={posts} 
                                 loadMorePosts={loadMorePosts} 
@@ -281,7 +280,7 @@ const NewPosts = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 611px;
+    width: 650px;
     height: 61px;
     margin-bottom: 17px;
     font-family: var(--link-font);
@@ -294,5 +293,10 @@ const NewPosts = styled.div`
     .refresh-icon{
         font-size: 26px;
         margin-left: 14px;
+    }
+
+    @media(max-width: 460px){
+        width: 100%;
+        border-radius: 0;
     }
 `
