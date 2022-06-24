@@ -84,6 +84,10 @@ const Form = styled.form`
   align-items:center;
   justify-content:center;
   position:relative;
+  font-size: 15px;
+  color: rgba(81, 81, 81, 1);
+  font-weight: 600;
+  font-family: 'Lato';
 
   svg{
     position:absolute;
@@ -101,6 +105,9 @@ const Form = styled.form`
     padding:0 10px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     z-index:2;
+    font-size: 15px;
+    font-family:var(--link-font);
+    font-size: 16px;
     
     ::placeholder{
       display:flex;

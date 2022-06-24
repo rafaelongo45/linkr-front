@@ -26,6 +26,7 @@ function UserInfo(props) {
     promise.catch(err => console.log(err));
 
   }, [userId]);
+  console.log(user)
 
   function followOrUnfollowRequest() {
     setLoading(true);
@@ -94,7 +95,8 @@ const UserInfoBody = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 33px;
+  margin-bottom: 20px;
+  position: relative;
 
   @media(max-width: 460px){
     width: 95%;
@@ -163,9 +165,17 @@ const FollowButton = styled.button`
   font-weight: 700;
   font-size: 14px;
   line-height: 17px;
+  position: absolute;
+  right: -50%;
+  top: 25px;
   cursor: pointer;
 
+  @media(max-width: 1030px){
+    position: initial;
+  }
+
   @media(max-width: 460px){
+    position: initial;
     width: 60px;
     height: 26px;
     margin-right: 5px;

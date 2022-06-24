@@ -17,7 +17,6 @@ export default function Timeline({ filter }) {
     const [posts, setPosts] = useState([]);
     const [follows, setFollows] = useState('');
     const [loading, setLoading] = useState(false);
-    const [refresh, setRefresh] = useState(false);
     const [loadingMore, setLoadingMore] = useState(true);
     const [offset, setOffset] = useState(0);
     const [newPosts, setNewPosts] = useState(0);
@@ -47,7 +46,7 @@ export default function Timeline({ filter }) {
             getFollows();
         };
         getPosts()
-    }, [filter, refresh])
+    }, [filter])
 
     function getPosts() {
         if(!loadingMore) return
@@ -63,7 +62,6 @@ export default function Timeline({ filter }) {
         promise.then(res => {
             setPosts(posts.concat(res.data));
             setLoading(false);
-            setRefresh(false);
 
             if(posts.length === offset*10) {
                 setOffset(offset + 1)
@@ -144,9 +142,10 @@ export default function Timeline({ filter }) {
                         :
                         <></>
                 }
-                {filter === "timeline" ? <PostUrl setRefresh={setRefresh} /> : <></>}
+                {filter === "timeline" ? <PostUrl getPosts={getPosts} /> : <></>}
                 {loading ?
                     <>
+                        <NoPosts>Loading</NoPosts>
                         <LoadingStyle ></LoadingStyle>
                     </>
                     : posts !== [] ?
@@ -167,7 +166,7 @@ export default function Timeline({ filter }) {
                         <NoPosts>There are no posts yet</NoPosts>
                 }
                 {
-                    filter !== 'hashtag' ?
+                    filter === 'hashtag' ?
                         ''
                         :
                         !follows ?
@@ -191,6 +190,12 @@ export default function Timeline({ filter }) {
 const NoPosts = styled.p`
     font-size: 20px;
     color: #fff;
+    font-family: 'Lato';
+    font-weight: 700;
+
+    @media(max-width: 460px){
+        text-align:center;
+    }
 `
 
 const TimelineStyle = styled.main`
@@ -214,6 +219,7 @@ const TimelineStyle = styled.main`
             left: 0;
             width: 100%;
             top: 0;
+            z-index:1;
         }
     }
 `
@@ -252,7 +258,7 @@ const loadingAnimation = keyframes`
 `
 
 export const LoadingStyle = styled.div`
-    margin-top: 5px;
+    margin-top: 20px;
     border: 6px solid #f3f3f3;
     border-radius: 50%;
     border-top: 6px solid black;
@@ -281,4 +287,3 @@ const NewPosts = styled.div`
         margin-left: 14px;
     }
 `
-
