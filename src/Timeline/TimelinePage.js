@@ -1,6 +1,7 @@
-import styled, { keyframes } from "styled-components";
 import { useContext, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router";
+import styled, { keyframes } from "styled-components";
+import { BiRefresh } from 'react-icons/bi';
 import useInterval from "use-interval";
 import axios from "axios";
 
@@ -96,7 +97,7 @@ export default function Timeline({ filter }) {
     function getNewPosts() {
 
     }
-  
+
     return (<>
         <TimelineStyle >
             <Header />
@@ -120,26 +121,31 @@ export default function Timeline({ filter }) {
                     </>
                     : posts !== [] ?
                         <>
-                            {newPosts !== 0 ? <NewPosts onClick={() => { getPosts(); setNewPosts(0); }} >{`${newPosts} new posts, load more!`}</NewPosts> : <></>}
-                            <PostsList posts={posts} />
+                            {newPosts !== 0 ?
+                                <NewPosts onClick={() => { getPosts(); setNewPosts(0); }} >
+                                    <p>{`${newPosts} new posts, load more!`}</p>
+                                    <BiRefresh className="refresh-icon" />
+                                </NewPosts>
+                            : <></>}
+                                <PostsList posts={posts} />
                         </>
                         :
                         <NoPosts>There are no posts yet</NoPosts>
                 }
                 {
                     filter !== 'hashtag' ?
-                    ''
-                    :
-                    !follows ? 
-                    ''
-                    :
-                    posts.length === 0 && follows[0].followsAmmount === '0' ?
-                    <NoPosts>You don't follow anyone yet. Search for new friends!</NoPosts>
-                    :
-                    posts.length === 0 && follows[0].postsAmmount === '0' ?
-                    <NoPosts>No posts found from your friends</NoPosts>
-                    :
-                    ''
+                        ''
+                        :
+                        !follows ?
+                            ''
+                            :
+                            posts.length === 0 && follows[0].followsAmmount === '0' ?
+                                <NoPosts>You don't follow anyone yet. Search for new friends!</NoPosts>
+                                :
+                                posts.length === 0 && follows[0].postsAmmount === '0' ?
+                                    <NoPosts>No posts found from your friends</NoPosts>
+                                    :
+                                    ''
                 }
             </PostsArea>
             {filter !== "hashtag" ? <TrendingHashtags /> : <></>}
@@ -235,5 +241,10 @@ const NewPosts = styled.div`
     color: #FFFFFF;
     background-color: var(--background-button);
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+    .refresh-icon{
+        font-size: 26px;
+        margin-left: 14px;
+    }
 `
 
